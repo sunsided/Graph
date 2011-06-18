@@ -15,9 +15,9 @@ namespace Graph
 		/// <param name="input">Der zu verarbeitende Wert</param>
 		/// <returns>Das Ergebnis</returns>
 		/// <remarks>Hier wird auschließlich die Filterlogik implementiert.</remarks>
+		[Pure]
 		public override TOut Filter(TIn input)
 		{
-			Contract.Ensures(Equals(Contract.Result<TOut>(), input));
 			return input;
 		}
 	}

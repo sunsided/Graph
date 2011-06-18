@@ -4,7 +4,7 @@
 	/// Interface für eine Senke
 	/// </summary>
 	/// <typeparam name="TOut">Ausgabedatentyp</typeparam>
-	public interface ISource<out TOut> : IAppendable<TOut>
+	public interface ISource<out TOut> : IAppendable<TOut>, IProcessIndicator
 	{
 		/// <summary>
 		/// Erzeugt die Eingabe

@@ -4,7 +4,7 @@
 	/// Interface für eine verarbeitbares Element
 	/// </summary>
 	/// <typeparam name="TIn">Eingabedatentyp</typeparam>
-	public interface IDataProcessor<in TIn>
+	public interface IDataProcessor<in TIn> : IProcessIndicator
 	{
 		/// <summary>
 		/// Verarbeitet die Eingabe

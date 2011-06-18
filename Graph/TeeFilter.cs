@@ -77,14 +77,23 @@ namespace Graph
 		/// <param name="input">Der zu verarbeitende Wert</param>
 		public void Process(TIn input)
 		{
-			lock (_elementList)
+			try
 			{
-				// Die Liste durchlaufen
-				for (int i=0; i<_elementList.Count; ++i)
+				SetProcessingState(ProcessState.Dispatching);
+				lock (_elementList)
 				{
-					IDataProcessor<TOut> element = _elementList[i];
-					element.Process(input);
+					// Die Liste durchlaufen
+					for (int i = 0; i < _elementList.Count; ++i)
+					{
+						IDataProcessor<TOut> element = _elementList[i];
+						element.Process(input);
+					}
 				}
+
+			}
+			finally
+			{
+				SetProcessingState(ProcessState.Idle);
 			}
 		}
 
@@ -96,6 +105,24 @@ namespace Graph
 		{
 			Contract.Invariant(_elementList != null);
 			Contract.Invariant(Contract.ForAll(_elementList, element => element != null));
+		}
+
+		/// <summary>
+		/// Setzt den Bearbeitungsstatus
+		/// </summary>
+		/// <param name="state">Zustand, in dem sich das Element befindet</param>
+		protected void SetProcessingState(ProcessState state)
+		{
+			State = state;
+			Contract.Assume(State == state);
+		}
+
+		/// <summary>
+		/// Ermittelt, ob das Objekt gerade beschäftigt ist
+		/// </summary>
+		public ProcessState State
+		{
+			[Pure] get; protected set;
 		}
 	}
 }
