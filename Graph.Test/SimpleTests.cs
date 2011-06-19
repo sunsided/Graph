@@ -17,19 +17,19 @@ namespace Graph.Test
 			PassthroughFilter<int> passthroughFilter1 = new PassthroughFilter<int>();
 			PassthroughFilter<int> passthroughFilter2 = new PassthroughFilter<int>();
 			TeeFilter<int> tee = new TeeFilter<int>();
-			PassthroughFilter<int> passthroughFilter3 = new PassthroughFilter<int>();
-			PassthroughFilter<int> passthroughFilter4 = new PassthroughFilter<int>();
+			DelegateFilter<int> filter3 = new DelegateFilter<int>(value => value + 10);
+			DelegateFilter<int, double> filter4 = new DelegateFilter<int, double>(value => value * 0.75);
 			TerminatorSink<int> sink1 = new TerminatorSink<int>();
-			TerminatorSink<int> sink2 = new TerminatorSink<int>();
+			TerminatorSink<double> sink2 = new TerminatorSink<double>();
 
 			source.Append(passthroughFilter1)
 				.Append(passthroughFilter2)
 				.Append(tee);
-			
-			tee.Append(passthroughFilter3)
+
+			tee.Append(filter3)
 				.Append(sink1);
 
-			tee.Append(passthroughFilter4)
+			tee.Append(filter4)
 				.Append(sink2);
 
 			sink1.StateChanged += (sender, args) =>
