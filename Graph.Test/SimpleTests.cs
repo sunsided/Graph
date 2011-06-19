@@ -20,7 +20,11 @@ namespace Graph.Test
 			DelegateFilter<int> filter3 = new DelegateFilter<int>(value => value + 10);
 			DelegateFilter<int, double> filter4 = new DelegateFilter<int, double>(value => value * 0.75);
 			TerminatorSink<int> sink1 = new TerminatorSink<int>();
-			TerminatorSink<double> sink2 = new TerminatorSink<double>();
+			DelegateSink<double> sink2 = new DelegateSink<double>(value =>
+			                                                      	{
+			                                                      		Trace.WriteLine("Sink 2 - Wert erhalten: " + value);
+			                                                      		waitHandle2.Set();
+			                                                      	});
 
 			source.Append(passthroughFilter1)
 				.Append(passthroughFilter2)
@@ -36,11 +40,6 @@ namespace Graph.Test
 			                      	{
 			                      		if (args.State == ProcessState.Dispatching) Trace.WriteLine("Sink 1 - Wert erhalten: " + args.Input);
 			                      		waitHandle1.Set();
-			                      	};
-			sink2.StateChanged += (sender, args) =>
-			                      	{
-			                      		if (args.State == ProcessState.Dispatching) Trace.WriteLine("Sink 2 - Wert erhalten: " + args.Input);
-			                      		waitHandle2.Set();
 			                      	};
 
 			source.Process();
