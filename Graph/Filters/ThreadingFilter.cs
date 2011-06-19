@@ -37,16 +37,16 @@ namespace Graph.Filters
 			IDataProcessor<TOut> follower = Follower;
 
 			// Kopieren
-			SetProcessingState(ProcessState.Filtering);
+			SetProcessingState(ProcessState.Filtering, input);
 			TOut result = Filter(input);
 
 			// Delegat erzeugen und aufrufen.
-			SetProcessingState(ProcessState.Dispatching);
+			SetProcessingState(ProcessState.Dispatching, input);
 			WaitCallback callback = delegate { follower.Process(result); };
 			ThreadPool.QueueUserWorkItem(callback);
 
 			// Fertig
-			SetProcessingState(ProcessState.Idle);
+			SetProcessingState(ProcessState.Idle, default(TIn));
 		}
 	}
 }

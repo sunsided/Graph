@@ -21,6 +21,11 @@ namespace Graph.Filters
 		private readonly List<IDataProcessor<TOut>> _elementList = new List<IDataProcessor<TOut>>();
 
 		/// <summary>
+		/// Der Prozesszustand hat sich geändert
+		/// </summary>
+		public event EventHandler<ProcessStateEventArgs> StateChanged;
+
+		/// <summary>
 		/// Liefert die Anzahl der registrierten Ausgänge
 		/// </summary>
 		[Pure]
@@ -79,7 +84,7 @@ namespace Graph.Filters
 		{
 			try
 			{
-				SetProcessingState(ProcessState.Dispatching);
+				SetProcessingState(ProcessState.Dispatching, input);
 				lock (_elementList)
 				{
 					// Die Liste durchlaufen
@@ -93,7 +98,7 @@ namespace Graph.Filters
 			}
 			finally
 			{
-				SetProcessingState(ProcessState.Idle);
+				SetProcessingState(ProcessState.Idle, null);
 			}
 		}
 
@@ -111,10 +116,13 @@ namespace Graph.Filters
 		/// Setzt den Bearbeitungsstatus
 		/// </summary>
 		/// <param name="state">Zustand, in dem sich das Element befindet</param>
-		protected void SetProcessingState(ProcessState state)
+		/// <param name="currentInput">Der derzeitige Input, falls vorhanden</param>
+		protected void SetProcessingState(ProcessState state, object currentInput)
 		{
+			if (state == State) return;
 			State = state;
 			Contract.Assume(State == state);
+			if (StateChanged != null) StateChanged(this, new ProcessStateEventArgs(state, currentInput));
 		}
 
 		/// <summary>

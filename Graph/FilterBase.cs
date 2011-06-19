@@ -23,11 +23,11 @@
 		/// <seealso cref="IFilter{TIn,TOut}.Filter"/>
 		public virtual void Process(TIn input)
 		{
-			SetProcessingState(ProcessState.Filtering);
+			SetProcessingState(ProcessState.Filtering, input);
 			TOut result = Filter(input);
-			SetProcessingState(ProcessState.Dispatching);
+			SetProcessingState(ProcessState.Dispatching, input);
 			Follower.Process(result);
-			SetProcessingState(ProcessState.Idle);
+			SetProcessingState(ProcessState.Idle, null);
 		}
 	}
 }

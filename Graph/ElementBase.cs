@@ -8,17 +8,13 @@ namespace Graph
 	/// Basisklasse für Elemente
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	public abstract class ElementBase<T> : IAppendable<T>
+	/// <typeparam name="TIn"></typeparam>
+	public abstract class ElementBase<T> : StateBase, IAppendable<T>
 	{
 		/// <summary>
 		/// Das nächste Element
 		/// </summary>
 		private IDataProcessor<T> _follower = new TerminatorSink<T>();
-
-		/// <summary>
-		/// Objekt für Threadsynchronisierung
-		/// </summary>
-		public readonly object SyncRoot = new object();
 
 		/// <summary>
 		/// Liefert das Nachfolgeelement
@@ -40,14 +36,6 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Ermittelt den Zustand des Objektes
-		/// </summary>
-		public ProcessState State
-		{
-			[Pure] get; protected set; 
-		}
-
-		/// <summary>
 		/// Hängt ein Element an
 		/// </summary>
 		/// <param name="element">Das anzuhängende Element</param>
@@ -66,16 +54,6 @@ namespace Graph
 		{
 			Contract.Invariant(_follower != null);
 			Contract.Invariant(_follower != this);
-		}
-
-		/// <summary>
-		/// Setzt den Bearbeitungsstatus
-		/// </summary>
-		/// <param name="state">Der Zustand, in dem sich das Element befindet</param>
-		protected void SetProcessingState(ProcessState state)
-		{
-			Contract.Ensures(State == state);
-			State = state;
 		}
 	}
 }

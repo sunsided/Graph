@@ -68,6 +68,7 @@
   <ItemGroup>
     <Compile Include="ElementBase.cs" />
     <Compile Include="ProcessState.cs" />
+    <Compile Include="ProcessStateEventArgs.cs" />
     <Compile Include="Sources\ConstantSource.cs" />
     <Compile Include="Sources\RandomDoubleSource.cs" />
     <Compile Include="Sources\RandomIntegerSource.cs" />
@@ -83,6 +84,7 @@
     <Compile Include="Filters\PassthroughFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Filters\TeeFilter.cs" />
+    <Compile Include="StateBase.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

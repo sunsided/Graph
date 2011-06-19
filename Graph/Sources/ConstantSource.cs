@@ -34,11 +34,11 @@
 		/// </summary>
 		public void Process()
 		{
-			SetProcessingState(ProcessState.Filtering);
+			SetProcessingState(ProcessState.Filtering, null);
 			T value = Create();
-			SetProcessingState(ProcessState.Dispatching);
+			SetProcessingState(ProcessState.Dispatching, value);
 			Follower.Process(value);
-			SetProcessingState(ProcessState.Idle);
+			SetProcessingState(ProcessState.Idle, null);
 		}
 	}
 }
