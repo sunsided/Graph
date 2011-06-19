@@ -6,7 +6,7 @@ namespace Graph
 	/// Senke, die Daten verwirft
 	/// </summary>
 	/// <typeparam name="TIn">Eingabeparameter</typeparam>
-	public class DelegateSink<TIn> : StateBase, ISink<TIn>
+	public sealed class DelegateSink<TIn> : StateBase, ISink<TIn>
 	{
 		/// <summary>
 		/// Die auszuführende Aktion

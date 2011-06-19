@@ -5,7 +5,7 @@ namespace Graph
 	/// <summary>
 	/// Quelle, die einen pseudozufälligen <see cref="Double"/>-Wert in einem bestimmten Bereich liefert
 	/// </summary>
-	public class RandomDoubleSource : ElementBase<double>, ISource<double>
+	public sealed class RandomDoubleSource : ElementBase<double>, ISource<double>
 	{
 		/// <summary>
 		/// Der zu erzeugende Wert

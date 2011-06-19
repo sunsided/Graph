@@ -6,7 +6,7 @@ namespace Graph
 	/// Filter, das auf ein <see cref="WaitHandle"/> wartet und dann die Elemente weiterreicht
 	/// </summary>
 	/// <typeparam name="T">Ein- und Ausgabeparameter</typeparam>
-	public class WaitEventFilter<T> : PassthroughFilter<T>
+	public sealed class WaitEventFilter<T> : PassthroughFilter<T>
 	{
 		/// <summary>
 		/// Das WaitHandle

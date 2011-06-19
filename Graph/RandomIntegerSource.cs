@@ -6,7 +6,7 @@ namespace Graph
 	/// Quelle, die einen pseudozufälligen <see cref="Int32"/>-Wert in einem bestimmten Bereich liefert
 	/// </summary>
 	/// <typeparam name="T">Der Ausgangsdatentyp</typeparam>
-	public class RandomIntegerSource : ElementBase<int>, ISource<int>
+	public sealed class RandomIntegerSource : ElementBase<int>, ISource<int>
 	{
 		/// <summary>
 		/// Der zu erzeugende Wert

@@ -8,7 +8,7 @@ namespace Graph
 	/// </summary>
 	/// <typeparam name="TIn">Eingabeparameter</typeparam>
 	/// <typeparam name="TOut">Ausgabeparameter</typeparam>
-	public class DelegateFilter<TIn, TOut> : FilterBase<TIn, TOut>
+	public sealed class DelegateFilter<TIn, TOut> : FilterBase<TIn, TOut>
 	{
 		/// <summary>
 		/// Die zu verwendende Filterfunktion
@@ -77,7 +77,7 @@ namespace Graph
 	/// Filter, das Elemente mittels einer Delegate bearbeitet
 	/// </summary>
 	/// <typeparam name="T">Ein- und Ausgabeparameter</typeparam>
-	public class DelegateFilter<T> : DelegateFilter<T, T>
+	public sealed class DelegateFilter<T> : DelegateFilter<T, T>
 	{
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DelegateFilter&lt;T&gt;"/> class.

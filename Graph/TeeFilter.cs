@@ -12,7 +12,7 @@ namespace Graph
 	/// Die Methode ist threadsicher, da alle Ausgänge sequentiell abgearbeitet werden. 
 	/// Das Nachschalten eines Asynchronfilters kann die Threadsicherheit auflösen!
 	/// </remarks>
-	public class TeeFilter<T> : IFilter<T, T>, ISink<T>, IAppendable<T>
+	public sealed class TeeFilter<T> : IFilter<T, T>, ISink<T>, IAppendable<T>
 	{
 		/// <summary>
 		/// Die Liste der angehängten Elemente

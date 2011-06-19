@@ -4,7 +4,7 @@
 	/// Quelle, die immer denselben Wert liefert
 	/// </summary>
 	/// <typeparam name="T">Der Ausgangsdatentyp</typeparam>
-	public class ConstantSource<T> : ElementBase<T>, ISource<T>
+	public sealed class ConstantSource<T> : ElementBase<T>, ISource<T>
 	{
 		/// <summary>
 		/// Der zu erzeugende Wert
