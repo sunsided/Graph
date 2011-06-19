@@ -5,7 +5,7 @@
 	/// </summary>
 	/// <typeparam name="TIn">Eingabedatentyp</typeparam>
 	/// <typeparam name="TOut">Ausgabedatentyp</typeparam>
-	public interface IFilter<in TIn, out TOut> : IDataProcessor<TIn>, IAppendable<TOut>
+	public interface IFilter<in TIn, out TOut> : IAppendableDataProcessor<TIn, TOut>
 	{
 		/// <summary>
 		/// Verarbeitet die Eingabe

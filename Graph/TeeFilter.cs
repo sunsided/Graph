@@ -44,25 +44,28 @@ namespace Graph.Filters
 		/// <summary>
 		/// Hängt ein Element an
 		/// </summary>
-		/// <param name="element">Der anzuhängende Element</param>
-		void IAppendable<T>.Append(IDataProcessor<T> element)
+		/// <param name="sink">Das anzuhängende Element</param>
+		public void Append(IDataProcessor<T> sink)
 		{
-			Append(element);
+			lock (_elementList)
+			{
+				if (_elementList.Contains(sink)) throw new ArgumentException("Senke bereits registriert.", "sink");
+				_elementList.Add(sink);
+			}
 		}
 
 		/// <summary>
 		/// Hängt ein Element an
 		/// </summary>
 		/// <param name="sink">Das anzuhängende Element</param>
-		public TeeFilter<T> Append(IDataProcessor<T> sink)
+		public IAppendable<TOut> Append<TOut>(IAppendableDataProcessor<T, TOut> sink)
 		{
-			Contract.Ensures(Contract.Result<TeeFilter<T>>() != null);
 			lock (_elementList)
 			{
 				if (_elementList.Contains(sink)) throw new ArgumentException("Senke bereits registriert.", "sink");
 				_elementList.Add(sink);
 			}
-			return this;
+			return sink;
 		}
 		
 		/// <summary>

@@ -15,6 +15,13 @@ namespace Graph
 		/// <typeparam name="TData">Eingabedatentyp des nächsten Elementes</typeparam>
 		/// <param name="element">Der anzuhängende Filter</param>
 		void Append(IDataProcessor<TData> element);
+
+		/// <summary>
+		/// Hängt einen Filter oder eine Senke an
+		/// </summary>
+		/// <typeparam name="TData">Eingabedatentyp des nächsten Elementes</typeparam>
+		/// <param name="element">Der anzuhängende Filter</param>
+		IAppendable<TOutNext> Append<TOutNext>(IAppendableDataProcessor<TData, TOutNext> element);
 	}
 
 	/// <summary>
@@ -32,6 +39,17 @@ namespace Graph
 		public void Append(IDataProcessor<TData> element)
 		{
 			Contract.Requires(element != null, "Anzuhängendes Element darf nicht null sein.");
+		}
+
+		/// <summary>
+		/// Hängt einen Filter oder eine Senke an
+		/// </summary>
+		/// <typeparam name="TData">Eingabedatentyp des nächsten Elementes</typeparam>
+		/// <param name="element">Der anzuhängende Filter</param>
+		public IAppendable<TOutNext> Append<TOutNext>(IAppendableDataProcessor<TData, TOutNext> element)
+		{
+			Contract.Requires(element != null, "Anzuhängendes Element darf nicht null sein.");
+			return null;
 		}
 	}
 }

@@ -8,7 +8,6 @@ namespace Graph
 	/// Basisklasse für Elemente
 	/// </summary>
 	/// <typeparam name="T"></typeparam>
-	/// <typeparam name="TIn"></typeparam>
 	public abstract class ElementBase<T> : StateBase, IAppendable<T>
 	{
 		/// <summary>
@@ -44,6 +43,18 @@ namespace Graph
 			if (element == this) throw new ArgumentException("Kann nicht an sich selbst anhängen.");
 			Contract.Assume(element != this);
 			lock (_follower) _follower = element;
+		}
+
+		/// <summary>
+		/// Hängt ein Element an
+		/// </summary>
+		/// <param name="element">Das anzuhängende Element</param>
+		public IAppendable<TOut> Append<TOut>(IAppendableDataProcessor<T, TOut> element)
+		{
+			if (element == this) throw new ArgumentException("Kann nicht an sich selbst anhängen.");
+			Contract.Assume(element != this);
+			lock (_follower) _follower = element;
+			return element;
 		}
 
 		/// <summary>

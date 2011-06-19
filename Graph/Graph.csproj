@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IAppendableDataProcessor.cs" />
     <Compile Include="ElementBase.cs" />
     <Compile Include="ProcessState.cs" />
     <Compile Include="ProcessStateEventArgs.cs" />
