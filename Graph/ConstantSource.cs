@@ -1,4 +1,4 @@
-﻿namespace Graph.Sources
+﻿namespace Graph
 {
 	/// <summary>
 	/// Quelle, die immer denselben Wert liefert

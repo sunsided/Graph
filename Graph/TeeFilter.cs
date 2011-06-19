@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 
-namespace Graph.Filters
+namespace Graph
 {
 	/// <summary>
 	/// Filter, der den Eingang auf mehrere Ausgänge gibt.

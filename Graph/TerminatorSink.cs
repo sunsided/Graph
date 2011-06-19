@@ -1,4 +1,4 @@
-﻿namespace Graph.Sinks
+﻿namespace Graph
 {
 	/// <summary>
 	/// Senke, die Daten verwirft

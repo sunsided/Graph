@@ -1,8 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Threading;
-using Graph.Filters;
-using Graph.Sinks;
-using Graph.Sources;
 using NUnit.Framework;
 
 namespace Graph.Test
@@ -25,14 +22,15 @@ namespace Graph.Test
 			TerminatorSink<int> sink1 = new TerminatorSink<int>();
 			TerminatorSink<int> sink2 = new TerminatorSink<int>();
 
-			source.Append(passthroughFilter1);
-			passthroughFilter1.Append(passthroughFilter2);
-			passthroughFilter2.Append(tee);
-			tee.Append(passthroughFilter3);
-			tee.Append(passthroughFilter4);
+			source.Append(passthroughFilter1)
+				.Append(passthroughFilter2)
+				.Append(tee);
+			
+			tee.Append(passthroughFilter3)
+				.Append(sink1);
 
-			passthroughFilter3.Append(sink1);
-			passthroughFilter4.Append(sink2);
+			tee.Append(passthroughFilter4)
+				.Append(sink2);
 
 			sink1.StateChanged += (sender, args) =>
 			                      	{

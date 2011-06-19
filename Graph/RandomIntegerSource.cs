@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Graph.Sources
+namespace Graph
 {
 	/// <summary>
 	/// Quelle, die einen pseudozufälligen <see cref="Int32"/>-Wert in einem bestimmten Bereich liefert

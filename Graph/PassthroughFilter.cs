@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.Contracts;
 
-namespace Graph.Filters
+namespace Graph
 {
 	/// <summary>
 	/// Filter, das Elemente nur weiterreicht
