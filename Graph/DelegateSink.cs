@@ -11,13 +11,22 @@ namespace Graph
 		/// <summary>
 		/// Die auszuführende Aktion
 		/// </summary>
-		private readonly Action<TIn> _action;
+		private readonly Action<DelegateSink<TIn>, TIn> _action;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DelegateSink&lt;TIn&gt;"/> class.
 		/// </summary>
 		/// <param name="action">The action.</param>
 		public DelegateSink(Action<TIn> action)
+			: this((sender, value) => action(value))
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DelegateSink&lt;TIn&gt;"/> class.
+		/// </summary>
+		/// <param name="action">The action.</param>
+		public DelegateSink(Action<DelegateSink<TIn>, TIn> action)
 		{
 			_action = action;
 		}
@@ -29,7 +38,7 @@ namespace Graph
 		public void Process(TIn input)
 		{
 			SetProcessingState(ProcessState.Dispatching, input);
-			_action(input);
+			_action(this, input);
 			SetProcessingState(ProcessState.Idle, null);
 		}
 	}

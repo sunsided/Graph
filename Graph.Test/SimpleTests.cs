@@ -13,27 +13,23 @@ namespace Graph.Test
 			ManualResetEvent waitHandle1 = new ManualResetEvent(false),
 			                 waitHandle2 = new ManualResetEvent(false);
 
-			ConstantSource<int> source = new ConstantSource<int>(10);
-			PassthroughFilter<int> passthroughFilter1 = new PassthroughFilter<int>();
-			PassthroughFilter<int> passthroughFilter2 = new PassthroughFilter<int>();
-			TeeFilter<int> tee = new TeeFilter<int>();
-			DelegateFilter<int> filter3 = new DelegateFilter<int>(value => value + 10);
-			DelegateFilter<int, double> filter4 = new DelegateFilter<int, double>(value => value * 0.75);
-			TerminatorSink<int> sink1 = new TerminatorSink<int>();
-			DelegateSink<double> sink2 = new DelegateSink<double>(value =>
+			ISource<int> source = new ConstantSource<int>(10);
+			IFilter<int, int> tee = new TeeFilter<int>();
+			ISink<int> sink1 = new TerminatorSink<int>();
+			ISink<double> sink2 = new DelegateSink<double>(value =>
 			                                                      	{
 			                                                      		Trace.WriteLine("Sink 2 - Wert erhalten: " + value);
 			                                                      		waitHandle2.Set();
 			                                                      	});
 
-			source.Append(passthroughFilter1)
-				.Append(passthroughFilter2)
+			source.Append(new PassthroughFilter<int>())
+				.Append(new PassthroughFilter<int>())
 				.Append(tee);
 
-			tee.Append(filter3)
+			tee.Append(new DelegateFilter<int>(value => value + 10))
 				.Append(sink1);
 
-			tee.Append(filter4)
+			tee.Append(new DelegateFilter<int, double>(value => value * 0.75))
 				.Append(sink2);
 
 			sink1.StateChanged += (sender, args) =>
