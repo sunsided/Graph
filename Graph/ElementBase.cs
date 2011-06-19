@@ -1,9 +1,14 @@
 using System;
 using System.Diagnostics.Contracts;
+using Graph.Sinks;
 
 namespace Graph
 {
-	public abstract class ElementBase<T>
+	/// <summary>
+	/// Basisklasse für Elemente
+	/// </summary>
+	/// <typeparam name="T"></typeparam>
+	public abstract class ElementBase<T> : IAppendable<T>
 	{
 		/// <summary>
 		/// Das nächste Element

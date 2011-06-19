@@ -66,19 +66,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ElementBase.cs" />
     <Compile Include="ProcessState.cs" />
-    <Compile Include="TerminatorSink.cs" />
+    <Compile Include="Sources\ConstantSource.cs" />
+    <Compile Include="Sources\RandomDoubleSource.cs" />
+    <Compile Include="Sources\RandomIntegerSource.cs" />
+    <Compile Include="Sinks\TerminatorSink.cs" />
     <Compile Include="IProcessIndicator.cs" />
-    <Compile Include="ThreadingFilter.cs" />
+    <Compile Include="Filters\ThreadingFilter.cs" />
     <Compile Include="IDataProcessor.cs" />
     <Compile Include="FilterBase.cs" />
-    <Compile Include="IFilterSinkAppendable.cs" />
+    <Compile Include="IAppendable.cs" />
     <Compile Include="ISource.cs" />
     <Compile Include="ISink.cs" />
     <Compile Include="IFilter.cs" />
-    <Compile Include="PassthroughFilter.cs" />
+    <Compile Include="Filters\PassthroughFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TeeFilter.cs" />
+    <Compile Include="Filters\TeeFilter.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

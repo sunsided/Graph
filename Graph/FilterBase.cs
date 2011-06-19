@@ -1,11 +1,11 @@
 ﻿namespace Graph
 {
 	/// <summary>
-	/// Filter, das Elemente nur weiterreicht
+	/// Basisklasse für Filter
 	/// </summary>
-	/// <typeparam name="TIn">Eingabeparameter, identisch mit <typeparamref name="TOut"/></typeparam>
-	/// <typeparam name="TOut">Ausgabeparameter, identisch mit <typeparamref name="TIn"/>></typeparam>
-	public abstract class FilterBase<TIn, TOut> : ElementBase<TOut>, IFilter<TIn, TOut> where TIn: TOut
+	/// <typeparam name="TIn">Eingabeparameter</typeparam>
+	/// <typeparam name="TOut">Ausgabeparameter</typeparam>
+	public abstract class FilterBase<TIn, TOut> : ElementBase<TOut>, IFilter<TIn, TOut>
 	{
 		/// <summary>
 		/// Verarbeitet die Eingabe
