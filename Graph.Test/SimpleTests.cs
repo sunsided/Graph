@@ -32,17 +32,19 @@ namespace Graph.Test
 			// Threadwechsel, Delegate, 1-Sekunden-Delay und Sink
 			tee.Append(new ThreadingFilter<int>())
 				.Append(new DelegateFilter<int>((my, value) => value + ((int)my.Tag), 10))
-				.Append(new DelegateFilter<int>(value => { Thread.Sleep(1000); return value; }))
+				.Append(new DelegateFilter<int>(value => { Thread.Sleep(2000); return value; }))
+				.Append(new SetEventFilter<int>(waitHandle2))
 				.Append(sink1);
 
 			// Delegate und Sink (Hauptthread, unverzögert)
-			tee.Append(new DelegateFilter<int, double>(value => value*0.75))
-				.Append(new DelegateSink<double>((my, value) => { Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Sink 2 - Wert erhalten: " + value); ((ManualResetEvent) my.Tag).Set(); }, waitHandle2));
+			tee.Append(new DelegateFilter<int, double>(value => value * 0.75))
+				.Append(new DelegateFilter<double>(value => { Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - warte auf Event ..."); return value; }))
+				.Append(new WaitEventFilter<double>(waitHandle2))
+				.Append(new DelegateSink<double>((my, value) => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Sink 2 - Wert erhalten: " + value)));
 			
 			// Und los!
 			source.Process();
-			Assert.IsTrue(waitHandle1.WaitOne(5000));
-			Assert.IsTrue(waitHandle2.WaitOne(5000));
+			Assert.IsTrue(waitHandle1.WaitOne(10000));
 		}
 	}
 }

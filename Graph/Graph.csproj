@@ -66,6 +66,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="WaitEventFilter.cs" />
+    <Compile Include="ResetEventFilter.cs" />
+    <Compile Include="SetEventFilter.cs" />
     <Compile Include="DelegateSink.cs" />
     <Compile Include="DelegateFilter.cs" />
     <Compile Include="IAppendableDataProcessor.cs" />
