@@ -5,9 +5,8 @@ namespace Graph.Filters
 	/// <summary>
 	/// Filter, das Elemente nur weiterreicht
 	/// </summary>
-	/// <typeparam name="TIn">Eingabeparameter, identisch mit <typeparamref name="TOut"/></typeparam>
-	/// <typeparam name="TOut">Ausgabeparameter, identisch mit <typeparamref name="TIn"/>></typeparam>
-	public class PassthroughFilter<TIn, TOut> : FilterBase<TIn, TOut> where TIn: TOut
+	/// <typeparam name="T">Ein- und Ausgabeparameter</typeparam>
+	public class PassthroughFilter<T> : FilterBase<T, T>
 	{
 		/// <summary>
 		/// Verarbeitet die Eingabe
@@ -16,7 +15,7 @@ namespace Graph.Filters
 		/// <returns>Das Ergebnis</returns>
 		/// <remarks>Hier wird auschließlich die Filterlogik implementiert.</remarks>
 		[Pure]
-		public override TOut Filter(TIn input)
+		public override T Filter(T input)
 		{
 			return input;
 		}

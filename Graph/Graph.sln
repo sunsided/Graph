@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph", "Graph.csproj", "{FE2F5A6E-7F8F-4F88-A189-77A822FE93A6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Graph.Test", "..\Graph.Test\Graph.Test.csproj", "{E234B675-3A94-4754-B4C3-FC05D26EE02F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{FE2F5A6E-7F8F-4F88-A189-77A822FE93A6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FE2F5A6E-7F8F-4F88-A189-77A822FE93A6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FE2F5A6E-7F8F-4F88-A189-77A822FE93A6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E234B675-3A94-4754-B4C3-FC05D26EE02F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E234B675-3A94-4754-B4C3-FC05D26EE02F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E234B675-3A94-4754-B4C3-FC05D26EE02F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E234B675-3A94-4754-B4C3-FC05D26EE02F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

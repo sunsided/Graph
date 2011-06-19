@@ -7,18 +7,17 @@ namespace Graph.Filters
 	/// <summary>
 	/// Filter, der den Eingang auf mehrere Ausgänge gibt.
 	/// </summary>
-	/// <typeparam name="TIn">Eingabeparameter, identisch mit <typeparamref name="TOut"/></typeparam>
-	/// <typeparam name="TOut">Ausgabeparameter, identisch mit <typeparamref name="TIn"/>></typeparam>
+	/// <typeparam name="T">Ein- und Ausgabeparameter</typeparam>
 	/// <remarks>
 	/// Die Methode ist threadsicher, da alle Ausgänge sequentiell abgearbeitet werden. 
 	/// Das Nachschalten eines Asynchronfilters kann die Threadsicherheit auflösen!
 	/// </remarks>
-	public class TeeFilter<TIn, TOut> : ISink<TIn>, IAppendable<TOut> where TIn : TOut
+	public class TeeFilter<T> : ISink<T>, IAppendable<T>
 	{
 		/// <summary>
 		/// Die Liste der angehängten Elemente
 		/// </summary>
-		private readonly List<IDataProcessor<TOut>> _elementList = new List<IDataProcessor<TOut>>();
+		private readonly List<IDataProcessor<T>> _elementList = new List<IDataProcessor<T>>();
 
 		/// <summary>
 		/// Der Prozesszustand hat sich geändert
@@ -46,7 +45,7 @@ namespace Graph.Filters
 		/// Hängt ein Element an
 		/// </summary>
 		/// <param name="element">Der anzuhängende Element</param>
-		void IAppendable<TOut>.Append(IDataProcessor<TOut> element)
+		void IAppendable<T>.Append(IDataProcessor<T> element)
 		{
 			Append(element);
 		}
@@ -55,9 +54,9 @@ namespace Graph.Filters
 		/// Hängt ein Element an
 		/// </summary>
 		/// <param name="sink">Das anzuhängende Element</param>
-		public TeeFilter<TIn, TOut> Append(IDataProcessor<TOut> sink)
+		public TeeFilter<T> Append(IDataProcessor<T> sink)
 		{
-			Contract.Ensures(Contract.Result<TeeFilter<TIn, TOut>>() != null);
+			Contract.Ensures(Contract.Result<TeeFilter<T>>() != null);
 			lock (_elementList)
 			{
 				if (_elementList.Contains(sink)) throw new ArgumentException("Senke bereits registriert.", "sink");
@@ -71,7 +70,7 @@ namespace Graph.Filters
 		/// </summary>
 		/// <param name="element">Das zu entfernende Element</param>
 		/// <returns><c>true</c>, wenn das Element entfernt wurde, ansonsten <c>false</c></returns>
-		public bool RemoveElement(IDataProcessor<TOut> element)
+		public bool RemoveElement(IDataProcessor<T> element)
 		{
 			lock(_elementList) return _elementList.Remove(element);
 		}
@@ -80,7 +79,7 @@ namespace Graph.Filters
 		/// Verarbeitet die Eingabe
 		/// </summary>
 		/// <param name="input">Der zu verarbeitende Wert</param>
-		public void Process(TIn input)
+		public void Process(T input)
 		{
 			try
 			{
@@ -90,7 +89,7 @@ namespace Graph.Filters
 					// Die Liste durchlaufen
 					for (int i = 0; i < _elementList.Count; ++i)
 					{
-						IDataProcessor<TOut> element = _elementList[i];
+						IDataProcessor<T> element = _elementList[i];
 						element.Process(input);
 					}
 				}
