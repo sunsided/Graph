@@ -14,11 +14,26 @@ namespace Graph
 		private readonly Action<DelegateSink<TIn>, TIn> _action;
 
 		/// <summary>
+		/// Benutzerdefiniertes Objekt
+		/// </summary>
+		public object Tag { get; set; }
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="DelegateSink&lt;TIn&gt;"/> class.
 		/// </summary>
 		/// <param name="action">The action.</param>
 		public DelegateSink(Action<TIn> action)
-			: this((sender, value) => action(value))
+			: this(action, null)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DelegateSink&lt;TIn&gt;"/> class.
+		/// </summary>
+		/// <param name="action">The action.</param>
+		/// <param name="tag">Benutzerdefiniertes Tag</param>
+		public DelegateSink(Action<TIn> action, object tag)
+			: this((sender, value) => action(value), tag)
 		{
 		}
 
@@ -27,8 +42,19 @@ namespace Graph
 		/// </summary>
 		/// <param name="action">The action.</param>
 		public DelegateSink(Action<DelegateSink<TIn>, TIn> action)
+			: this(action, null)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DelegateSink&lt;TIn&gt;"/> class.
+		/// </summary>
+		/// <param name="action">The action.</param>
+		/// <param name="tag">Benutzerdefiniertes Tag</param>
+		public DelegateSink(Action<DelegateSink<TIn>, TIn> action, object tag)
 		{
 			_action = action;
+			Tag = tag;
 		}
 
 		/// <summary>

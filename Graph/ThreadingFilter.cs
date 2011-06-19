@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics.Contracts;
 using System.Threading;
 
-namespace Graph.Filters
+namespace Graph
 {
 	/// <summary>
 	/// Filter, welches die Weiterverarbeitung in einem neuen Thread durchführt.

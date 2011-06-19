@@ -13,16 +13,51 @@ namespace Graph
 		/// <summary>
 		/// Die zu verwendende Filterfunktion
 		/// </summary>
-		private readonly Func<TIn, TOut> _filter;
+		private readonly Func<DelegateFilter<TIn, TOut>, TIn, TOut> _filter;
+
+		/// <summary>
+		/// Benutzerdefiniertes Objekt
+		/// </summary>
+		public object Tag { get; set; }
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DelegateFilter&lt;TIn, TOut&gt;"/> class.
 		/// </summary>
 		/// <param name="filter">The filter.</param>
 		public DelegateFilter(Func<TIn, TOut> filter)
+			: this(filter, null)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DelegateFilter&lt;TIn, TOut&gt;"/> class.
+		/// </summary>
+		/// <param name="filter">The filter.</param>
+		/// <param name="tag">Benutzerdefiniertes Tag</param>
+		public DelegateFilter(Func<TIn, TOut> filter, object tag)
+			: this((sender, @in) => filter(@in), tag)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DelegateFilter&lt;TIn, TOut&gt;"/> class.
+		/// </summary>
+		/// <param name="filter">The filter.</param>
+		public DelegateFilter(Func<DelegateFilter<TIn, TOut>, TIn, TOut> filter)
+			: this(filter, null)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DelegateFilter&lt;TIn, TOut&gt;"/> class.
+		/// </summary>
+		/// <param name="filter">The filter.</param>
+		/// <param name="tag">Benutzerdefiniertes Tag</param>
+		public DelegateFilter(Func<DelegateFilter<TIn, TOut>, TIn, TOut> filter, object tag)
 		{
 			Contract.Requires(filter != null);
 			_filter = filter;
+			Tag = tag;
 		}
 
 		/// <summary>
@@ -34,7 +69,7 @@ namespace Graph
 		[Pure]
 		public override TOut Filter(TIn input)
 		{
-			return _filter(input);
+			return _filter(this, input);
 		}
 	}
 
@@ -42,33 +77,40 @@ namespace Graph
 	/// Filter, das Elemente mittels einer Delegate bearbeitet
 	/// </summary>
 	/// <typeparam name="T">Ein- und Ausgabeparameter</typeparam>
-	public class DelegateFilter<T> : FilterBase<T, T>
+	public class DelegateFilter<T> : DelegateFilter<T, T>
 	{
 		/// <summary>
-		/// Die zu verwendende Filterfunktion
-		/// </summary>
-		private readonly Func<T, T> _filter;
-
-		/// <summary>
-		/// Initializes a new instance of the <see cref="DelegateFilter&lt;TIn, TOut&gt;"/> class.
+		/// Initializes a new instance of the <see cref="DelegateFilter&lt;T&gt;"/> class.
 		/// </summary>
 		/// <param name="filter">The filter.</param>
-		public DelegateFilter(Func<T, T> filter)
+		public DelegateFilter(Func<T, T> filter) : base(filter)
 		{
-			Contract.Requires(filter != null);
-			_filter = filter;
 		}
 
 		/// <summary>
-		/// Verarbeitet die Eingabe
+		/// Initializes a new instance of the <see cref="DelegateFilter&lt;T&gt;"/> class.
 		/// </summary>
-		/// <param name="input">Der zu verarbeitende Wert</param>
-		/// <returns>Das Ergebnis</returns>
-		/// <remarks>Hier wird auschließlich die Filterlogik implementiert.</remarks>
-		[Pure]
-		public override T Filter(T input)
+		/// <param name="filter">The filter.</param>
+		/// <param name="tag">The tag.</param>
+		public DelegateFilter(Func<T, T> filter, object tag) : base(filter, tag)
 		{
-			return _filter(input);
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DelegateFilter&lt;T&gt;"/> class.
+		/// </summary>
+		/// <param name="filter">The filter.</param>
+		public DelegateFilter(Func<DelegateFilter<T, T>, T, T> filter) : base(filter)
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DelegateFilter&lt;T&gt;"/> class.
+		/// </summary>
+		/// <param name="filter">The filter.</param>
+		/// <param name="tag">The tag.</param>
+		public DelegateFilter(Func<DelegateFilter<T, T>, T, T> filter, object tag) : base(filter, tag)
+		{
 		}
 	}
 }
