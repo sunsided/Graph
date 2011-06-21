@@ -26,6 +26,7 @@ namespace Graph.Test
 			// Quelle erzeugen, zwei Passthroughs und den Tee einhängen
 			ISource<int> source = new ConstantSource<int>(10).MakeThreaded();
 			source.Append(new PassthroughFilter<int>())
+				.Append(new DelegateFilter<int>(value => { Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " -- Thread nach Start"); return value; }))
 				.Append(new PassthroughFilter<int>())
 				.Append(tee);
 
@@ -52,6 +53,8 @@ namespace Graph.Test
 
 			// Und los!
 			source.Process();
+			//source.Process();
+			//source.Process();
 			Assert.IsTrue(waitHandle1.WaitOne(10000));
 		}
 	}
