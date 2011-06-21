@@ -47,7 +47,7 @@ namespace Graph.Test
 			tee.Append(new DelegateFilter<int>((my, value) => value + ((int)my.Tag), 10).MakeThreaded())
 				.Append(new DelegateFilter<int>(value => { Thread.Sleep(2000); return value; }))
 				//.Append(new SetEventFilter<int>(waitHandle).AttachOutput(Console.Out, "Handle freigegeben"))
-				.Append(new SemaphoreReleaseFilter<int>(semaphore).AttachOutput(Console.Out, "Handle freigegeben"))
+				.Append(new ReleaseSemaphoreFilter<int>(semaphore).AttachOutput(Console.Out, "Handle freigegeben"))
 				.Append(sink1);
 
 			// Delegate und Sink (Hauptthread, unverzögert)

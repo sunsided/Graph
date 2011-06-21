@@ -9,7 +9,7 @@ namespace Graph
 	/// <typeparam name="T">Ein- und Ausgabeparameter</typeparam>
 	/// <seealso cref="ResetEventFilter{T}"/>
 	/// <seealso cref="WaitEventFilter{T}"/>
-	/// <seealso cref="SemaphoreReleaseFilter{T}"/>
+	/// <seealso cref="ReleaseSemaphoreFilter{T}"/>
 	public sealed class SetEventFilter<T> : PassthroughFilter<T>
 	{
 		/// <summary>

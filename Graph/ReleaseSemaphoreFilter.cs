@@ -8,7 +8,7 @@ namespace Graph
 	/// </summary>
 	/// <typeparam name="T">Ein- und Ausgabeparameter</typeparam>
 	/// <seealso cref="WaitEventFilter{T}"/>
-	public sealed class SemaphoreReleaseFilter<T> : PassthroughFilter<T>
+	public sealed class ReleaseSemaphoreFilter<T> : PassthroughFilter<T>
 	{
 		/// <summary>
 		/// Das WaitHandle
@@ -19,7 +19,7 @@ namespace Graph
 		/// Initializes a new instance of the <see cref="SetEventFilter&lt;T&gt;"/> class.
 		/// </summary>
 		/// <param name="handle">The handle.</param>
-		public SemaphoreReleaseFilter(Semaphore handle)
+		public ReleaseSemaphoreFilter(Semaphore handle)
 		{
 			Contract.Requires(handle != null);
 			WaitHandle = handle;
