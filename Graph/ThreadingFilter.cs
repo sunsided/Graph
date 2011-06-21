@@ -116,8 +116,10 @@ namespace Graph
 				task.Start(_scheduler);
 			}
 			else
+			{
 				task.Start();
-			
+			}
+
 			// Fertig
 			SetProcessingState(ProcessState.Idle, null);
 		}
@@ -140,6 +142,39 @@ namespace Graph
 			Contract.Requires(!(processor is ThreadingFilter<T>));
 			Contract.Ensures(Contract.Result<ThreadingFilter<T>>() != null);
 			return new ThreadingFilter<T>(processor);
+		}
+
+		/// <summary>
+		/// Führt die Verarbeitung des Elementes in einem ThreadPool-Thread aus.
+		/// </summary>
+		/// <typeparam name="T">Der zu verarbeitende Datentyp</typeparam>
+		/// <param name="processor">Der zu wrappende Processor</param>
+		/// <param name="scheduler">Der zu verwendende Scheduler</param>
+		/// <returns>Ein Threadingfilter</returns>
+		public static ThreadingFilter<T> InThreadPool<T>(this IDataProcessor<T> processor, TaskScheduler scheduler)
+		{
+			Contract.Requires(processor != null);
+			Contract.Requires(scheduler != null);
+			Contract.Requires(!(processor is ThreadingFilter<T>));
+			Contract.Ensures(Contract.Result<ThreadingFilter<T>>() != null);
+			return new ThreadingFilter<T>(processor, scheduler);
+		}
+
+		/// <summary>
+		/// Führt die Verarbeitung des Elementes in einem ThreadPool-Thread aus.
+		/// </summary>
+		/// <typeparam name="T">Der zu verarbeitende Datentyp</typeparam>
+		/// <param name="processor">Der zu wrappende Processor</param>
+		/// <param name="scheduler">Der zu verwendende Scheduler</param>
+		/// <param name="options">Die Task-Erzeugungsoptionen</param>
+		/// <returns>Ein Threadingfilter</returns>
+		public static ThreadingFilter<T> InThreadPool<T>(this IDataProcessor<T> processor, TaskScheduler scheduler, TaskCreationOptions options)
+		{
+			Contract.Requires(processor != null);
+			Contract.Requires(scheduler != null);
+			Contract.Requires(!(processor is ThreadingFilter<T>));
+			Contract.Ensures(Contract.Result<ThreadingFilter<T>>() != null);
+			return new ThreadingFilter<T>(processor, scheduler, options);
 		}
 	}
 }
