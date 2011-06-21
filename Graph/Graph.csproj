@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConditionalPassthroughFilter.cs" />
     <Compile Include="WaitEventFilter.cs" />
     <Compile Include="ResetEventFilter.cs" />
     <Compile Include="SetEventFilter.cs" />

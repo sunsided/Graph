@@ -14,7 +14,6 @@ namespace Graph
 		/// <param name="input">Der zu verarbeitende Wert</param>
 		/// <returns>Das Ergebnis</returns>
 		/// <remarks>Hier wird auschließlich die Filterlogik implementiert.</remarks>
-		[Pure]
 		public override T Filter(T input)
 		{
 			return input;

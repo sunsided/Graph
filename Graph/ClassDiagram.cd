@@ -4,10 +4,7 @@
     <Position X="7.395" Y="10.088" Height="0.291" Width="5.229" />
   </Comment>
   <Comment CommentText="Threading">
-    <Position X="4.519" Y="10.094" Height="0.291" Width="1.444" />
-  </Comment>
-  <Comment CommentText="Demultiplexer">
-    <Position X="2.529" Y="8.604" Height="0.291" Width="1.444" />
+    <Position X="5.79" Y="10.094" Height="0.291" Width="1.444" />
   </Comment>
   <Class Name="Graph.AppendableContract&lt;TData&gt;" Collapsed="true">
     <Position X="0.5" Y="3.25" Width="1.5" />
@@ -41,15 +38,16 @@
     </TypeIdentifier>
     <Lollipop Orientation="Left" Position="0.1" />
   </Class>
-  <Class Name="Graph.PassthroughFilter&lt;T&gt;" Collapsed="true">
-    <Position X="4.5" Y="7.75" Width="1.5" />
+  <Class Name="Graph.ConditionalPassthroughFilter&lt;T&gt;" Collapsed="true">
+    <Position X="3.25" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
-      <FileName>PassthroughFilter.cs</FileName>
+      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAABAAgAAAAAAAABAAAAA=</HashCode>
+      <FileName>ConditionalPassthroughFilter.cs</FileName>
+      <NewMemberFileName>PassthroughFilter.cs</NewMemberFileName>
     </TypeIdentifier>
   </Class>
   <Class Name="Graph.ThreadingFilter&lt;T&gt;" Collapsed="true">
-    <Position X="4.5" Y="9.25" Width="1.5" />
+    <Position X="5.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ThreadingFilter.cs</FileName>
@@ -137,6 +135,13 @@
       <FileName>ConstantSource.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Graph.PassthroughFilter&lt;T&gt;" Collapsed="true">
+    <Position X="4.5" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>PassthroughFilter.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Interface Name="Graph.IFilter&lt;TIn, TOut&gt;" Collapsed="true">
     <Position X="2.5" Y="0.5" Width="1.5" />

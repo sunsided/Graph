@@ -15,6 +15,7 @@ namespace Graph.Test
 
 			// Teefilter
 			IFilter<int, int> tee = new TeeFilter<int>();
+			IFilter<double, double> tee2 = new TeeFilter<double>();
 
 			// Eine Senke definieren
 			ISink<int> sink1 = new TerminatorSink<int>();
@@ -38,10 +39,16 @@ namespace Graph.Test
 
 			// Delegate und Sink (Hauptthread, unverzögert)
 			tee.Append(new DelegateFilter<int, double>(value => value * 0.75))
+				.Append(tee2)
 				.Append(new DelegateFilter<double>(value => { Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - warte auf Event ..."); return value; }))
 				.Append(new WaitEventFilter<double>(waitHandle2))
 				.Append(new DelegateSink<double>((my, value) => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Sink 2 - Wert erhalten: " + value)));
 			
+			// Dingsi.
+			tee2.Append(new DelegateFilter<double>(value => { Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - erwartet."); return value; }));
+			tee2.Append(new ConditionalPassthroughFilter<double>(value => value > 10))
+				.Append(new DelegateFilter<double>(value => { Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - sollte nicht passieren."); return value; }));
+
 			// Und los!
 			source.Process();
 			Assert.IsTrue(waitHandle1.WaitOne(10000));
