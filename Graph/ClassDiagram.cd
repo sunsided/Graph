@@ -7,7 +7,7 @@
     <Position X="4.519" Y="10.094" Height="0.291" Width="1.444" />
   </Comment>
   <Comment CommentText="Demultiplexer">
-    <Position X="2.519" Y="8.427" Height="0.291" Width="1.444" />
+    <Position X="2.529" Y="8.604" Height="0.291" Width="1.444" />
   </Comment>
   <Class Name="Graph.AppendableContract&lt;TData&gt;" Collapsed="true">
     <Position X="0.5" Y="3.25" Width="1.5" />
@@ -79,7 +79,7 @@
   <Class Name="Graph.TeeFilter&lt;T&gt;" Collapsed="true">
     <Position X="2.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAAACAAAAEAAAgAAAAQAAAACAQAAAAAQBABAACA=</HashCode>
+      <HashCode>AAAIAAAAAAAAAEAAAgAAAAQAAAACAQAAAAAQAABAAAA=</HashCode>
       <FileName>TeeFilter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Orientation="Left" Position="0.196" />
@@ -94,14 +94,6 @@
   </Class>
   <Class Name="Graph.DelegateSink&lt;TIn&gt;" Collapsed="true">
     <Position X="11" Y="5.25" Width="1.5" />
-    <InheritanceLine Type="Graph.StateBase" ManuallyRouted="true">
-      <Path>
-        <Point X="5.25" Y="4.312" />
-        <Point X="5.25" Y="4.625" />
-        <Point X="11.75" Y="4.625" />
-        <Point X="11.75" Y="5.25" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAAAAAgAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>DelegateSink.cs</FileName>
@@ -183,12 +175,6 @@
   </Interface>
   <Interface Name="Graph.IDataProcessor&lt;TIn&gt;" Collapsed="true">
     <Position X="4.5" Y="2.25" Width="1.5" />
-    <InheritanceLine Type="Graph.IProcessIndicator" ManuallyRouted="true">
-      <Path>
-        <Point X="6.5" Y="2.596" />
-        <Point X="6" Y="2.596" />
-      </Path>
-    </InheritanceLine>
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>IDataProcessor.cs</FileName>

@@ -12,18 +12,13 @@ namespace Graph
 	/// Die Methode ist threadsicher, da alle Ausgänge sequentiell abgearbeitet werden. 
 	/// Das Nachschalten eines Asynchronfilters kann die Threadsicherheit auflösen!
 	/// </remarks>
-	public sealed class TeeFilter<T> : IFilter<T, T>, ISink<T>, IAppendable<T>
+	public sealed class TeeFilter<T> : StateBase, IFilter<T, T>, ISink<T>
 	{
 		/// <summary>
 		/// Die Liste der angehängten Elemente
 		/// </summary>
 		private readonly List<IDataProcessor<T>> _elementList = new List<IDataProcessor<T>>();
-
-		/// <summary>
-		/// Der Prozesszustand hat sich geändert
-		/// </summary>
-		public event EventHandler<ProcessStateEventArgs> StateChanged;
-
+		
 		/// <summary>
 		/// Liefert die Anzahl der registrierten Ausgänge
 		/// </summary>
@@ -122,27 +117,6 @@ namespace Graph
 		{
 			Contract.Invariant(_elementList != null);
 			Contract.Invariant(Contract.ForAll(_elementList, element => element != null));
-		}
-
-		/// <summary>
-		/// Setzt den Bearbeitungsstatus
-		/// </summary>
-		/// <param name="state">Zustand, in dem sich das Element befindet</param>
-		/// <param name="currentInput">Der derzeitige Input, falls vorhanden</param>
-		protected void SetProcessingState(ProcessState state, object currentInput)
-		{
-			if (state == State) return;
-			State = state;
-			Contract.Assume(State == state);
-			if (StateChanged != null) StateChanged(this, new ProcessStateEventArgs(state, currentInput));
-		}
-
-		/// <summary>
-		/// Ermittelt, ob das Objekt gerade beschäftigt ist
-		/// </summary>
-		public ProcessState State
-		{
-			[Pure] get; protected set;
 		}
 	}
 }
