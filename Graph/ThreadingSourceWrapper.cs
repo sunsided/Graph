@@ -33,7 +33,9 @@ namespace Graph
 		{
 			Contract.Requires(next != null);
 			Contract.Assume(next != this);
+			
 			_source = next;
+			_source.StateChanged += (sender, args) => SetProcessingState(args.State, args.Input);
 		}
 
 		/// <summary>
@@ -64,6 +66,8 @@ namespace Graph
 			_source = next;
 			_scheduler = scheduler;
 			_options = options;
+
+			_source.StateChanged += (sender, args) => SetProcessingState(args.State, args.Input);
 		}
 
 		/// <summary>
@@ -71,9 +75,6 @@ namespace Graph
 		/// </summary>
 		public void Process()
 		{
-			// Kopieren
-			SetProcessingState(ProcessState.Filtering, null);
-
 			// Neuen Task erzeugen
 			Action action = delegate { _source.Process(); };
 			Task task = new Task(action, _options);

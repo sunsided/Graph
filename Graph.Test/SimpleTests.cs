@@ -20,7 +20,7 @@ namespace Graph.Test
 			IFilter<double, double> tee2 = new TeeFilter<double>();
 
 			// Eine Senke definieren
-			ISink<int> sink1 = new TerminatorSink<int>();
+			ISink<int> sink1 = new TerminatorSink<int>().MakeThreaded();
 			sink1.StateChanged += (sender, args) => { if (args.State == ProcessState.Dispatching) Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Sink 1 - Wert erhalten: " + args.Input); waitHandle1.Set(); };
 
 			// Quelle erzeugen, zwei Passthroughs und den Tee einhängen
