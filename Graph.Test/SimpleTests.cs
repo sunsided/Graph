@@ -10,6 +10,8 @@ namespace Graph.Test
 		[Test]
 		public void ChainTest()
 		{
+			Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Verarbeitung begonnen.");
+
 			ManualResetEvent waitHandle1 = new ManualResetEvent(false),
 			                 waitHandle2 = new ManualResetEvent(false);
 
@@ -22,7 +24,7 @@ namespace Graph.Test
 			sink1.StateChanged += (sender, args) => { if (args.State == ProcessState.Dispatching) Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Sink 1 - Wert erhalten: " + args.Input); waitHandle1.Set(); };
 
 			// Quelle erzeugen, zwei Passthroughs und den Tee einhängen
-			ISource<int> source = new ConstantSource<int>(10);
+			ISource<int> source = new ConstantSource<int>(10).MakeThreaded();
 			source.Append(new PassthroughFilter<int>())
 				.Append(new PassthroughFilter<int>())
 				.Append(tee);
@@ -31,8 +33,7 @@ namespace Graph.Test
 			tee.Append(new DelegateSink<int>(value => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Tee - Wert erhalten: " + value)));
 
 			// Threadwechsel, Delegate, 1-Sekunden-Delay und Sink
-			tee.Append(new ThreadingFilter<int>())
-				.Append(new DelegateFilter<int>((my, value) => value + ((int)my.Tag), 10))
+			tee.Append(new DelegateFilter<int>((my, value) => value + ((int)my.Tag), 10).MakeThreaded())
 				.Append(new DelegateFilter<int>(value => { Thread.Sleep(2000); return value; }))
 				.Append(new SetEventFilter<int>(waitHandle2))
 				.Append(sink1);
