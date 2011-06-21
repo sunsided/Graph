@@ -25,6 +25,8 @@ namespace Graph.Test
 
 			Semaphore semaphore = new Semaphore(0, count);
 
+			// TODO: Extension Method auf Source, die den Graphen plottet!
+
 			// Teefilter
 			TeeFilter<int> tee = new TeeFilter<int>();
 			TeeFilter<double> tee2 = new TeeFilter<double> {Tag = "Debug-Tee"};
