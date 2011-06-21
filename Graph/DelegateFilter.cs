@@ -46,6 +46,7 @@ namespace Graph
 		public DelegateFilter(Func<DelegateFilter<TIn, TOut>, TIn, TOut> filter)
 			: this(filter, null)
 		{
+			Contract.Requires(filter != null);
 		}
 
 		/// <summary>
@@ -115,6 +116,7 @@ namespace Graph
 		public DelegateFilter(Func<DelegateFilter<T>, T, T> filter)
 			: this(filter, null)
 		{
+			Contract.Requires(filter != null);
 		}
 
 		/// <summary>

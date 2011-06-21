@@ -1,5 +1,7 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System;
+using System.Diagnostics.Contracts;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Graph
 {
@@ -10,10 +12,42 @@ namespace Graph
 	public sealed class ThreadingFilter<T> : PassthroughFilter<T>
 	{
 		/// <summary>
+		/// Der zu verwendende Task Scheduler
+		/// </summary>
+		private readonly TaskScheduler _scheduler;
+
+		/// <summary>
+		/// Die zu verwendenden Task Creation Options
+		/// </summary>
+		private readonly TaskCreationOptions _options;
+
+		/// <summary>
 		/// Initializes a new instance of the <see cref="ThreadingFilter&lt;TInt&gt;"/> class.
 		/// </summary>
 		public ThreadingFilter()
 		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ThreadingFilter&lt;TInt&gt;"/> class.
+		/// </summary>
+		/// <param name="scheduler">Der zu verwendende Task Scheduler</param>
+		public ThreadingFilter(TaskScheduler scheduler)
+			: this(scheduler, TaskCreationOptions.None)
+		{
+			Contract.Requires(scheduler != null);
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ThreadingFilter&lt;TInt&gt;"/> class.
+		/// </summary>
+		/// <param name="scheduler">Der zu verwendende Task Scheduler</param>
+		/// <param name="options">Die zu verwendenden Task-Erzeugungsoptionen</param>
+		public ThreadingFilter(TaskScheduler scheduler, TaskCreationOptions options)
+		{
+			Contract.Requires(scheduler != null);
+			_scheduler = scheduler;
+			_options = options;
 		}
 
 		/// <summary>
@@ -22,8 +56,39 @@ namespace Graph
 		/// <param name="next">Das nachfolgende Element</param>
 		public ThreadingFilter(IDataProcessor<T> next)
 		{
+			Contract.Requires(next != null);
 			Contract.Assume(next != this);
 			Follower = next;
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ThreadingFilter&lt;TIn&gt;"/> class.
+		/// </summary>
+		/// <param name="next">Das nachfolgende Element</param>
+		/// <param name="scheduler">Der zu verwendende Task Scheduler</param>
+		public ThreadingFilter(IDataProcessor<T> next, TaskScheduler scheduler)
+			: this(next, scheduler, TaskCreationOptions.None)
+		{
+			Contract.Requires(next != null);
+			Contract.Requires(scheduler != null);
+			Contract.Assume(next != this);
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="ThreadingFilter&lt;TIn&gt;"/> class.
+		/// </summary>
+		/// <param name="next">Das nachfolgende Element</param>
+		/// <param name="scheduler">Der zu verwendende Task Scheduler</param>
+		/// <param name="options">Die zu verwendenden Task-Erzeugungsoptionen</param>
+		public ThreadingFilter(IDataProcessor<T> next, TaskScheduler scheduler, TaskCreationOptions options)
+		{
+			Contract.Requires(next != null);
+			Contract.Requires(scheduler != null);
+			Contract.Assume(next != this);
+
+			Follower = next;
+			_scheduler = scheduler;
+			_options = options;
 		}
 
 		/// <summary>
@@ -41,11 +106,41 @@ namespace Graph
 
 			// Delegat erzeugen und aufrufen.
 			SetProcessingState(ProcessState.Dispatching, input);
-			WaitCallback callback = delegate { follower.Process(result); };
-			ThreadPool.QueueUserWorkItem(callback);
 
+			// Neuen Task erzeugen
+			Action action = delegate { follower.Process(result); };
+			Task task = new Task(action, _options);
+
+			// Task starten
+			if (_scheduler != null)
+			{
+				task.Start(_scheduler);
+			}
+			else
+				task.Start();
+			
 			// Fertig
 			SetProcessingState(ProcessState.Idle, null);
+		}
+	}
+
+	/// <summary>
+	/// Helfermethoden für <see cref="ThreadingFilter{T}"/>
+	/// </summary>
+	public static class ThreadingFilterHelper
+	{
+		/// <summary>
+		/// Führt die Verarbeitung des Elementes in einem ThreadPool-Thread aus.
+		/// </summary>
+		/// <typeparam name="T">Der zu verarbeitende Datentyp</typeparam>
+		/// <param name="processor">Der zu wrappende Processor</param>
+		/// <returns>Ein Threadingfilter</returns>
+		public static ThreadingFilter<T> InThreadPool<T>(this IDataProcessor<T> processor)
+		{
+			Contract.Requires(processor != null);
+			Contract.Requires(!(processor is ThreadingFilter<T>));
+			Contract.Ensures(Contract.Result<ThreadingFilter<T>>() != null);
+			return new ThreadingFilter<T>(processor);
 		}
 	}
 }
