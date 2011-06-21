@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Comment CommentText="Threadsynchronisation">
-    <Position X="7.395" Y="10.088" Height="0.291" Width="5.229" />
+    <Position X="7.395" Y="10.088" Height="0.291" Width="6.937" />
   </Comment>
   <Comment CommentText="Threading">
     <Position X="5.79" Y="10.094" Height="0.291" Width="1.444" />
@@ -25,7 +25,7 @@
   <Class Name="Graph.StateBase" Collapsed="true">
     <Position X="4.5" Y="3.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAACAAAAAAAAAAAEAAAAAAAAAAAAAAABAAAACA=</HashCode>
+      <HashCode>AAAAAAAACAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAACA=</HashCode>
       <FileName>StateBase.cs</FileName>
     </TypeIdentifier>
     <Lollipop Orientation="Left" Position="0.1" />
@@ -39,7 +39,7 @@
     <Lollipop Orientation="Left" Position="0.1" />
   </Class>
   <Class Name="Graph.ConditionalPassthroughFilter&lt;T&gt;" Collapsed="true">
-    <Position X="3.25" Y="9.25" Width="1.5" />
+    <Position X="3.5" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAABAAgAAAAAAAABAAAAA=</HashCode>
       <FileName>ConditionalPassthroughFilter.cs</FileName>
@@ -77,7 +77,7 @@
   <Class Name="Graph.TeeFilter&lt;T&gt;" Collapsed="true">
     <Position X="2.5" Y="7.75" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAIAAAAAAAAAEAAAgAAAAQAAAACAQAAAAAQAABAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAEAAAgAAAAQAAAACAQAAAAAQAABAAAA=</HashCode>
       <FileName>TeeFilter.cs</FileName>
     </TypeIdentifier>
     <Lollipop Orientation="Left" Position="0.196" />
@@ -144,7 +144,7 @@
     </TypeIdentifier>
   </Class>
   <Class Name="Graph.ActionFilter&lt;T&gt;" Collapsed="true">
-    <Position X="13" Y="9.25" Width="1.5" />
+    <Position X="1.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAABAAAAAAAAAAgAAAAAA=</HashCode>
       <FileName>ActionFilter.cs</FileName>
@@ -165,6 +165,20 @@
       <FileName>ThreadingSourceWrapper.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Graph.ReleaseSemaphoreFilter&lt;T&gt;" Collapsed="true">
+    <Position X="12.75" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAIBAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ReleaseSemaphoreFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graph.DebuggerBreakFilter&lt;T&gt;" Collapsed="true">
+    <Position X="4.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>DebuggerBreakFilter.cs</FileName>
+    </TypeIdentifier>
   </Class>
   <Interface Name="Graph.IFilter&lt;TIn, TOut&gt;" Collapsed="true">
     <Position X="2.5" Y="0.5" Width="1.5" />
@@ -211,7 +225,7 @@
   <Interface Name="Graph.IProcessIndicator">
     <Position X="6.5" Y="2.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAACA=</HashCode>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
       <FileName>IProcessIndicator.cs</FileName>
     </TypeIdentifier>
   </Interface>
