@@ -18,12 +18,12 @@ namespace Graph.Test
 		{
 			Console.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Verarbeitung begonnen.");
 
-			const int count = 1;
+			const int count = 3;
 
-			ManualResetEvent waitHandle1 = new ManualResetEvent(false),
-			                 waitHandle = new ManualResetEvent(false);
+			ManualResetEvent waitHandle1 = new ManualResetEvent(false);
+			//ManualResetEvent waitHandle = new ManualResetEvent(false);
 
-			//Semaphore semaphore = new Semaphore(0, count);
+			Semaphore semaphore = new Semaphore(0, count);
 
 			// Teefilter
 			TeeFilter<int> tee = new TeeFilter<int>();
@@ -46,7 +46,8 @@ namespace Graph.Test
 			// Threadwechsel, Delegate, 1-Sekunden-Delay und Sink
 			tee.Append(new DelegateFilter<int>((my, value) => value + ((int)my.Tag), 10).MakeThreaded())
 				.Append(new DelegateFilter<int>(value => { Thread.Sleep(2000); return value; }))
-				.Append(new SetEventFilter<int>(waitHandle).AttachOutput(Console.Out, "Handle freigegeben"))
+				//.Append(new SetEventFilter<int>(waitHandle).AttachOutput(Console.Out, "Handle freigegeben"))
+				.Append(new SemaphoreReleaseFilter<int>(semaphore).AttachOutput(Console.Out, "Handle freigegeben"))
 				.Append(sink1);
 
 			// Delegate und Sink (Hauptthread, unverzögert)
@@ -55,7 +56,7 @@ namespace Graph.Test
 
 			// Dingsi.
 			tee2.Append(new ActionFilter<double>(value => Console.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - warte auf Event ...")))
-				.Append(new WaitEventFilter<double>(waitHandle))
+				.Append(new WaitEventFilter<double>(semaphore))
 				.Append(new ActionSink<double>((my, value) => Console.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Sink 2 - Wert erhalten: " + value)));
 			
 			// Dingsi.

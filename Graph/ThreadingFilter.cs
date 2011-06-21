@@ -140,7 +140,6 @@ namespace Graph
 		{
 			Contract.Requires(processor != null);
 			Contract.Requires(!(processor is ThreadingFilter<T>));
-			Contract.Requires(!(processor is TeeFilter<T>));
 			Contract.Ensures(Contract.Result<ThreadingFilter<T>>() != null);
 			return new ThreadingFilter<T>(processor);
 		}
@@ -157,7 +156,6 @@ namespace Graph
 			Contract.Requires(processor != null);
 			Contract.Requires(scheduler != null);
 			Contract.Requires(!(processor is ThreadingFilter<T>));
-			Contract.Requires(!(processor is TeeFilter<T>));
 			Contract.Ensures(Contract.Result<ThreadingFilter<T>>() != null);
 			return new ThreadingFilter<T>(processor, scheduler);
 		}
@@ -175,51 +173,6 @@ namespace Graph
 			Contract.Requires(processor != null);
 			Contract.Requires(scheduler != null);
 			Contract.Requires(!(processor is ThreadingFilter<T>));
-			Contract.Requires(!(processor is TeeFilter<T>));
-			Contract.Ensures(Contract.Result<ThreadingFilter<T>>() != null);
-			return new ThreadingFilter<T>(processor, scheduler, options);
-		}
-
-		/// <summary>
-		/// Führt die Verarbeitung des Elementes in einem <see cref="Task"/> aus.
-		/// </summary>
-		/// <typeparam name="T">Der zu verarbeitende Datentyp</typeparam>
-		/// <param name="processor">Der zu wrappende Processor</param>
-		/// <returns>Ein Threadingfilter</returns>
-		public static ThreadingFilter<T> MakeThreaded<T>(this TeeFilter<T> processor)
-		{
-			Contract.Requires(processor != null);
-			Contract.Ensures(Contract.Result<ThreadingFilter<T>>() != null);
-			return new ThreadingFilter<T>(processor);
-		}
-
-		/// <summary>
-		/// Führt die Verarbeitung des Elementes in einem <see cref="Task"/> aus.
-		/// </summary>
-		/// <typeparam name="T">Der zu verarbeitende Datentyp</typeparam>
-		/// <param name="processor">Der zu wrappende Processor</param>
-		/// <param name="scheduler">Der zu verwendende Scheduler</param>
-		/// <returns>Ein Threadingfilter</returns>
-		public static ThreadingFilter<T> MakeThreaded<T>(this TeeFilter<T> processor, TaskScheduler scheduler)
-		{
-			Contract.Requires(processor != null);
-			Contract.Requires(scheduler != null);
-			Contract.Ensures(Contract.Result<ThreadingFilter<T>>() != null);
-			return new ThreadingFilter<T>(processor, scheduler);
-		}
-
-		/// <summary>
-		/// Führt die Verarbeitung des Elementes in einem <see cref="Task"/> aus.
-		/// </summary>
-		/// <typeparam name="T">Der zu verarbeitende Datentyp</typeparam>
-		/// <param name="processor">Der zu wrappende Processor</param>
-		/// <param name="scheduler">Der zu verwendende Scheduler</param>
-		/// <param name="options">Die Task-Erzeugungsoptionen</param>
-		/// <returns>Ein Threadingfilter</returns>
-		public static ThreadingFilter<T> MakeThreaded<T>(this TeeFilter<T> processor, TaskScheduler scheduler, TaskCreationOptions options)
-		{
-			Contract.Requires(processor != null);
-			Contract.Requires(scheduler != null);
 			Contract.Ensures(Contract.Result<ThreadingFilter<T>>() != null);
 			return new ThreadingFilter<T>(processor, scheduler, options);
 		}

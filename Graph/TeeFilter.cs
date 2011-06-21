@@ -11,8 +11,11 @@ namespace Graph
 	/// <remarks>
 	/// Die Methode ist threadsicher, da alle Ausgänge sequentiell abgearbeitet werden. 
 	/// Das Nachschalten eines Asynchronfilters kann die Threadsicherheit auflösen!
+	/// 
+	/// Der <see cref="TeeFilter{T}"/> ist absichtlich nicht vom Typ <see cref="IFilter{T,T}"/>,
+	/// um sicherzustellen, dass die Bedienung korrekt erfolgt.
 	/// </remarks>
-	public sealed class TeeFilter<T> : StateBase, /*IFilter<T, T>,*/ ISink<T>
+	public sealed class TeeFilter<T> : StateBase, ISink<T>
 	{
 		/// <summary>
 		/// Die Liste der angehängten Elemente
@@ -77,18 +80,7 @@ namespace Graph
 		{
 			lock(_elementList) return _elementList.Remove(element);
 		}
-		/*
-		/// <summary>
-		/// Unbenutzt
-		/// </summary>
-		/// <param name="input">The input.</param>
-		/// <returns></returns>
-		T IFilter<T, T>.Filter(T input)
-		{
-			return input;
-		}
-		*/
-
+		
 		/// <summary>
 		/// Verarbeitet die Eingabe
 		/// </summary>
