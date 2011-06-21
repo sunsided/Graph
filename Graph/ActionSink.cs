@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Diagnostics;
+using System.Diagnostics.Contracts;
+using System.IO;
 
 namespace Graph
 {
@@ -68,6 +71,74 @@ namespace Graph
 			SetProcessingState(ProcessState.Dispatching, input);
 			_action(this, input);
 			SetProcessingState(ProcessState.Idle, null);
+		}
+	}
+
+	/// <summary>
+	/// Helfermethoden für <see cref="ActionFilter{T}"/>
+	/// </summary>
+	public static class ActionFilterHelper
+	{
+		/// <summary>
+		/// Gibt eine Trace-Meldung aus
+		/// </summary>
+		/// <typeparam name="T">Der zu verarbeitende Datentyp</typeparam>
+		/// <param name="processor">Der zu wrappende Processor</param>
+		/// <param name="message">Die auszugebende Meldung</param>
+		/// <returns>Ein Threadingfilter</returns>
+		public static ActionFilter<T> AttachTraceOutput<T>(this IFilter<T, T> processor, string message)
+		{
+			Contract.Requires(processor != null);
+			Contract.Requires(message != null);
+			Contract.Ensures(Contract.Result<ActionFilter<T>>() != null);
+
+			return new ActionFilter<T>(value =>
+			                           	{
+			                           		Trace.WriteLine(message);
+			                           		processor.Process(value);
+			                           	});
+		}
+
+		/// <summary>
+		/// Gibt eine Debug-Meldung aus
+		/// </summary>
+		/// <typeparam name="T">Der zu verarbeitende Datentyp</typeparam>
+		/// <param name="processor">Der zu wrappende Processor</param>
+		/// <param name="message">Die auszugebende Meldung</param>
+		/// <returns>Ein Threadingfilter</returns>
+		public static ActionFilter<T> AttachDebugOutput<T>(this IFilter<T, T> processor, string message)
+		{
+			Contract.Requires(processor != null);
+			Contract.Requires(message != null);
+			Contract.Ensures(Contract.Result<ActionFilter<T>>() != null);
+
+			return new ActionFilter<T>(value =>
+			                           	{
+			                           		Debug.WriteLine(message);
+			                           		processor.Process(value);
+			                           	});
+		}
+
+		/// <summary>
+		/// Gibt eine Debug-Meldung aus
+		/// </summary>
+		/// <typeparam name="T">Der zu verarbeitende Datentyp</typeparam>
+		/// <param name="processor">Der zu wrappende Processor</param>
+		/// <param name="writer">Der zu verwendende Writer</param>
+		/// <param name="message">Die auszugebende Meldung</param>
+		/// <returns>Ein Threadingfilter</returns>
+		public static ActionFilter<T> AttachOutput<T>(this IFilter<T, T> processor, TextWriter writer, string message)
+		{
+			Contract.Requires(processor != null);
+			Contract.Requires(message != null);
+			Contract.Requires(writer != null);
+			Contract.Ensures(Contract.Result<ActionFilter<T>>() != null);
+
+			return new ActionFilter<T>(value =>
+			{
+				writer.WriteLine(message);
+				processor.Process(value);
+			});
 		}
 	}
 }

@@ -69,6 +69,8 @@
   <ItemGroup>
     <Compile Include="ConditionalPassthroughFilter.cs" />
     <Compile Include="ActionFilter.cs" />
+    <Compile Include="DebuggerBreakFilter.cs" />
+    <Compile Include="SemaphoreReleaseFilter.cs" />
     <Compile Include="ThreadingSinkWrapper.cs" />
     <Compile Include="ThreadingSourceWrapper.cs" />
     <Compile Include="WaitEventFilter.cs" />

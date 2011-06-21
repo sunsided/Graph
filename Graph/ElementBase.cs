@@ -53,7 +53,7 @@ namespace Graph
 			if (element == this) throw new ArgumentException("Kann nicht an sich selbst anhängen.");
 			Contract.Assume(element != this);
 			lock (_follower) _follower = element;
-			return element;
+			return element; // TODO: Bei Threading-Filtern den Follower zurückgeben!
 		}
 
 		/// <summary>

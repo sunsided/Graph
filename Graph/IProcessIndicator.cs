@@ -8,11 +8,6 @@ namespace Graph
 	public interface IProcessIndicator
 	{
 		/// <summary>
-		/// Ermittelt den Zustand des Elementes
-		/// </summary>
-		ProcessState State { get; }
-
-		/// <summary>
 		/// Der Prozesszustand hat sich geändert
 		/// </summary>
 		event EventHandler<ProcessStateEventArgs> StateChanged;

@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Diagnostics.Contracts;
+using System.Threading;
 
 namespace Graph
 {
@@ -6,6 +7,9 @@ namespace Graph
 	/// Filter, das Elemente weiterreicht und dabei ein <see cref="EventWaitHandle"/> setzt
 	/// </summary>
 	/// <typeparam name="T">Ein- und Ausgabeparameter</typeparam>
+	/// <seealso cref="ResetEventFilter{T}"/>
+	/// <seealso cref="WaitEventFilter{T}"/>
+	/// <seealso cref="SemaphoreReleaseFilter{T}"/>
 	public sealed class SetEventFilter<T> : PassthroughFilter<T>
 	{
 		/// <summary>
@@ -19,6 +23,7 @@ namespace Graph
 		/// <param name="handle">The handle.</param>
 		public SetEventFilter(EventWaitHandle handle)
 		{
+			Contract.Requires(handle != null);
 			WaitHandle = handle;
 		}
 
