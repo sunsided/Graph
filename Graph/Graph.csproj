@@ -68,12 +68,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConditionalPassthroughFilter.cs" />
+    <Compile Include="ActionFilter.cs" />
     <Compile Include="ThreadingSinkWrapper.cs" />
     <Compile Include="ThreadingSourceWrapper.cs" />
     <Compile Include="WaitEventFilter.cs" />
     <Compile Include="ResetEventFilter.cs" />
     <Compile Include="SetEventFilter.cs" />
-    <Compile Include="DelegateSink.cs" />
+    <Compile Include="ActionSink.cs" />
     <Compile Include="DelegateFilter.cs" />
     <Compile Include="IAppendableDataProcessor.cs" />
     <Compile Include="ElementBase.cs" />

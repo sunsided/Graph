@@ -26,12 +26,12 @@ namespace Graph.Test
 			// Quelle erzeugen, zwei Passthroughs und den Tee einhängen
 			ISource<int> source = new ConstantSource<int>(10).MakeThreaded();
 			source.Append(new PassthroughFilter<int>())
-				.Append(new DelegateFilter<int>(value => { Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " -- Thread nach Start"); return value; }))
+				.Append(new ActionFilter<int>(value => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " -- Thread nach Start")))
 				.Append(new PassthroughFilter<int>())
 				.Append(tee);
 
 			// Debugging-Sink in den Tee einhängen
-			tee.Append(new DelegateSink<int>(value => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Tee - Wert erhalten: " + value)));
+			tee.Append(new ActionSink<int>(value => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Tee - Wert erhalten: " + value)));
 
 			// Threadwechsel, Delegate, 1-Sekunden-Delay und Sink
 			tee.Append(new DelegateFilter<int>((my, value) => value + ((int)my.Tag), 10).MakeThreaded())
@@ -42,14 +42,14 @@ namespace Graph.Test
 			// Delegate und Sink (Hauptthread, unverzögert)
 			tee.Append(new DelegateFilter<int, double>(value => value * 0.75))
 				.Append(tee2)
-				.Append(new DelegateFilter<double>(value => { Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - warte auf Event ..."); return value; }))
+				.Append(new ActionFilter<double>(value => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - warte auf Event ...")))
 				.Append(new WaitEventFilter<double>(waitHandle2))
-				.Append(new DelegateSink<double>((my, value) => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Sink 2 - Wert erhalten: " + value)));
+				.Append(new ActionSink<double>((my, value) => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Sink 2 - Wert erhalten: " + value)));
 			
 			// Dingsi.
-			tee2.Append(new DelegateFilter<double>(value => { Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - erwartet."); return value; }));
+			tee2.Append(new ActionFilter<double>(value => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - erwartet.")));
 			tee2.Append(new ConditionalPassthroughFilter<double>(value => value > 10))
-				.Append(new DelegateFilter<double>(value => { Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - sollte nicht passieren."); return value; }));
+				.Append(new ActionFilter<double>(value => Trace.WriteLine("#" + Thread.CurrentThread.ManagedThreadId + " Wert erhalten: " + value + " - sollte nicht passieren.")));
 
 			// Und los!
 			source.Process();

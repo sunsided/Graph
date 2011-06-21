@@ -3,15 +3,17 @@
 namespace Graph
 {
 	/// <summary>
-	/// Senke, die Daten verwirft
+	/// Senke, die eine Aktion ausführt
 	/// </summary>
 	/// <typeparam name="TIn">Eingabeparameter</typeparam>
-	public sealed class DelegateSink<TIn> : StateBase, ISink<TIn>
+	/// <seealso cref="DelegateFilter{T}"/>
+	/// <seealso cref="ActionFilter{T}"/>
+	public sealed class ActionSink<TIn> : StateBase, ISink<TIn>
 	{
 		/// <summary>
 		/// Die auszuführende Aktion
 		/// </summary>
-		private readonly Action<DelegateSink<TIn>, TIn> _action;
+		private readonly Action<ActionSink<TIn>, TIn> _action;
 
 		/// <summary>
 		/// Benutzerdefiniertes Objekt
@@ -19,39 +21,39 @@ namespace Graph
 		public object Tag { get; set; }
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DelegateSink&lt;TIn&gt;"/> class.
+		/// Initializes a new instance of the <see cref="ActionSink{TIn}"/> class.
 		/// </summary>
 		/// <param name="action">The action.</param>
-		public DelegateSink(Action<TIn> action)
+		public ActionSink(Action<TIn> action)
 			: this(action, null)
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DelegateSink&lt;TIn&gt;"/> class.
+		/// Initializes a new instance of the <see cref="ActionSink{TIn}"/> class.
 		/// </summary>
 		/// <param name="action">The action.</param>
 		/// <param name="tag">Benutzerdefiniertes Tag</param>
-		public DelegateSink(Action<TIn> action, object tag)
+		public ActionSink(Action<TIn> action, object tag)
 			: this((sender, value) => action(value), tag)
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DelegateSink&lt;TIn&gt;"/> class.
+		/// Initializes a new instance of the <see cref="ActionSink{TIn}"/> class.
 		/// </summary>
 		/// <param name="action">The action.</param>
-		public DelegateSink(Action<DelegateSink<TIn>, TIn> action)
+		public ActionSink(Action<ActionSink<TIn>, TIn> action)
 			: this(action, null)
 		{
 		}
 
 		/// <summary>
-		/// Initializes a new instance of the <see cref="DelegateSink&lt;TIn&gt;"/> class.
+		/// Initializes a new instance of the <see cref="ActionSink{TIn}"/> class.
 		/// </summary>
 		/// <param name="action">The action.</param>
 		/// <param name="tag">Benutzerdefiniertes Tag</param>
-		public DelegateSink(Action<DelegateSink<TIn>, TIn> action, object tag)
+		public ActionSink(Action<ActionSink<TIn>, TIn> action, object tag)
 		{
 			_action = action;
 			Tag = tag;

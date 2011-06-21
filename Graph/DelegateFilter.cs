@@ -4,10 +4,13 @@ using System.Diagnostics.Contracts;
 namespace Graph
 {
 	/// <summary>
-	/// Filter, das Elemente mittels einer Delegate bearbeitet
+	/// Filter, das eine Funktion ausführt und Elemente weiterreicht
 	/// </summary>
 	/// <typeparam name="TIn">Eingabeparameter</typeparam>
 	/// <typeparam name="TOut">Ausgabeparameter</typeparam>
+	/// <seealso cref="ActionFilter{T}"/>
+	/// <seealso cref="ActionSink{T}"/>
+	/// <seealso cref="ConditionalPassthroughFilter{T}"/>
 	public sealed class DelegateFilter<TIn, TOut> : FilterBase<TIn, TOut>
 	{
 		/// <summary>
@@ -67,7 +70,6 @@ namespace Graph
 		/// <param name="input">Der zu verarbeitende Wert</param>
 		/// <returns>Das Ergebnis</returns>
 		/// <remarks>Hier wird auschließlich die Filterlogik implementiert.</remarks>
-		[Pure]
 		public override TOut Filter(TIn input)
 		{
 			return _filter(this, input);
@@ -75,8 +77,11 @@ namespace Graph
 	}
 
 	/// <summary>
-	/// Filter, das Elemente mittels einer Delegate bearbeitet
+	/// Filter, das eine Funktion ausführt und Elemente weiterreicht
 	/// </summary>
+	/// <seealso cref="ActionFilter{T}"/>
+	/// <seealso cref="ActionSink{T}"/>
+	/// <seealso cref="ConditionalPassthroughFilter{T}"/>
 	/// <typeparam name="T">Ein- und Ausgabeparameter</typeparam>
 	public sealed class DelegateFilter<T> : FilterBase<T, T>
 	{
@@ -137,7 +142,6 @@ namespace Graph
 		/// <param name="input">Der zu verarbeitende Wert</param>
 		/// <returns>Das Ergebnis</returns>
 		/// <remarks>Hier wird auschließlich die Filterlogik implementiert.</remarks>
-		[Pure]
 		public override T Filter(T input)
 		{
 			return _filter(this, input);
