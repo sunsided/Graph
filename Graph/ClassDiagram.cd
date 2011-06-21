@@ -49,7 +49,7 @@
   <Class Name="Graph.ThreadingFilter&lt;T&gt;" Collapsed="true">
     <Position X="5.75" Y="9.25" Width="1.5" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAQAAAAAAAgABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>ThreadingFilter.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -90,11 +90,11 @@
     </TypeIdentifier>
     <Lollipop Position="0.1" />
   </Class>
-  <Class Name="Graph.DelegateSink&lt;TIn&gt;" Collapsed="true">
-    <Position X="11" Y="5.25" Width="1.5" />
+  <Class Name="Graph.ActionSink&lt;TIn&gt;" Collapsed="true">
+    <Position X="9.25" Y="5.25" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAgAAAAAgAAAAAAAAAAAAAAAAAAgAAAAAA=</HashCode>
-      <FileName>DelegateSink.cs</FileName>
+      <FileName>ActionSink.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
@@ -108,7 +108,7 @@
   <Class Name="Graph.DelegateFilter&lt;T&gt;" Collapsed="true">
     <Position X="10.5" Y="7.75" Width="2" />
     <TypeIdentifier>
-      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAABAAAIAAAAAAAAAAAAA=</HashCode>
       <FileName>DelegateFilter.cs</FileName>
     </TypeIdentifier>
   </Class>
@@ -142,6 +142,29 @@
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>PassthroughFilter.cs</FileName>
     </TypeIdentifier>
+  </Class>
+  <Class Name="Graph.ActionFilter&lt;T&gt;" Collapsed="true">
+    <Position X="13" Y="9.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgAAAAAAAAAAAAABAAAAAAAAAAgAAAAAA=</HashCode>
+      <FileName>ActionFilter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Graph.ThreadingSinkWrapper&lt;T&gt;" Collapsed="true">
+    <Position X="11" Y="5.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAQAAAAAAAgABAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ThreadingSinkWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Graph.ThreadingSourceWrapper&lt;T&gt;" Collapsed="true">
+    <Position X="13" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAUAAAAAAAgABAAAAACAAAAAAAAAAAAAABAA=</HashCode>
+      <FileName>ThreadingSourceWrapper.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
   </Class>
   <Interface Name="Graph.IFilter&lt;TIn, TOut&gt;" Collapsed="true">
     <Position X="2.5" Y="0.5" Width="1.5" />
