@@ -67,40 +67,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConditionalPassthroughFilter.cs" />
-    <Compile Include="ActionFilter.cs" />
-    <Compile Include="DebuggerBreakFilter.cs" />
-    <Compile Include="SemaphoreReleaseFilter.cs" />
-    <Compile Include="ThreadingSinkWrapper.cs" />
-    <Compile Include="ThreadingSourceWrapper.cs" />
-    <Compile Include="WaitEventFilter.cs" />
-    <Compile Include="ResetEventFilter.cs" />
-    <Compile Include="SetEventFilter.cs" />
-    <Compile Include="ActionSink.cs" />
-    <Compile Include="DelegateFilter.cs" />
-    <Compile Include="IAppendableDataProcessor.cs" />
-    <Compile Include="ElementBase.cs" />
-    <Compile Include="ProcessState.cs" />
-    <Compile Include="ProcessStateEventArgs.cs" />
-    <Compile Include="ConstantSource.cs" />
-    <Compile Include="RandomDoubleSource.cs" />
-    <Compile Include="RandomIntegerSource.cs" />
-    <Compile Include="TerminatorSink.cs" />
-    <Compile Include="IProcessIndicator.cs" />
-    <Compile Include="ThreadingFilter.cs" />
-    <Compile Include="IDataProcessor.cs" />
-    <Compile Include="FilterBase.cs" />
-    <Compile Include="IAppendable.cs" />
+    <Compile Include="DataProcessor.cs" />
     <Compile Include="ISource.cs" />
     <Compile Include="ISink.cs" />
     <Compile Include="IFilter.cs" />
-    <Compile Include="PassthroughFilter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TeeFilter.cs" />
-    <Compile Include="StateBase.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="ClassDiagram.cd" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
