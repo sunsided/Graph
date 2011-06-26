@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataProcessor.cs" />
+    <Compile Include="DataProcessorException.cs" />
     <Compile Include="ISource.cs" />
     <Compile Include="ISink.cs" />
     <Compile Include="IFilter.cs" />
