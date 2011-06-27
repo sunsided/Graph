@@ -3,6 +3,12 @@ using System.ComponentModel;
 
 namespace Graph
 {
+	/// <summary>
+	/// Filter mit zwei Eingängen
+	/// </summary>
+	/// <typeparam name="TInput1">Erster Eingangsdatentyp</typeparam>
+	/// <typeparam name="TInput2">Zweiter Eingangsdatentyp</typeparam>
+	/// <typeparam name="TOutput">Ausgangsdatentyp</typeparam>
 	public abstract class DualInFilter<TInput1, TInput2, TOutput> : DataSource<TOutput>, IDualInFilter<TInput1, TInput2, TOutput>
 	{
 		/// <summary>
@@ -39,18 +45,18 @@ namespace Graph
 		/// <summary>
 		/// Erster Input
 		/// </summary>
-		private Queue<TInput1> _input1 = new Queue<TInput1>();
+		private readonly Queue<TInput1> _input1 = new Queue<TInput1>(); // TODO Limitierungs-Semaphor
 
 		/// <summary>
 		/// Zweiter Input
 		/// </summary>
-		private Queue<TInput2> _input2 = new Queue<TInput2>();
+		private readonly Queue<TInput2> _input2 = new Queue<TInput2>(); // TODO Limitierungs-Semaphor
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
 		/// </summary>
 		/// <remarks></remarks>
-		public DualInFilter()
+		protected DualInFilter()
 		{
 		}
 
@@ -59,7 +65,7 @@ namespace Graph
 		/// </summary>
 		/// <param name="outputQueueLength">Length of the output queue.</param>
 		/// <remarks></remarks>
-		public DualInFilter([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength) : base(outputQueueLength)
+		protected DualInFilter([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength) : base(outputQueueLength)
 		{
 			_inputSink1 = new PassthroughSink<TInput1>(_input1);
 			_inputSink2 = new PassthroughSink<TInput2>(_input2);
@@ -150,6 +156,32 @@ namespace Graph
 		public ISink<TInput2> Input2
 		{
 			get { return _inputSink2; }
+		}
+	}
+
+	/// <summary>
+	/// Filter mit zwei Eingängen
+	/// </summary>
+	/// <typeparam name="TInput">Eingangsdatentyp</typeparam>
+	/// <typeparam name="TOutput">Ausgangsdatentyp</typeparam>
+	public abstract class DualInFilter<TInput, TOutput> : DualInFilter<TInput, TInput, TOutput>, IDualInFilter<TInput, TOutput>
+	{
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
+		/// </summary>
+		/// <remarks></remarks>
+		protected DualInFilter()
+		{
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
+		/// </summary>
+		/// <param name="outputQueueLength">Length of the output queue.</param>
+		/// <remarks></remarks>
+		protected DualInFilter([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
+			: base(outputQueueLength)
+		{
 		}
 	}
 }
