@@ -1,15 +1,38 @@
-Ôªønamespace Graph
+using System;
+using System.Diagnostics.Contracts;
+
+namespace Graph
 {
-	/// <summary>
-	/// Interface f√ºr eine verarbeitbares Element
-	/// </summary>
-	/// <typeparam name="TIn">Eingabedatentyp</typeparam>
-	public interface IDataProcessor<in TIn> : IProcessIndicator
+	public interface IDataProcessor
 	{
 		/// <summary>
-		/// Verarbeitet die Eingabe
+		/// Liest oder setzt das benutzerdefinierte Tag
 		/// </summary>
-		/// <param name="input">Der zu verarbeitende Wert</param>
-		void Process(TIn input);
+		object Tag { [Pure] get; set; }
+
+		/// <summary>
+		/// Ermittelt den aktuellen Bearbeitungsstand
+		/// </summary>
+		ProcessingState State { [Pure] get; }
+
+		/// <summary>
+		/// Wird gerufen, wenn sich der Verarbeitungszustand (<see cref="DataProcessorBase.State"/>) ge‰ndert hat
+		/// </summary>
+		event EventHandler<ProcessingStateEventArgs> ProcessingStateChanged;
+
+		/// <summary>
+		/// Wird gerufen, wenn eine Exception aufgetreten ist
+		/// </summary>
+		event EventHandler<ExceptionEventArgs> ExceptionCaught;
+
+		/// <summary>
+		/// Beginnt die Verarbeitung
+		/// </summary>
+		void StartProcessing();
+
+		/// <summary>
+		/// H‰lt die Verarbeitung an
+		/// </summary>
+		void StopProcessing();
 	}
 }

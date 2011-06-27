@@ -1,18 +1,11 @@
 ﻿namespace Graph
 {
 	/// <summary>
-	/// Interface für Filter
+	/// Interface für ein Filter
 	/// </summary>
-	/// <typeparam name="TIn">Eingabedatentyp</typeparam>
-	/// <typeparam name="TOut">Ausgabedatentyp</typeparam>
-	public interface IFilter<in TIn, out TOut> : IAppendableDataProcessor<TIn, TOut>
+	/// <typeparam name="TInput">Der Eingangsdatentyp</typeparam>
+	/// <typeparam name="TOutput">Der Ausgangsdatentyp</typeparam>
+	public interface IFilter<in TInput, out TOutput> : IDataInput<TInput>, IDataOutput<TOutput>
 	{
-		/// <summary>
-		/// Verarbeitet die Eingabe
-		/// </summary>
-		/// <param name="input">Der zu verarbeitende Wert</param>
-		/// <returns>Das Ergebnis</returns>
-		/// <remarks>Hier wird auschließlich die Filterlogik implementiert.</remarks>
-		TOut Filter(TIn input);
 	}
 }
