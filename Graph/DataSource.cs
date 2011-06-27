@@ -88,6 +88,14 @@ namespace Graph
 		/// </summary>
 		private readonly AutoResetEvent _outputStartTrigger = new AutoResetEvent(false);
 
+		// <summary>
+		/// Erzeugt eine neue Instanz der <see cref="DataSource{TData}"/>-Klasse.
+		/// </summary>
+		protected DataSource()
+			: this(OutputQueueLengthDefault)
+		{
+		}
+
 		/// <summary>
 		/// Erzeugt eine neue Instanz der <see cref="DataSource{TData}"/>-Klasse.
 		/// </summary>
