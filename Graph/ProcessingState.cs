@@ -6,6 +6,11 @@
 	public enum ProcessingState
 	{
 		/// <summary>
+		/// Angehalten
+		/// </summary>
+		Stopped,
+
+		/// <summary>
 		/// Wartend
 		/// </summary>
 		Idle,

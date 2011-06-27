@@ -104,10 +104,14 @@ namespace Graph
 			Contract.Requires(outputQueueLength > 0);
 
 			OutputQueueLength = outputQueueLength;
-			_outputQueueSemaphore = new Semaphore(0, outputQueueLength);
+			_outputQueueSemaphore = new Semaphore(outputQueueLength, outputQueueLength);
 
 			_processingTask = new Task(ProcessingLoop, TaskCreationOptions.LongRunning);
 			_outputTask = new Task(OutputLoop, TaskCreationOptions.LongRunning);
+
+			// TODO: Senke automatisch starten?
+			//_processingTask.Start(); // TODO: Scheduler wählbar?
+			//_outputTask.Start(); // TODO: Scheduler wählbar?
 		}
 
 		/// <summary>
@@ -153,6 +157,7 @@ namespace Graph
 		{
 			if (_processingTask.Status == TaskStatus.WaitingToRun || _processingTask.Status == TaskStatus.Running) return;
 			_processingTask.Start();
+			_outputTask.Start();
 		}
 
 		/// <summary>
@@ -163,6 +168,7 @@ namespace Graph
 			Contract.Ensures(_stopProcessing == true);
 			_stopProcessing = true;
 			_outputStartTrigger.Set();
+			OnProcessingStateChanged(ProcessingState.Stopped);
 		}
 
 		/// <summary>

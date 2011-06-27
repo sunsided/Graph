@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics.Contracts;
+using System.Threading;
 
 namespace Graph
 {
@@ -20,7 +22,7 @@ namespace Graph
 			/// <summary>
 			/// Die zu verwendende Queue
 			/// </summary>
-			public Queue<T> Queue { get; private set; }
+			private Queue<T> Queue { get; set; }
 
 			/// <summary>
 			/// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;.PassthroughSink&lt;T&gt;"/> class.
@@ -33,24 +35,50 @@ namespace Graph
 			}
 
 			/// <summary>
+			/// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;.PassthroughSink&lt;T&gt;"/> class.
+			/// </summary>
+			/// <param name="queue">The queue.</param>
+			/// <param name="registrationTimeout">Der Timeout in Millisekunden, der beim Registrieren von Elementen eingehalten werden soll.</param>
+			/// <param name="inputQueueLength">Die maximale Anzahl an Elementen in der Eingangsqueue.</param>
+			/// <remarks></remarks>
+			public PassthroughSink(Queue<T> queue, [DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
+				: base(registrationTimeout, inputQueueLength)
+			{
+				Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
+				Contract.Requires(inputQueueLength > 0);
+				Queue = queue;
+			}
+
+			/// <summary>
 			/// Verarbeitet die Daten
 			/// </summary>
 			/// <param name="payload">Die zu verarbeitenden Daten</param>
 			protected override void ProcessData(T payload)
 			{
-				Queue.Enqueue(payload); // TODO: Semaphore beachten und Rückmeldung geben
+				// Semaphor-Locking wird hier nicht benötigt, da dies die Basisklasse für uns übernimmt
+				Queue.Enqueue(payload);
 			}
 		}
 
 		/// <summary>
+		/// Vorgabewert für den Registrierungstimeout
+		/// </summary>
+		internal const int RegistrationTimeoutDefault = Timeout.Infinite;
+
+		/// <summary>
+		/// Vorgabewert für die Länge der Eingabequeue
+		/// </summary>
+		internal const int InputQueueLengthDefault = 100;
+		
+		/// <summary>
 		/// Erster Input
 		/// </summary>
-		private readonly Queue<TInput1> _input1 = new Queue<TInput1>(); // TODO Limitierungs-Semaphor
+		private readonly Queue<TInput1> _input1 = new Queue<TInput1>();
 
 		/// <summary>
 		/// Zweiter Input
 		/// </summary>
-		private readonly Queue<TInput2> _input2 = new Queue<TInput2>(); // TODO Limitierungs-Semaphor
+		private readonly Queue<TInput2> _input2 = new Queue<TInput2>();
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
@@ -58,6 +86,11 @@ namespace Graph
 		/// <remarks></remarks>
 		protected DualInFilter()
 		{
+			Contract.Ensures(_inputSink1 != null && _inputSink2 != null);
+
+			_inputSink1 = new PassthroughSink<TInput1>(_input1);
+			_inputSink2 = new PassthroughSink<TInput2>(_input2);
+			StartProcessing();
 		}
 
 		/// <summary>
@@ -65,10 +98,39 @@ namespace Graph
 		/// </summary>
 		/// <param name="outputQueueLength">Length of the output queue.</param>
 		/// <remarks></remarks>
-		protected DualInFilter([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength) : base(outputQueueLength)
+		protected DualInFilter([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
+			: base(outputQueueLength)
 		{
+			Contract.Requires(outputQueueLength > 0);
+			Contract.Ensures(_inputSink1 != null && _inputSink2 != null);
+			Contract.Ensures(Input1 == _inputSink1);
+			Contract.Ensures(Input2 == _inputSink2);
+
 			_inputSink1 = new PassthroughSink<TInput1>(_input1);
 			_inputSink2 = new PassthroughSink<TInput2>(_input2);
+			StartProcessing();
+		}
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
+		/// </summary>
+		/// <param name="outputQueueLength">Length of the output queue.</param>
+		/// <param name="registrationTimeout">Der Timeout in Millisekunden, der beim Registrieren von Elementen eingehalten werden soll.</param>
+		/// <param name="inputQueueLength">Die maximale Anzahl an Elementen in der Eingangsqueue.</param>
+		/// <remarks></remarks>
+		protected DualInFilter([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength, [DefaultValue(OutputQueueLengthDefault)] int outputQueueLength) 
+			: base(outputQueueLength)
+		{
+			Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
+			Contract.Requires(inputQueueLength > 0);
+			Contract.Requires(outputQueueLength > 0);
+			Contract.Ensures(_inputSink1 != null && _inputSink2 != null);
+			Contract.Ensures(Input1 == _inputSink1);
+			Contract.Ensures(Input2 == _inputSink2);
+
+			_inputSink1 = new PassthroughSink<TInput1>(_input1, registrationTimeout, inputQueueLength);
+			_inputSink2 = new PassthroughSink<TInput2>(_input2, registrationTimeout, inputQueueLength);
+			StartProcessing();
 		}
 
 		/// <summary>
@@ -82,6 +144,10 @@ namespace Graph
 		/// </returns>
 		protected override SourceResult CreateData(out TOutput payload)
 		{
+			payload = default(TOutput);
+			if (_input1.Count == 0) return SourceResult.Idle;
+			if (_input2.Count == 0) return SourceResult.Idle;
+
 			TInput1 value1 = _input1.Dequeue();
 			TInput2 value2 = _input2.Dequeue();
 
@@ -102,7 +168,7 @@ namespace Graph
 		/// Starts the processing.
 		/// </summary>
 		/// <remarks></remarks>
-		public override void StartProcessing()
+		public sealed override void StartProcessing()
 		{
 			_inputSink1.StartProcessing();
 			_inputSink2.StartProcessing();
@@ -142,7 +208,11 @@ namespace Graph
 		/// </summary>
 		public ISink<TInput1> Input1
 		{
-			get { return _inputSink1; }
+			[Pure] get
+			{
+				Contract.Ensures(Contract.Result<ISink<TInput1>>() != null);
+				return _inputSink1;
+			}
 		}
 
 		/// <summary>
@@ -155,7 +225,22 @@ namespace Graph
 		/// </summary>
 		public ISink<TInput2> Input2
 		{
-			get { return _inputSink2; }
+			[Pure] get
+			{
+				Contract.Ensures(Contract.Result<ISink<TInput1>>() != null);
+				return _inputSink2;
+			}
+		}
+
+		/// <summary>
+		/// Invariante für den Vertrag
+		/// </summary>
+		/// <remarks></remarks>
+		[ContractInvariantMethod]
+		private void ObjectInvariant()
+		{
+			Contract.Invariant(_inputSink1 != null);
+			Contract.Invariant(_inputSink2 != null);
 		}
 	}
 
@@ -182,6 +267,7 @@ namespace Graph
 		protected DualInFilter([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
 			: base(outputQueueLength)
 		{
+			Contract.Requires(outputQueueLength > 0);
 		}
 	}
 }

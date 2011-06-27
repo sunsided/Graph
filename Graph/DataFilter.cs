@@ -25,6 +25,7 @@ namespace Graph
 		/// </summary>
 		private readonly Queue<IDataInput<TOutput>> _currentOutputs = new Queue<IDataInput<TOutput>>();
 
+
 		/// <summary>
 		/// Erzeugt eine neue Instanz der <see cref="DataFilter{TInput, TOutput}"/>-Klasse.
 		/// </summary>

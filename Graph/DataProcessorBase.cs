@@ -41,7 +41,9 @@ namespace Graph
 		/// <summary>
 		/// Interner Konstruktor, um Instanzierung auﬂerhalb dieser Assembly zu verhindern
 		/// </summary>
-		internal DataProcessorBase() {}
+		internal DataProcessorBase()
+		{
+		}
 
 		/// <summary>
 		/// Raises the <see cref="ProcessingStateChanged"/> event.

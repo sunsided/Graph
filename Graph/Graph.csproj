@@ -77,6 +77,16 @@
     <Compile Include="IDataInput.cs" />
     <Compile Include="IDataOutput.cs" />
     <Compile Include="IDataProcessor.cs" />
+    <Compile Include="ActionInvoker.cs" />
+    <Compile Include="Logic\AndGate.cs" />
+    <Compile Include="Logic\LogicEmitter.cs" />
+    <Compile Include="Logic\LogicActionInvoker.cs" />
+    <Compile Include="Logic\NotGate.cs" />
+    <Compile Include="Logic\NorGate.cs" />
+    <Compile Include="Logic\XnorGate.cs" />
+    <Compile Include="Logic\NandGate.cs" />
+    <Compile Include="Logic\XorGate.cs" />
+    <Compile Include="Logic\OrGate.cs" />
     <Compile Include="ProcessingStateEventArgs.cs" />
     <Compile Include="DataProcessor.cs" />
     <Compile Include="DataProcessorBase.cs" />
@@ -87,6 +97,7 @@
     <Compile Include="ProcessingState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

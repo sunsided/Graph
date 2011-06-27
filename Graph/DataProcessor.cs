@@ -88,9 +88,10 @@ namespace Graph
 
 			_registrationTimeout = registrationTimeout;
 			InputQueueLength = inputQueueLength;
-			_inputQueueSemaphore = new Semaphore(0, inputQueueLength);
+			_inputQueueSemaphore = new Semaphore(inputQueueLength, inputQueueLength);
 
 			_processingTask = new Task(ProcessingLoop, TaskCreationOptions.LongRunning);
+			_processingTask.Start(); // TODO: Scheduler wählbar?
 		}
 
 		/// <summary>
@@ -162,6 +163,7 @@ namespace Graph
 			Contract.Ensures(_stopProcessing == true);
 			_stopProcessing = true;
 			_processStartTrigger.Set();
+			OnProcessingStateChanged(ProcessingState.Stopped);
 		}
 
 		/// <summary>
