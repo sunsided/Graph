@@ -67,11 +67,21 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataSource.cs" />
+    <Compile Include="DataSink.cs" />
+    <Compile Include="DataFilter.cs" />
+    <Compile Include="ExceptionEventArgs.cs" />
+    <Compile Include="IDataInput.cs" />
+    <Compile Include="IDataOutput.cs" />
+    <Compile Include="IDataProcessor.cs" />
+    <Compile Include="ProcessingStateEventArgs.cs" />
     <Compile Include="DataProcessor.cs" />
+    <Compile Include="DataProcessorBase.cs" />
     <Compile Include="DataProcessorException.cs" />
     <Compile Include="ISource.cs" />
     <Compile Include="ISink.cs" />
     <Compile Include="IFilter.cs" />
+    <Compile Include="ProcessingState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

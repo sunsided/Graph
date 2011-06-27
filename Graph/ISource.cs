@@ -3,7 +3,8 @@
 	/// <summary>
 	/// Interface für eine Quelle
 	/// </summary>
-	public interface ISource
+	/// <typeparam name="TOutput">Der Ausgangsdatentyp</typeparam>
+	public interface ISource<out TOutput> : IDataOutput<TOutput>
 	{
 	}
 }

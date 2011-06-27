@@ -3,35 +3,36 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Threading;
+using System.Threading.Tasks;
 
 namespace Graph
 {
 	/// <summary>
 	/// Basisklasse für ein Datenverarbeitungselement
 	/// </summary>
-	public abstract class DataProcessor<TData>
+	public abstract class DataProcessor<TData> : DataProcessorBase, IDataInput<TData>
 	{
 		/// <summary>
 		/// Vorgabewert für <see cref="_registrationTimeout"/>.
 		/// </summary>
-		private const int RegistrationTimeoutDefault = Timeout.Infinite;
+		internal const int RegistrationTimeoutDefault = Timeout.Infinite;
 
 		/// <summary>
 		/// Vorgabewert für <see cref="InputQueueLength"/>
 		/// </summary>
-		private const int InputQueueLengthDefault = 100;
+		internal const int InputQueueLengthDefault = 100;
 
 		/// <summary>
 		/// Timeout in Millisekunden, der beim Registrieren von Elementen eingehalten
 		/// werden soll.
-		/// <seealso cref="Register"/>
+		/// <seealso cref="RegisterInput"/>
 		/// </summary>
 		private readonly int _registrationTimeout;
 
 		/// <summary>
 		/// Timeout in Millisekunden, der beim warten auf registrierte Elemente eingehalten
 		/// werden soll.
-		/// <seealso cref="Register"/>
+		/// <seealso cref="RegisterInput"/>
 		/// </summary>
 		private const int ProcessingLockTimeout = Timeout.Infinite;
 
@@ -42,7 +43,7 @@ namespace Graph
 
 		/// <summary>
 		/// Der Semaphor, der den Zugriff auf die Eingabequeue regelt.
-		/// <seealso cref="Register"/>
+		/// <seealso cref="RegisterInput"/>
 		/// <seealso cref="_inputQueue"/>
 		/// </summary>
 		private readonly Semaphore _inputQueueSemaphore;
@@ -63,14 +64,14 @@ namespace Graph
 		private volatile bool _stopProcessing;
 
 		/// <summary>
-		/// Liest oder setzt das benutzerdefinierte Tag
+		/// Der Verarbeitungstask
 		/// </summary>
-		public object Tag { [Pure] get; set; }
+		private readonly Task _processingTask;
 
 		/// <summary>
 		/// Erzeugt eine neue Instanz der <see cref="DataProcessor{T}"/>-Klasse.
 		/// </summary>
-		protected DataProcessor()
+		internal DataProcessor()
 			: this(RegistrationTimeoutDefault, InputQueueLengthDefault)
 		{
 		}
@@ -80,7 +81,7 @@ namespace Graph
 		/// </summary>
 		/// <param name="registrationTimeout">Der Timeout in Millisekunden, der beim Registrieren von Elementen eingehalten werden soll.</param>
 		/// <param name="inputQueueLength">Die maximale Anzahl an Elementen in der Eingangsqueue.</param>
-		protected DataProcessor([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
+		internal DataProcessor([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
 		{
 			Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
 			Contract.Requires(inputQueueLength > 0);
@@ -88,6 +89,8 @@ namespace Graph
 			_registrationTimeout = registrationTimeout;
 			InputQueueLength = inputQueueLength;
 			_inputQueueSemaphore = new Semaphore(0, inputQueueLength);
+
+			_processingTask = new Task(ProcessingLoop, TaskCreationOptions.LongRunning);
 		}
 
 		/// <summary>
@@ -99,9 +102,9 @@ namespace Graph
 		/// </para>
 		/// </summary>
 		/// <param name="input">Der zu registrierende Eingabewert.</param>
-		public bool Register(TData input)
+		public bool RegisterInput(TData input)
 		{
-			Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_inputQueue.Count) == _inputQueue.Count + 1) ||
+			Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_inputQueue.Count) + 1 == _inputQueue.Count) ||
 			                  (!Contract.Result<bool>() && Contract.OldValue(_inputQueue.Count) == _inputQueue.Count));
 
 			// Warten, bis ein Eingabeslot frei wird
@@ -120,7 +123,7 @@ namespace Graph
 		/// Sind keine weiteren Daten in der Eingangsqueue, blockiert die Methode, bis
 		/// <see cref="_processStartTrigger"/> gesetzt wird.
 		/// </para>
-		/// <seealso cref="Register(TData)"/>
+		/// <seealso cref="RegisterInput"/>
 		/// <seealso cref="StopProcessing"/>
 		/// </summary>
 		private void ProcessingLoop()
@@ -129,15 +132,19 @@ namespace Graph
 			while (!_stopProcessing)
 			{
 				// Auf Start warten
+				OnProcessingStateChanged(ProcessingState.Idle);
 				if (!_processStartTrigger.WaitOne(ProcessingLockTimeout)) continue;
 
 				// Daten beziehen
 				lock (_inputQueue)
 				{
 					if (_inputQueue.Count == 0) continue;
-					while(_inputQueue.Count > 0)
+					OnProcessingStateChanged(ProcessingState.Preparing);
+					int count = _inputQueue.Count;
+					while (count-- > 0)
 					{
 						processingQueue.Enqueue(_inputQueue.Dequeue());
+						_inputQueueSemaphore.Release(1);
 					}
 				}
 
@@ -153,11 +160,20 @@ namespace Graph
 		/// <summary>
 		/// Hält die Verarbeitung an
 		/// </summary>
-		public void StopProcessing()
+		public override void StopProcessing()
 		{
 			Contract.Ensures(_stopProcessing == true);
 			_stopProcessing = true;
 			_processStartTrigger.Set();
+		}
+
+		/// <summary>
+		/// Beginnt die Verarbeitung
+		/// </summary>
+		public override void StartProcessing()
+		{
+			if (_processingTask.Status == TaskStatus.WaitingToRun || _processingTask.Status == TaskStatus.Running) return;
+			_processingTask.Start();
 		}
 
 		/// <summary>
@@ -168,12 +184,19 @@ namespace Graph
 		{
 			try
 			{
-				
+				OnProcessingStateChanged(ProcessingState.Processing);
+				ProcessData(payload);
 			}
 			catch(Exception e)
 			{
-				throw;
+				OnExceptionCaught(e);
 			}
 		}
+
+		/// <summary>
+		/// Verarbeitet die Daten
+		/// </summary>
+		/// <param name="payload">Die zu verarbeitenden Daten</param>
+		protected abstract void ProcessData(TData payload);
 	}
 }

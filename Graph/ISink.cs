@@ -3,7 +3,8 @@
 	/// <summary>
 	/// Interface für eine Senke
 	/// </summary>
-	public interface ISink
+	/// <typeparam name="TInput">Der Eingangsdatentyp</typeparam>
+	public interface ISink<in TInput> : IDataInput<TInput>
 	{
 	}
 }
