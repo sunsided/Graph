@@ -51,8 +51,8 @@ namespace Graph
 		/// <returns><c>true</c>, wenn der Prozessor erfolgreich hinzugefügt wurde, ansonsten <c>false</c></returns>
 		public bool AttachOutput(IDataInput<TOutput> outputProcessor)
 		{
-			Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) + 1 == _outputList.Count) ||
-							  (!Contract.Result<bool>() && Contract.OldValue(_outputList.Count) == _outputList.Count));
+			//Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) + 1 == _outputList.Count) ||
+			//                  (!Contract.Result<bool>() && Contract.OldValue(_outputList.Count) == _outputList.Count));
 
 			// Element eintüten und Verarbeitung starten lassen
 			lock (_outputList)
@@ -70,8 +70,8 @@ namespace Graph
 		/// <returns><c>true</c>, wenn der Prozessor erfolgreich hinzugefügt wurde, ansonsten <c>false</c></returns>
 		public bool DetachOutput(IDataInput<TOutput> outputProcessor)
 		{
-			Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) - 1 == _outputList.Count) ||
-							  (!Contract.Result<bool>() && Contract.OldValue(_outputList.Count) == _outputList.Count));
+			//Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) - 1 == _outputList.Count) ||
+			//                  (!Contract.Result<bool>() && Contract.OldValue(_outputList.Count) == _outputList.Count));
 
 			// Element eintüten und Verarbeitung starten lassen
 			lock (_outputList)

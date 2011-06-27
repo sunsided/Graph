@@ -104,9 +104,6 @@ namespace Graph
 		/// <param name="input">Der zu registrierende Eingabewert.</param>
 		public bool RegisterInput(TData input)
 		{
-			Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_inputQueue.Count) + 1 == _inputQueue.Count) ||
-			                  (!Contract.Result<bool>() && Contract.OldValue(_inputQueue.Count) == _inputQueue.Count));
-
 			// Warten, bis ein Eingabeslot frei wird
 			if (!_inputQueueSemaphore.WaitOne(_registrationTimeout)) return false;
 

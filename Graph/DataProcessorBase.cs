@@ -50,9 +50,7 @@ namespace Graph
 		/// <remarks></remarks>
 		protected virtual void OnProcessingStateChanged(ProcessingState state)
 		{
-			Contract.Ensures(State != state);
 			if (state == State) return;
-
 			EventHandler<ProcessingStateEventArgs> handler = ProcessingStateChanged;
 			if (handler != null) handler(this, new ProcessingStateEventArgs(state));
 		}
