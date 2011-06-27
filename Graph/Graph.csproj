@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConditionalPassFilter.cs" />
     <Compile Include="FunctionFilter.cs" />
     <Compile Include="TeeFilter.cs" />
     <Compile Include="DualInFilter.cs" />
