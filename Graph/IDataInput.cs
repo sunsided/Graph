@@ -6,7 +6,7 @@ namespace Graph
 	/// Interface für Elemente, die Daten einlesen
 	/// </summary>
 	/// <typeparam name="TData">Der Eingangsdatentyp</typeparam>
-	public interface IDataInput<in TData> : IDataProcessor
+	public interface IDataInput<in TData>
 	{
 		/// <summary>
 		/// Die Länge der Eingabequeue

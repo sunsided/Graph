@@ -6,7 +6,7 @@ namespace Graph
 	/// Interface für Elemente, die Daten ausgeben
 	/// </summary>
 	/// <typeparam name="TOutput">Der Ausgangsdatentyp des Elementes. Entspricht Eingangsdatenyp des angeschlossenen <see cref="IDataInput{TOutput}"/>.</typeparam>
-	public interface IDataOutput<out TOutput> : IDataProcessor
+	public interface IDataOutput<out TOutput>
 	{
 		/// <summary>
 		/// Die Anzahl der Ausgabeprozessoren
