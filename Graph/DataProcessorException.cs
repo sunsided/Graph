@@ -5,13 +5,13 @@ using System.Runtime.Serialization;
 namespace Graph
 {
 	/// <summary>
-	/// Exception, die innerhalb eines <see cref="DataProcessor{TData}"/> auftrat.
+	/// Exception that occurs within a <see cref="DataProcessor{TData}"/>.
 	/// </summary>
 	[Serializable]
 	public sealed class DataProcessorException : Exception
 	{
 		/// <summary>
-		/// Der verursachende <see cref="DataProcessor{TData}"/>
+		/// The raising <see cref="DataProcessor{TData}"/>
 		/// </summary>
 		public object DataProcessor { get; private set; }
 

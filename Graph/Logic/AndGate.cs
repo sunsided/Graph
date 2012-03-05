@@ -3,18 +3,19 @@
 namespace Graph.Logic
 {
 	/// <summary>
-	/// Ein AND-Gatter
+	/// Produces a logical AND of two values
 	/// </summary>
 	public sealed class AndGate : DualInFilter<bool, bool>
 	{
 		/// <summary>
-		/// Verarbeitet die Daten
+		/// Processes the data
 		/// </summary>
-		/// <param name="input1">Der erste Eingabewert</param>
-		/// <param name="input2">Der zweite Eingabewert</param>
+		/// <param name="input1">The first input value</param>
+        /// <param name="input2">The second input value</param>
 		/// <param name="output"><paramref name="input1"/> AND <paramref name="input2"/></param>
-		/// <returns>Immer <c>true</c>. </returns>
-		protected override bool ProcessData(bool input1, bool input2, out bool output)
+		/// <returns>Always <c>true</c>. </returns>
+		[Pure]
+        protected override bool ProcessData(bool input1, bool input2, out bool output)
 		{
 			Contract.Ensures(Contract.Result<bool>());
 

@@ -3,25 +3,24 @@ using System.Diagnostics.Contracts;
 namespace Graph
 {
 	/// <summary>
-	/// Interface für Elemente, die Daten einlesen
+	/// Interface for elements that take data
 	/// </summary>
-	/// <typeparam name="TData">Der Eingangsdatentyp</typeparam>
+	/// <typeparam name="TData">The input data type</typeparam>
 	public interface IDataInput<in TData>
 	{
 		/// <summary>
-		/// Die Länge der Eingabequeue
+		/// The length of the input queue
 		/// </summary>
 		int InputQueueLength { [Pure] get; }
 
 		/// <summary>
-		/// Registriert einen Eingabewert
+		/// Registers an input value
 		/// <para>
-		/// Wenn die Eingabequeue frei ist, ist dieser Aufruf nicht blockierend. 
-		/// Ist die Queue voll, blockiert der Aufruf so lange, bis neue Werte 
-		/// nachgereicht werden können.
+		/// If the input queue has free slots, this call is non-blocking, otherwise it is blocked
+		/// until a queue slot is freed.
 		/// </para>
 		/// </summary>
-		/// <param name="input">Der zu registrierende Eingabewert.</param>
+		/// <param name="input">The value to register.</param>
 		bool RegisterInput(TData input);
 	}
 }

@@ -4,12 +4,12 @@ using System.Diagnostics.Contracts;
 namespace Graph
 {
 	/// <summary>
-	/// Basisklasse für ein Datenverarbeitungselement mit Ausgang
+	/// Base class for data processors with output
 	/// </summary>
 	public sealed class FunctionFilter<TInput, TOutput> : DataFilter<TInput, TOutput>
 	{
 		/// <summary>
-		/// Die auszuführende Aktion
+		/// The function to call
 		/// </summary>
 		private readonly Func<FunctionFilter<TInput, TOutput>, TInput, TOutput> _func;
 
@@ -34,12 +34,11 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Verteilt den Eingang aug die Ausgänge
+		/// Maps the function to the input
 		/// </summary>
-		/// <param name="input">Der Eingabewert</param>
-		/// <param name="output">Der Ausgabewert</param>
-		/// <returns>Immer <c>true</c>.
-		/// </returns>
+		/// <param name="input">The input value</param>
+		/// <param name="output">The output value</param>
+		/// <returns>Always <c>true</c> </returns>
 		protected override bool ProcessData(TInput input, out TOutput output)
 		{
 			output = _func(this, input);

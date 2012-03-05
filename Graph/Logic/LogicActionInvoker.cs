@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 namespace Graph.Logic
 {
 	/// <summary>
-	/// Senke, die eine Aktion ausführt und den eingehenden Wahrheitswert übergibt
+	/// Sink that receives a boolean value and invokes an action
 	/// </summary>
 	public sealed class LogicActionInvoker : ActionInvoker<bool>
 	{

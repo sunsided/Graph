@@ -5,22 +5,23 @@ using System.Threading;
 namespace Graph
 {
 	/// <summary>
-	/// Basisklasse für eine Senke
+	/// Base class for a data sink
 	/// </summary>
 	public abstract class DataSink<TData> : DataProcessor<TData>, ISink<TData>
 	{
-		/// <summary>
-		/// Erzeugt eine neue Instanz der <see cref="DataSink{T}"/>-Klasse.
-		/// </summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataSink&lt;TData&gt;"/> class.
+        /// </summary>
+        /// <remarks></remarks>
 		protected DataSink()
 		{
 		}
 
 		/// <summary>
-		/// Erzeugt eine neue Instanz der <see cref="DataSink{T}"/>-Klasse.
+        /// Initializes a new instance of the <see cref="DataSink&lt;TData&gt;"/> class.
 		/// </summary>
-		/// <param name="registrationTimeout">Der Timeout in Millisekunden, der beim Registrieren von Elementen eingehalten werden soll.</param>
-		/// <param name="inputQueueLength">Die maximale Anzahl an Elementen in der Eingangsqueue.</param>
+		/// <param name="registrationTimeout">Timeout in milliseconds to be used during value registration.</param>
+		/// <param name="inputQueueLength">Maximum queue length for input values.</param>
 		protected DataSink([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
 			: base(registrationTimeout, inputQueueLength)
 		{

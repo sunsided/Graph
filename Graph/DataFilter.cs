@@ -6,38 +6,39 @@ using System.Threading;
 namespace Graph
 {
 	/// <summary>
-	/// Basisklasse für ein Datenverarbeitungselement mit Ausgang
+	/// Base class for a data processor with output
 	/// </summary>
 	public abstract class DataFilter<TInput, TOutput> : DataProcessor<TInput>, IFilter<TInput, TOutput>
 	{
 		/// <summary>
-		/// Die Liste der Ausgabeverarbeiter
+        /// The list of attached output data processors
 		/// </summary>
 		private readonly List<IDataInput<TOutput>> _outputList = new List<IDataInput<TOutput>>();
 
 		/// <summary>
-		/// Die Anzahl der Ausgabeprozessoren
+		/// The count of attached output data processors
 		/// </summary>
 		public int OutputProcessorCount { [Pure] get { return _outputList.Count; } }
 
 		/// <summary>
-		/// Liste der zu bedienenden Ausgänge während eines Dispatching-Vorganges
+		/// The queue of output data processors to dispatch to
 		/// </summary>
 		private readonly Queue<IDataInput<TOutput>> _currentOutputs = new Queue<IDataInput<TOutput>>();
 
-
-		/// <summary>
-		/// Erzeugt eine neue Instanz der <see cref="DataFilter{TInput, TOutput}"/>-Klasse.
-		/// </summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataFilter&lt;TInput, TOutput&gt;"/> class.
+        /// </summary>
+        /// <remarks></remarks>
 		protected DataFilter()
 		{
 		}
 
-		/// <summary>
-		/// Erzeugt eine neue Instanz der <see cref="DataFilter{TInput, TOutput}"/>-Klasse.
-		/// </summary>
-		/// <param name="registrationTimeout">Der Timeout in Millisekunden, der beim Registrieren von Elementen eingehalten werden soll.</param>
-		/// <param name="inputQueueLength">Die maximale Anzahl an Elementen in der Eingangsqueue.</param>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataFilter&lt;TInput, TOutput&gt;"/> class.
+        /// </summary>
+        /// <param name="registrationTimeout">Timeout in milliseconds to be used during value registration.</param>
+        /// <param name="inputQueueLength">Maximum queue length for input values.</param>
+        /// <remarks></remarks>
 		protected DataFilter([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
 			: base(registrationTimeout, inputQueueLength)
 		{
@@ -46,16 +47,16 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Registriert einen Prozessor für die Ausgabewerte
+		/// Registers a processor for the output values
 		/// </summary>
-		/// <param name="outputProcessor">Der zu registrierende Prozessor.</param>
-		/// <returns><c>true</c>, wenn der Prozessor erfolgreich hinzugefügt wurde, ansonsten <c>false</c></returns>
+		/// <param name="outputProcessor">The processor to register.</param>
+		/// <returns><c>true</c> if the processor was registered successfully; <c>false</c> otherwise</returns>
 		public bool AttachOutput(IDataInput<TOutput> outputProcessor)
 		{
 			//Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) + 1 == _outputList.Count) ||
 			//                  (!Contract.Result<bool>() && Contract.OldValue(_outputList.Count) == _outputList.Count));
 
-			// Element eintüten und Verarbeitung starten lassen
+			// Register and start processing
 			lock (_outputList)
 			{
 				if (_outputList.Contains(outputProcessor)) return false;
@@ -65,16 +66,16 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Registriert einen Prozessor für die Ausgabewerte
+		/// Unregisters a processor
 		/// </summary>
-		/// <param name="outputProcessor">Der zu registrierende Prozessor.</param>
-		/// <returns><c>true</c>, wenn der Prozessor erfolgreich hinzugefügt wurde, ansonsten <c>false</c></returns>
+		/// <param name="outputProcessor">The processor to unregister.</param>
+		/// <returns><c>true</c> if the processor was removed successfully; <c>false</c> otherwise</returns>
 		public bool DetachOutput(IDataInput<TOutput> outputProcessor)
 		{
 			//Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) - 1 == _outputList.Count) ||
 			//                  (!Contract.Result<bool>() && Contract.OldValue(_outputList.Count) == _outputList.Count));
 
-			// Element eintüten und Verarbeitung starten lassen
+			// Kick it
 			lock (_outputList)
 			{
 				return _outputList.Remove(outputProcessor);
@@ -82,7 +83,7 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Verarbeitet die Daten
+		/// Processes the data
 		/// </summary>
 		/// <param name="payload">Die zu verarbeitenden Daten</param>
 		protected sealed override void ProcessData(TInput payload)
@@ -91,17 +92,17 @@ namespace Graph
 			OnProcessingStateChanged(ProcessingState.Processing);
 			bool dispatch = ProcessData(payload, out outputPayload);
 
-			// Verteilen
+			// Dispatch
 			if (!dispatch) return;
 			lock(_outputList)
 			{
 				OnProcessingStateChanged(ProcessingState.Dispatching);
-				// Prozessoren eintüten
+				// Enqueue processors
 				_currentOutputs.Clear();
 				_outputList.ForEach(processor => _currentOutputs.Enqueue(processor));
 			}
 
-			// Schleifen bis zum Abwinken
+			// Loop until all processors have been fed
 			while (_currentOutputs.Count > 0)
 			{
 				var processor = _currentOutputs.Dequeue();
@@ -113,13 +114,13 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Verarbeitet die Daten
+		/// Processes the data
 		/// </summary>
-		/// <param name="input">Der Eingabewert</param>
-		/// <param name="output">Der Ausgabewert</param>
+		/// <param name="input">The input data type</param>
+		/// <param name="output">The output data type</param>
 		/// <returns>
-		/// <c>true</c>, wenn der Ausgabewert an die Ausgänge weitergereicht - oder <c>false</c>,
-		/// wenn das Ergebnis verworfen werden soll.
+		/// <c>true</c> if the result should be handed to the outputs; <c>false</c>
+		/// if the result should be discarded.
 		/// </returns>
 		protected abstract bool ProcessData(TInput input, out TOutput output);
 	}

@@ -1,9 +1,9 @@
 ﻿namespace Graph
 {
 	/// <summary>
-	/// Interface für eine Senke
+	/// Interface for a data sink
 	/// </summary>
-	/// <typeparam name="TInput">Der Eingangsdatentyp</typeparam>
+	/// <typeparam name="TInput">The input data type</typeparam>
 	public interface ISink<in TInput> : IDataInput<TInput>
 	{
 	}

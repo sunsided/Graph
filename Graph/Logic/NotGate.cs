@@ -1,19 +1,18 @@
-﻿using System;
-using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.Contracts;
 
 namespace Graph.Logic
 {
 	/// <summary>
-	/// Ein NOT-Gatter
+	/// Produces a logical NOT (inversion) of the input
 	/// </summary>
 	public sealed class NotGate : DataFilter<bool, bool>
 	{
-		/// <summary>
-		/// Verarbeitet die Daten
-		/// </summary>
-		/// <param name="input">Der Eingabewert</param>
-		/// <param name="output">NOT <paramref name="input"/></param>
-		/// <returns>Immer <c>true</c>. </returns>
+        /// <summary>
+        /// Processes the data
+        /// </summary>
+        /// <param name="input">The first input value</param>
+        /// <param name="output">NOT <paramref name="input"/></param>
+        /// <returns>Always <c>true</c>. </returns>
 		[Pure]
 		protected override bool ProcessData(bool input, out bool output)
 		{

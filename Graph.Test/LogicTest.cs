@@ -5,13 +5,13 @@ using NUnit.Framework;
 namespace Graph.Test
 {
 	/// <summary>
-	/// Tests der Logikklassen
+	/// Tests the logic classes
 	/// </summary>
 	[TestFixture]
 	class LogicTest
 	{
 		/// <summary>
-		/// Testet den einfachen Durchgang von Daten
+		/// Tests simple data dispatching
 		/// </summary>
 		[Test]
 		public void TestDirect()
@@ -49,7 +49,7 @@ namespace Graph.Test
 		}
 
 		/// <summary>
-		/// Testet die Negation von Daten
+		/// Tests data negation
 		/// </summary>
 		[Test]
 		public void TestNegation()
@@ -57,20 +57,20 @@ namespace Graph.Test
 			AutoResetEvent autoResetEvent = new AutoResetEvent(false);
 			bool result = false;
 
-			// Elemente erzeugen
+			// Create elements
 			var source = new LogicEmitter();
 			var filter = new NotGate();
 			var sink = new LogicActionInvoker(value =>
 			                                                 	{
 			                                                 		result = value;
-			                                                 		autoResetEvent.Set();
+			                                                 		autoResetEvent.Set(); // wait for processing to finish
 																});
 
-			// Aufbauen
+			// Build the graph
 			source.AttachOutput(filter);
 			filter.AttachOutput(sink);
 			
-			// Starten
+			// Start processing
 			source.StartProcessing();
 
 			Assert.IsFalse(result);
@@ -96,7 +96,7 @@ namespace Graph.Test
 		}
 
 		/// <summary>
-		/// Testet die Negation von Daten
+		/// Tests double negation of data
 		/// </summary>
 		[Test]
 		public void TestDoubleNegation()
@@ -104,22 +104,22 @@ namespace Graph.Test
 			AutoResetEvent autoResetEvent = new AutoResetEvent(false);
 			bool result = false;
 
-			// Elemente erzeugen
+			// Create elements
 			var source = new LogicEmitter();
 			var filter1 = new NotGate();
 			var filter2 = new NotGate();
-			var sink = new LogicActionInvoker(value =>
-			{
-				result = value;
-				autoResetEvent.Set();
-			});
+		    var sink = new LogicActionInvoker(value =>
+		                                          {
+		                                              result = value;
+		                                              autoResetEvent.Set();
+		                                          });
 
-			// Aufbauen
+			// Build the graph
 			source.AttachOutput(filter1);
 			filter1.AttachOutput(filter2);
 			filter2.AttachOutput(sink);
 
-			// Starten
+			// Start processing
 			source.StartProcessing();
 
 			Assert.IsFalse(result);
@@ -145,7 +145,7 @@ namespace Graph.Test
 		}
 
 		/// <summary>
-		/// Testet die Verundung von Daten
+		/// Tests AND operation
 		/// </summary>
 		[Test]
 		public void TestAnd()
@@ -153,22 +153,22 @@ namespace Graph.Test
 			AutoResetEvent autoResetEvent = new AutoResetEvent(false);
 			bool result = false;
 
-			// Elemente erzeugen
+			// Create the elements
 			var source1 = new LogicEmitter();
 			var source2 = new LogicEmitter();
 			var gate = new AndGate();
-			var sink = new LogicActionInvoker(value =>
-			{
-				result = value;
-				autoResetEvent.Set();
-			});
+		    var sink = new LogicActionInvoker(value =>
+		                                          {
+		                                              result = value;
+		                                              autoResetEvent.Set();
+		                                          });
 
-			// Aufbauen
+			// Build the graph
 			source1.AttachOutput(gate.Input1);
 			source2.AttachOutput(gate.Input2);
 			gate.AttachOutput(sink);
 
-			// Starten
+			// Start processing
 			source1.StartProcessing();
 			source2.StartProcessing();
 			gate.StartProcessing();
@@ -194,7 +194,7 @@ namespace Graph.Test
 		}
 
 		/// <summary>
-		/// Testet die Ver-XNOR-ung von Daten
+		/// Tests XNOR
 		/// </summary>
 		[Test]
 		public void TestXnor()
@@ -202,22 +202,22 @@ namespace Graph.Test
 			AutoResetEvent autoResetEvent = new AutoResetEvent(false);
 			bool result = false;
 
-			// Elemente erzeugen
+			// Create elements
 			var source1 = new LogicEmitter();
 			var source2 = new LogicEmitter();
 			var gate = new XnorGate();
-			var sink = new LogicActionInvoker(value =>
-			{
-				result = value;
-				autoResetEvent.Set();
-			});
+		    var sink = new LogicActionInvoker(value =>
+		                                          {
+		                                              result = value;
+		                                              autoResetEvent.Set();
+		                                          });
 
-			// Aufbauen
+			// Build the graph
 			source1.AttachOutput(gate.Input1);
 			source2.AttachOutput(gate.Input2);
 			gate.AttachOutput(sink);
 
-			// Starten
+			// Start processing
 			source1.StartProcessing();
 			source2.StartProcessing();
 			//gate.StartProcessing();

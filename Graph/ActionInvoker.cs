@@ -5,29 +5,30 @@ using System.Threading.Tasks;
 namespace Graph
 {
 	/// <summary>
-	/// Senke, die eine Aktion ausführt und den eingehenden Wert übergibt
+	/// Sink that invokes an action
 	/// </summary>
 	public class ActionInvoker<TData> : DataSink<TData>
 	{
 		/// <summary>
-		/// Die auszuführende Aktion
+		/// The action to invoke
 		/// </summary>
 		private readonly Action<TData> _action;
 
 		/// <summary>
-		/// Der zu verwendende Task-Scheduler
+		/// The task scheduler to be used
 		/// </summary>
 		private readonly TaskScheduler _scheduler;
 
 		/// <summary>
-		/// Der zu verwendende Task-Scheduler
+		/// The task creation options for the scheduler
 		/// </summary>
+		/// <seealso cref="_scheduler"/>
 		private readonly TaskCreationOptions _creationOptions = TaskCreationOptions.None;
 
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ActionInvoker{T}"/> class.
 		/// </summary>
-		/// <param name="action">The auszuführende Aktion.</param>
+		/// <param name="action">The action to invoke.</param>
 		public ActionInvoker(Action<TData> action)
 		{
 			Contract.Requires(action != null);
@@ -37,8 +38,8 @@ namespace Graph
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ActionInvoker{T}"/> class.
 		/// </summary>
-		/// <param name="action">The auszuführende Aktion.</param>
-		/// <param name="scheduler">Der zu verwendende Scheduler</param>
+        /// <param name="action">The action to invoke.</param>
+		/// <param name="scheduler">The scheduler to use</param>
 		public ActionInvoker(Action<TData> action, TaskScheduler scheduler)
 			: this(action)
 		{
@@ -50,9 +51,9 @@ namespace Graph
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ActionInvoker{T}"/> class.
 		/// </summary>
-		/// <param name="action">The auszuführende Aktion.</param>
-		/// <param name="scheduler">Der zu verwendende Scheduler</param>
-		/// <param name="taskCreationOptions">Die Task-Erzeugungsoptionen</param>
+        /// <param name="action">The action to invoke.</param>
+        /// <param name="scheduler">The scheduler to use</param>
+		/// <param name="taskCreationOptions">The task creation options to be used</param>
 		public ActionInvoker(Action<TData> action, TaskScheduler scheduler, TaskCreationOptions taskCreationOptions)
 			: this(action, scheduler)
 		{
@@ -65,8 +66,8 @@ namespace Graph
 		/// <summary>
 		/// Initializes a new instance of the <see cref="ActionInvoker{T}"/> class.
 		/// </summary>
-		/// <param name="action">The auszuführende Aktion.</param>
-		/// <param name="taskCreationOptions">Die Task-Erzeugungsoptionen</param>
+        /// <param name="action">The action to invoke.</param>
+        /// <param name="taskCreationOptions">The task creation options to be used</param>
 		public ActionInvoker(Action<TData> action, TaskCreationOptions taskCreationOptions)
 			: this(action)
 		{
@@ -75,9 +76,9 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Verarbeitet die Daten
+		/// Processes the data
 		/// </summary>
-		/// <param name="payload">Die zu verarbeitenden Daten</param>
+		/// <param name="payload">The data to process</param>
 		protected override void ProcessData(TData payload)
 		{
 			Task task = new Task(() => _action(payload), _creationOptions);

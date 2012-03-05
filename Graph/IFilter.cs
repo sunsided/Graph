@@ -1,10 +1,10 @@
 ﻿namespace Graph
 {
 	/// <summary>
-	/// Interface für ein Filter
+	/// Interface for a filter
 	/// </summary>
-	/// <typeparam name="TInput">Der Eingangsdatentyp</typeparam>
-	/// <typeparam name="TOutput">Der Ausgangsdatentyp</typeparam>
+	/// <typeparam name="TInput">The input data type</typeparam>
+	/// <typeparam name="TOutput">The output data type</typeparam>
 	public interface IFilter<in TInput, out TOutput> : IDataInput<TInput>, IDataOutput<TOutput>
 	{
 	}

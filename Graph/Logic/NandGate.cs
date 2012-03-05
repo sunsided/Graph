@@ -3,17 +3,17 @@
 namespace Graph.Logic
 {
 	/// <summary>
-	/// Ein NAND-Gatter
+	/// Produces a logical NAND of two values
 	/// </summary>
 	public sealed class NandGate : DualInFilter<bool, bool>
 	{
-		/// <summary>
-		/// Verarbeitet die Daten
-		/// </summary>
-		/// <param name="input1">Der erste Eingabewert</param>
-		/// <param name="input2">Der zweite Eingabewert</param>
-		/// <param name="output">NOT (<paramref name="input1"/> AND <paramref name="input2"/>)</param>
-		/// <returns>Immer <c>true</c>. </returns>
+        /// <summary>
+        /// Processes the data
+        /// </summary>
+        /// <param name="input1">The first input value</param>
+        /// <param name="input2">The second input value</param>
+        /// <param name="output">NOT (<paramref name="input1"/> AND <paramref name="input2"/>)</param>
+        /// <returns>Always <c>true</c>. </returns>
 		[Pure]
 		protected override bool ProcessData(bool input1, bool input2, out bool output)
 		{

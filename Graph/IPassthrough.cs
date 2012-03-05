@@ -1,9 +1,9 @@
 ﻿namespace Graph
 {
 	/// <summary>
-	/// Interface für ein Passthrough-Filter
+	/// Interface for a filter that directly passes the input to the output
 	/// </summary>
-	/// <typeparam name="TData">Der Ein- und Ausgangsdatentyp</typeparam>
+	/// <typeparam name="TData">The input and output data type</typeparam>
 	public interface IPassthrough<TData> : IFilter<TData, TData>
 	{
 	}

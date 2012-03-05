@@ -3,14 +3,15 @@ using System.Diagnostics.Contracts;
 
 namespace Graph
 {
-	/// <summary>
-	/// Filter, das einen Wert nur weiterreicht, wenn eine Entscheidungsfunktion mit
-	/// <c>true</c> evaluiert.
-	/// </summary>
+    /// <summary>
+    /// Filter that passes on data only if a test function evaluates to <code>true</code>
+    /// </summary>
+    /// <typeparam name="TData">The type of the data.</typeparam>
+    /// <remarks></remarks>
 	public sealed class ConditionalPassFilter<TData> : DataFilter<TData, TData>, IPassthrough<TData>
 	{
 		/// <summary>
-		/// Die auszuführende Aktion
+		/// The test function
 		/// </summary>
 		private readonly Func<ConditionalPassFilter<TData>, TData, bool> _func;
 
@@ -35,11 +36,11 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Wertet die Entscheidungsfunktion aus und reicht den Wert weiter
+		/// Evaluates the test function
 		/// </summary>
-		/// <param name="input">Der Eingabewert</param>
-		/// <param name="output">Immer <paramref name="input"/>.</param>
-		/// <returns><c>true</c> oder <c>false</c>, abhängig von der Entscheidungsfunktion</returns>
+		/// <param name="input">The input value</param>
+		/// <param name="output">Always <paramref name="input"/>.</param>
+		/// <returns><c>true</c> or <c>false</c> depending on the function result</returns>
 		protected override bool ProcessData(TData input, out TData output)
 		{
 			output = input;

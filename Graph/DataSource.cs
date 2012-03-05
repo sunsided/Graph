@@ -7,98 +7,102 @@ using System.Threading.Tasks;
 namespace Graph
 {
 	/// <summary>
-	/// Basisklasse für ein Datenverarbeitungselement mit Ausgang
+	/// Base class for data processors with output
 	/// </summary>
 	public abstract class DataSource<TData> : DataProcessorBase, ISource<TData>
 	{
 		/// <summary>
-		/// Verarbeitungsmodus
+		/// Processing state
 		/// </summary>
 		public enum SourceResult
 		{
 			/// <summary>
-			/// Nichts tun
+			/// Do nothing
 			/// </summary>
 			Idle,
 
 			/// <summary>
-			/// Daten verarbeiten
+			/// Process data
 			/// </summary>
 			Process,
 
 			/// <summary>
-			/// Verarbeitung abbrechen
+			/// Stop processing
 			/// </summary>
 			StopProcessing
 		}
 
 		/// <summary>
-		/// Die Liste der Ausgabeverarbeiter
+		/// The list of output processors
 		/// </summary>
 		private readonly List<IDataInput<TData>> _outputList = new List<IDataInput<TData>>();
 
-		/// <summary>
-		/// Die Anzahl der Ausgabeprozessoren
-		/// </summary>
+        /// <summary>
+        /// Gets the output processor count.
+        /// </summary>
+        /// <remarks></remarks>
 		public int OutputProcessorCount { [Pure] get { return _outputList.Count; } }
 
 		/// <summary>
-		/// Liste der zu bedienenden Ausgänge während eines Dispatching-Vorganges
+		/// The list of outputs to dispatch data to.
 		/// </summary>
 		private readonly Queue<IDataInput<TData>> _currentOutputs = new Queue<IDataInput<TData>>();
 
 		/// <summary>
-		/// Die Größe der Ausgabequeue
+		/// The size of the output queue
 		/// </summary>
 		private readonly Queue<TData> _outputQueue = new Queue<TData>();
 
 		/// <summary>
-		/// Der Verarbeitungstask
+		/// The processing task
 		/// </summary>
 		private readonly Task _processingTask;
 
 		/// <summary>
-		/// Der Ausgabetask
+		/// The output task
 		/// </summary>
 		private readonly Task _outputTask;
 
 		/// <summary>
-		/// Gibt an, ob die Verarbeitung angehalten werden soll
+		/// Determines if the processing should stop
 		/// </summary>
 		private volatile bool _stopProcessing;
 
 		/// <summary>
-		/// Vorgabewert für <see cref="OutputQueueLength"/>
+		/// Default value for <see cref="OutputQueueLength"/>
 		/// </summary>
 		internal const int OutputQueueLengthDefault = 100;
 
 		/// <summary>
-		/// Der Semaphor, der den Zugriff auf die Ausgabequeue regelt.
+		/// The semaphore to control access to the output queue
 		/// <seealso cref="_outputQueue"/>
 		/// </summary>
 		private readonly Semaphore _outputQueueSemaphore;
 
 		/// <summary>
-		/// Die Länge der Eingabequeue
+		/// The maximum size of the output queue
 		/// </summary>
 		public int OutputQueueLength { [Pure] get; private set; }
 
 		/// <summary>
-		/// Threadsynchronisierungsobjekt, das den Ausgabeloop startet
+		/// Thread synchronization object that controls the output loop
 		/// </summary>
 		private readonly AutoResetEvent _outputStartTrigger = new AutoResetEvent(false);
 
-		// <summary>
-		/// Erzeugt eine neue Instanz der <see cref="DataSource{TData}"/>-Klasse.
-		/// </summary>
+        /// <summary>
+        /// Creates a new instance of the <seealso cref="DataSource{TData}"/> class
+        /// </summary>
+        /// <remarks></remarks>
 		protected DataSource()
 			: this(OutputQueueLengthDefault)
 		{
 		}
 
-		/// <summary>
-		/// Erzeugt eine neue Instanz der <see cref="DataSource{TData}"/>-Klasse.
-		/// </summary>
+        /// <summary>
+        /// Initializes a new instance of the <see cref="DataSource&lt;TData&gt;"/> class.
+        /// </summary>
+        /// <param name="outputQueueLength">Length of the output queue.</param>
+        /// <remarks></remarks>
 		protected DataSource([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
 		{
 			Contract.Requires(outputQueueLength > 0);
@@ -109,16 +113,16 @@ namespace Graph
 			_processingTask = new Task(ProcessingLoop, TaskCreationOptions.LongRunning);
 			_outputTask = new Task(OutputLoop, TaskCreationOptions.LongRunning);
 
-			// TODO: Senke automatisch starten?
-			//_processingTask.Start(); // TODO: Scheduler wählbar?
-			//_outputTask.Start(); // TODO: Scheduler wählbar?
+			// TODO: Automatically start the sink?
+			//_processingTask.Start(); // TODO: customizable Scheduler?
+			//_outputTask.Start(); // TODO: customizable scheduler?
 		}
 
-		/// <summary>
-		/// Registriert einen Prozessor für die Ausgabewerte
-		/// </summary>
-		/// <param name="outputProcessor">Der zu registrierende Prozessor.</param>
-		/// <returns><c>true</c>, wenn der Prozessor erfolgreich hinzugefügt wurde, ansonsten <c>false</c></returns>
+        /// <summary>
+        /// Registers a processor of the output values
+        /// </summary>
+        /// <param name="outputProcessor">The processor to register.</param>
+        /// <returns><c>true</c> if the processor was added successfully; <c>false</c> otherwise</returns>
 		public bool AttachOutput(IDataInput<TData> outputProcessor)
 		{
 			//Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) + 1 == _outputList.Count) ||
@@ -134,10 +138,10 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Registriert einen Prozessor für die Ausgabewerte
+		/// Unregisters a processor
 		/// </summary>
-		/// <param name="outputProcessor">Der zu registrierende Prozessor.</param>
-		/// <returns><c>true</c>, wenn der Prozessor erfolgreich hinzugefügt wurde, ansonsten <c>false</c></returns>
+		/// <param name="outputProcessor">The processor to unregister.</param>
+		/// <returns><c>true</c> if the processor was successfully removed; <c>false</c> otherwise</returns>
 		public bool DetachOutput(IDataInput<TData> outputProcessor)
 		{
 			//Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) - 1 == _outputList.Count) ||
@@ -151,7 +155,7 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Beginnt die Verarbeitung
+		/// Starts processing
 		/// </summary>
 		public override void StartProcessing()
 		{
@@ -161,7 +165,7 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Hält die Verarbeitung an
+		/// Stops processing
 		/// </summary>
 		public override void StopProcessing()
 		{
@@ -172,7 +176,7 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Erzeugt Daten in einer Endlosschleife
+		/// Produces data in an ininite loop
 		/// <seealso cref="StartProcessing"/>
 		/// <seealso cref="StopProcessing"/>
 		/// </summary>
@@ -202,7 +206,7 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Der Ausgabeloop
+		/// The output loop
 		/// </summary>
 		private void OutputLoop()
 		{
@@ -211,12 +215,12 @@ namespace Graph
 				_outputStartTrigger.WaitOne();
 				OnProcessingStateChanged(ProcessingState.Dispatching);
 
-				// Verteilen, solange Daten vorhanden sind
+				// Dispatch while data available
 				int count;
 				lock (_outputQueue) count = _outputQueue.Count;
 				while (!_stopProcessing && count-- > 0)
 				{
-					// Ausgabewert beziehen
+					// Get result value
 					TData outputPayload;
 					lock (_outputQueue)
 					{
@@ -224,14 +228,14 @@ namespace Graph
 						_outputQueueSemaphore.Release(1);
 					}
 
-					// Ausgänge laden
+					// Get outputs
 					lock (_outputList)
 					{
 						_currentOutputs.Clear();
 						_outputList.ForEach(processor => _currentOutputs.Enqueue(processor));
 					}
 					
-					// Schleifen bis zum Abwinken
+					// Loopity loop
 					while (_currentOutputs.Count > 0)
 					{
 						var processor = _currentOutputs.Dequeue();
@@ -245,13 +249,12 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Erzeugt die Daten
+		/// Creates the data
 		/// </summary>
-		/// <param name="payload">Die auszugebenden Daten</param>
+		/// <param name="payload">The created data</param>
 		/// <returns>
-		/// <see cref="SourceResult.Process"/>, wenn die Verarbeitung fortgesetzt werden soll, <see cref="SourceResult.StopProcessing"/>, wenn die 
-		/// Ausgabe (<paramref name="payload"/>) verworfen und die Verarbeitung abgebrochen werden soll oder <see cref="SourceResult.Idle"/>, wenn
-		/// nichts geschehen soll.
+		/// <see cref="SourceResult.Process"/> if the processing should continue; <see cref="SourceResult.StopProcessing"/> if the output (<paramref name="payload"/>) 
+		/// should be discarded and the processing stopped; <see cref="SourceResult.Idle"/> if nothing should happen.
 		/// </returns>
 		protected abstract SourceResult CreateData(out TData payload);
 	}

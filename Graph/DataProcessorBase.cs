@@ -4,28 +4,33 @@ using System.Diagnostics.Contracts;
 namespace Graph
 {
 	/// <summary>
-	/// Basisklasse für ein Datenverarbeitungselement
+	/// Base for data processors
 	/// </summary>
 	public abstract class DataProcessorBase : IDataProcessor
 	{
-		/// <summary>
-		/// Liest oder setzt das benutzerdefinierte Tag
-		/// </summary>
+        /// <summary>
+        /// Gets or sets a user defined tag.
+        /// </summary>
+        /// <value>The tag.</value>
+        /// <remarks></remarks>
 		public object Tag { [Pure] get; set; }
 
-		/// <summary>
-		/// Ermittelt den aktuellen Bearbeitungsstand
-		/// </summary>
+        /// <summary>
+        /// Gets the current processing state
+        /// </summary>
+        /// <remarks></remarks>
 		public ProcessingState State { [Pure] get; private set; }
 
-		/// <summary>
-		/// Wird gerufen, wenn sich der Verarbeitungszustand (<see cref="State"/>) geändert hat
-		/// </summary>
+        /// <summary>
+        /// Occurs when the processing state (<see cref="DataProcessorBase.State"/>) changes.
+        /// </summary>
+        /// <remarks></remarks>
 		public event EventHandler<ProcessingStateEventArgs> ProcessingStateChanged;
 
-		/// <summary>
-		/// Wird gerufen, wenn eine Exception aufgetreten ist
-		/// </summary>
+        /// <summary>
+        /// Occurs when an exception was caught
+        /// </summary>
+        /// <remarks></remarks>
 		public event EventHandler<ExceptionEventArgs> ExceptionCaught;
 
 		/// <summary>
@@ -33,13 +38,14 @@ namespace Graph
 		/// </summary>
 		public abstract void StartProcessing();
 
-		/// <summary>
-		/// Hält die Verarbeitung an
-		/// </summary>
+        /// <summary>
+        /// Stops the processing
+        /// </summary>
+        /// <remarks></remarks>
 		public abstract void StopProcessing();
 
 		/// <summary>
-		/// Interner Konstruktor, um Instanzierung außerhalb dieser Assembly zu verhindern
+		/// Internal constructor to prevent construction outside this assembly
 		/// </summary>
 		internal DataProcessorBase()
 		{

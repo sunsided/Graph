@@ -6,21 +6,21 @@ using System.Threading;
 namespace Graph
 {
 	/// <summary>
-	/// Filter mit zwei Eingängen
+	/// Data filter with to inputs
 	/// </summary>
-	/// <typeparam name="TInput1">Erster Eingangsdatentyp</typeparam>
-	/// <typeparam name="TInput2">Zweiter Eingangsdatentyp</typeparam>
-	/// <typeparam name="TOutput">Ausgangsdatentyp</typeparam>
+	/// <typeparam name="TInput1">First input data type</typeparam>
+	/// <typeparam name="TInput2">Second input data type</typeparam>
+	/// <typeparam name="TOutput">Output data type</typeparam>
 	public abstract class DualInFilter<TInput1, TInput2, TOutput> : DataSource<TOutput>, IDualInFilter<TInput1, TInput2, TOutput>
 	{
 		/// <summary>
-		/// Senke, die Daten an die Elternqueue durchreicht
+		/// Sink that passes data to the parent queue
 		/// </summary>
-		/// <typeparam name="T"></typeparam>
+		/// <typeparam name="T">The data type</typeparam>
 		private sealed class PassthroughSink<T> : DataSink<T>
 		{
 			/// <summary>
-			/// Die zu verwendende Queue
+			/// The linked queue
 			/// </summary>
 			private Queue<T> Queue { get; set; }
 
@@ -38,8 +38,8 @@ namespace Graph
 			/// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;.PassthroughSink&lt;T&gt;"/> class.
 			/// </summary>
 			/// <param name="queue">The queue.</param>
-			/// <param name="registrationTimeout">Der Timeout in Millisekunden, der beim Registrieren von Elementen eingehalten werden soll.</param>
-			/// <param name="inputQueueLength">Die maximale Anzahl an Elementen in der Eingangsqueue.</param>
+            /// <param name="registrationTimeout">Timeout in milliseconds to be used during value registration.</param>
+            /// <param name="inputQueueLength">Maximum queue length for input values.</param>
 			/// <remarks></remarks>
 			public PassthroughSink(Queue<T> queue, [DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
 				: base(registrationTimeout, inputQueueLength)
@@ -50,33 +50,33 @@ namespace Graph
 			}
 
 			/// <summary>
-			/// Verarbeitet die Daten
+			/// Enqueues the data
 			/// </summary>
-			/// <param name="payload">Die zu verarbeitenden Daten</param>
+			/// <param name="payload">The data to enqueue</param>
 			protected override void ProcessData(T payload)
 			{
-				// Semaphor-Locking wird hier nicht benötigt, da dies die Basisklasse für uns übernimmt
+				// no locking needed here as the base classes already does this
 				Queue.Enqueue(payload);
 			}
 		}
 
 		/// <summary>
-		/// Vorgabewert für den Registrierungstimeout
+		/// Default value for locking timeouts
 		/// </summary>
 		internal const int RegistrationTimeoutDefault = Timeout.Infinite;
 
 		/// <summary>
-		/// Vorgabewert für die Länge der Eingabequeue
+		/// Default value for the input queue size
 		/// </summary>
 		internal const int InputQueueLengthDefault = 100;
 		
 		/// <summary>
-		/// Erster Input
+		/// First input
 		/// </summary>
 		private readonly Queue<TInput1> _input1 = new Queue<TInput1>();
 
 		/// <summary>
-		/// Zweiter Input
+		/// Second input
 		/// </summary>
 		private readonly Queue<TInput2> _input2 = new Queue<TInput2>();
 
@@ -134,13 +134,12 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Erzeugt die Daten
+		/// Produces the output data
 		/// </summary>
-		/// <param name="payload">Die auszugebenden Daten</param>
+		/// <param name="payload">The generated data</param>
 		/// <returns>
-		/// <see cref="DataSource{TData}.SourceResult.Process"/>, wenn die Verarbeitung fortgesetzt werden soll, <see cref="DataSource{TData}.SourceResult.StopProcessing"/>, wenn die 
-		/// Ausgabe (<paramref name="payload"/>) verworfen und die Verarbeitung abgebrochen werden soll oder <see cref="DataSource{TData}.SourceResult.Idle"/>, wenn
-		/// nichts geschehen soll.
+		/// <see cref="DataSource{TData}.SourceResult.Process"/> if the processing should continue; <see cref="DataSource{TData}.SourceResult.StopProcessing"/> if the output
+		/// (<paramref name="payload"/>) should be discarded and the processing should be stopped; <see cref="DataSource{TData}.SourceResult.Idle"/> if nothing should happen.
 		/// </returns>
 		protected override SourceResult CreateData(out TOutput payload)
 		{
@@ -187,24 +186,23 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Verarbeitet die Daten
+		/// Processes the data
 		/// </summary>
-		/// <param name="input1">Der erste Eingabewert</param>
-		/// <param name="input2">Der zweite Eingabewert</param>
-		/// <param name="output">Der Ausgabewert</param>
+		/// <param name="input1">The first input data type</param>
+		/// <param name="input2">The second input data type</param>
+		/// <param name="output">The output data type</param>
 		/// <returns>
-		/// <c>true</c>, wenn der Ausgabewert an die Ausgänge weitergereicht - oder <c>false</c>,
-		/// wenn das Ergebnis verworfen werden soll.
+		/// <c>true</c> if the result should be send to the outputs; <c>false</c> if the result should be discarded.
 		/// </returns>
 		protected abstract bool ProcessData(TInput1 input1, TInput2 input2, out TOutput output);
 
 		/// <summary>
-		/// Der erste Input
+		/// Backing field for the first input
 		/// </summary>
 		private readonly PassthroughSink<TInput1> _inputSink1;
 
 		/// <summary>
-		/// Der erste Input
+		/// The first input
 		/// </summary>
 		public ISink<TInput1> Input1
 		{
@@ -216,12 +214,12 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Der zweite Input
+        /// Backing field for the second input
 		/// </summary>
 		private readonly PassthroughSink<TInput2> _inputSink2;
 
 		/// <summary>
-		/// Der zweite Input
+		/// The second input
 		/// </summary>
 		public ISink<TInput2> Input2
 		{
@@ -233,7 +231,7 @@ namespace Graph
 		}
 
 		/// <summary>
-		/// Invariante für den Vertrag
+		/// Contract invariant
 		/// </summary>
 		/// <remarks></remarks>
 		[ContractInvariantMethod]
@@ -245,10 +243,10 @@ namespace Graph
 	}
 
 	/// <summary>
-	/// Filter mit zwei Eingängen
+	/// Filter with two identical inputs
 	/// </summary>
-	/// <typeparam name="TInput">Eingangsdatentyp</typeparam>
-	/// <typeparam name="TOutput">Ausgangsdatentyp</typeparam>
+	/// <typeparam name="TInput">The input data type</typeparam>
+	/// <typeparam name="TOutput">The output data type</typeparam>
 	public abstract class DualInFilter<TInput, TOutput> : DualInFilter<TInput, TInput, TOutput>, IDualInFilter<TInput, TOutput>
 	{
 		/// <summary>

@@ -4,34 +4,33 @@ using System.Threading;
 namespace Graph.Logic
 {
 	/// <summary>
-	/// Quelle, die Wahrweitswerte emittiert
+	/// Source that emits boolean values
 	/// </summary>
 	public sealed class LogicEmitter : DataSource<bool>
 	{
 		/// <summary>
-		/// WaitHandle, das das Erzeugen von Daten regelt
+		/// WaitHandle to control the value creation
 		/// </summary>
 		private readonly AutoResetEvent _starter = new AutoResetEvent(false);
 
 		/// <summary>
-		/// Timeout in Millisekunden
+		/// Timeout in milliseconds
 		/// </summary>
 		private const int StarterTimeoutMs = 1000;
 
 		/// <summary>
-		/// Emissionsqueue
+		/// Value emission queue
 		/// </summary>
 		private readonly Queue<bool> _emissionQueue = new Queue<bool>();
 
-		/// <summary>
-		/// Erzeugt die Daten
-		/// </summary>
-		/// <param name="payload">Die auszugebenden Daten</param>
-		/// <returns>
-		/// <see cref="DataSource{TData}.SourceResult.Process"/>, wenn die Verarbeitung fortgesetzt werden soll, <see cref="DataSource{TData}.SourceResult.StopProcessing"/>, wenn die 
-		/// Ausgabe (<paramref name="payload"/>) verworfen und die Verarbeitung abgebrochen werden soll oder <see cref="DataSource{TData}.SourceResult.Idle"/>, wenn
-		/// nichts geschehen soll.
-		/// </returns>
+        /// <summary>
+        /// Creates the data
+        /// </summary>
+        /// <param name="payload">The created data</param>
+        /// <returns>
+        /// <see cref="DataSource{TData}.SourceResult.Process"/> if the processing should continue; <see cref="DataSource{TData}.SourceResult.StopProcessing"/> if the output (<paramref name="payload"/>) 
+        /// should be discarded and the processing stopped; <see cref="DataSource{TData}.SourceResult.Idle"/> if nothing should happen.
+        /// </returns>
 		protected override SourceResult CreateData(out bool payload)
 		{
 			lock (_emissionQueue)
@@ -48,8 +47,8 @@ namespace Graph.Logic
 		}
 
 		/// <summary>
-		/// Emittiert den Wert <c>true</c>.
-		/// <para>Ein Aufruf von <see cref="DataSource{T}.StartProcessing"/> ist notwendig, damit die Verarbeitung gestartet wird.</para>
+		/// Emits the value <c>true</c>.
+		/// <para>A call to <see cref="DataSource{T}.StartProcessing"/> is needed to start processing!</para>
 		/// </summary>
 		public void EmitTrue()
 		{
@@ -57,8 +56,8 @@ namespace Graph.Logic
 		}
 
 		/// <summary>
-		/// Emittiert den Wert <c>false</c>.
-		/// <para>Ein Aufruf von <see cref="DataSource{T}.StartProcessing"/> ist notwendig, damit die Verarbeitung gestartet wird.</para>
+		/// Emits the value <c>false</c>.
+        /// <para>A call to <see cref="DataSource{T}.StartProcessing"/> is needed to start processing!</para>
 		/// </summary>
 		public void EmitFalse()
 		{
@@ -66,10 +65,10 @@ namespace Graph.Logic
 		}
 
 		/// <summary>
-		/// Emittiert den angegebenen Wert.
-		/// <para>Ein Aufruf von <see cref="DataSource{T}.StartProcessing"/> ist notwendig, damit die Verarbeitung gestartet wird.</para>
+		/// Emits the given value
+        /// <para>A call to <see cref="DataSource{T}.StartProcessing"/> is needed to start processing!</para>
 		/// </summary>
-		/// <param name="value">Der zu emittierende Wert</param>
+		/// <param name="value">The value to emit</param>
 		public void Emit(bool value)
 		{
 			lock(_emissionQueue)

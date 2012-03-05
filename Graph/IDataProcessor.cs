@@ -3,35 +3,40 @@ using System.Diagnostics.Contracts;
 
 namespace Graph
 {
+    /// <summary>
+    /// Interface for data processors
+    /// </summary>
 	public interface IDataProcessor
 	{
-		/// <summary>
-		/// Liest oder setzt das benutzerdefinierte Tag
-		/// </summary>
+        /// <summary>
+        /// Gets or sets a user defined tag.
+        /// </summary>
+        /// <value>The tag.</value>
 		object Tag { [Pure] get; set; }
 
 		/// <summary>
-		/// Ermittelt den aktuellen Bearbeitungsstand
+		/// Gets the current processing state
 		/// </summary>
 		ProcessingState State { [Pure] get; }
 
-		/// <summary>
-		/// Wird gerufen, wenn sich der Verarbeitungszustand (<see cref="DataProcessorBase.State"/>) geändert hat
-		/// </summary>
+        /// <summary>
+        /// Occurs when the processing state (<see cref="DataProcessorBase.State"/>) changes.
+        /// </summary>
+        /// <remarks></remarks>
 		event EventHandler<ProcessingStateEventArgs> ProcessingStateChanged;
 
 		/// <summary>
-		/// Wird gerufen, wenn eine Exception aufgetreten ist
+		/// Occurs when an exception was caught
 		/// </summary>
 		event EventHandler<ExceptionEventArgs> ExceptionCaught;
 
 		/// <summary>
-		/// Beginnt die Verarbeitung
+		/// Starts the processing
 		/// </summary>
 		void StartProcessing();
 
 		/// <summary>
-		/// Hält die Verarbeitung an
+		/// Stops the processing
 		/// </summary>
 		void StopProcessing();
 	}

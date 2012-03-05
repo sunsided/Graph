@@ -3,28 +3,28 @@ using System.Diagnostics.Contracts;
 namespace Graph
 {
 	/// <summary>
-	/// Interface für Elemente, die Daten ausgeben
+	/// Interface for elements that produce data.
 	/// </summary>
-	/// <typeparam name="TOutput">Der Ausgangsdatentyp des Elementes. Entspricht Eingangsdatenyp des angeschlossenen <see cref="IDataInput{TOutput}"/>.</typeparam>
+	/// <typeparam name="TOutput">The output data type.</typeparam>
 	public interface IDataOutput<out TOutput>
 	{
 		/// <summary>
-		/// Die Anzahl der Ausgabeprozessoren
+		/// The count of output processors.
 		/// </summary>
 		int OutputProcessorCount { [Pure] get; }
 
 		/// <summary>
-		/// Registriert einen Prozessor für die Ausgabewerte
+		/// Registers a processor for the output values.
 		/// </summary>
-		/// <param name="outputProcessor">Der zu registrierende Prozessor.</param>
-		/// <returns><c>true</c>, wenn der Prozessor erfolgreich hinzugefügt wurde, ansonsten <c>false</c></returns>
+		/// <param name="outputProcessor">The processor to register.</param>
+		/// <returns><c>true</c> if the processor could be attached successfully; <c>false</c> otherwise</returns>
 		bool AttachOutput(IDataInput<TOutput> outputProcessor);
 
 		/// <summary>
-		/// Registriert einen Prozessor für die Ausgabewerte
+		/// Unregisters a processor.
 		/// </summary>
-		/// <param name="outputProcessor">Der zu registrierende Prozessor.</param>
-		/// <returns><c>true</c>, wenn der Prozessor erfolgreich hinzugefügt wurde, ansonsten <c>false</c></returns>
+		/// <param name="outputProcessor">The processor to be removed.</param>
+        /// <returns><c>true</c> if the processor could be detached successfully; <c>false</c> otherwise</returns>
 		bool DetachOutput(IDataInput<TOutput> outputProcessor);
 	}
 }
