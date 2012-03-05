@@ -10,8 +10,6 @@
 	ISource source = new LogicEmitter();
 	```
 
-	(Note: For the ```LogicEmitter``` to actually do something you must call one of its ```EmitXXX()``` methods. This is just an example though.)
-
 2. Create a processor
 
 	```C#
@@ -36,5 +34,8 @@
 	```C#
 	source.StartProcessing();
 	```
+
+	(Note: For the ```LogicEmitter``` to actually do something you would have to call one of its ```EmitXXX()``` methods. This is just an example though.)
+
 6. ???
 7. Profit
