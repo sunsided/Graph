@@ -71,3 +71,18 @@ public sealed class AndGate : DualInFilter<bool, bool>
 	}
 }
 ```
+
+## Example data converter (filter)
+
+```C#
+/// <summary>
+/// Casts <see cref="System.String"/> to <see cref="System.Int32"/>
+/// </summary>
+public sealed class TypeCastFilter : DataFilter<string, int>
+{
+    protected override bool ProcessData(string input, out int output)
+	{
+		return Int32.TryParse(input, out output);
+	}
+}
+```
