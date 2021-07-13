@@ -55,7 +55,7 @@ namespace Graph
             if (state == State) return;
             State = state;
             var handler = ProcessingStateChanged;
-            if (handler != null) handler(this, new ProcessingStateEventArgs(state));
+            handler?.Invoke(this, new ProcessingStateEventArgs(state));
         }
 
         /// <summary>
@@ -65,7 +65,7 @@ namespace Graph
         protected virtual void OnExceptionCaught(Exception e)
         {
             var handler = ExceptionCaught;
-            if (handler != null) handler(this, new ExceptionEventArgs(e));
+            handler?.Invoke(this, new ExceptionEventArgs(e));
         }
     }
 }
