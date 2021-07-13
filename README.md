@@ -2,6 +2,23 @@
 
 **Graph** is a .NET library for parallel filter-based pipeline/dataflow processing.
 
+---
+
+🧀 Please note that like any good cheese, this library too is old and smells a bit.
+It was written in the years 2011 and 2012 and while still functional it is by no
+means actively developed or maintained, nor do I intend to change that.
+The code was updated to target .NET 6 and use more modern C# language constructs,
+but that's about it. — That said, feel free to play around!
+
+💡 For any serious use, please have a look at the [System.Threading.Tasks.Dataflow] package first,
+as it provides the [Dataflow (Task Parallel Library)] functionality.
+Unlike this library, TPL Dataflow supports `async` actions.
+
+[System.Threading.Tasks.Dataflow]: https://www.nuget.org/packages/System.Threading.Tasks.Dataflow/
+[Dataflow (Task Parallel Library)]: https://docs.microsoft.com/en-us/dotnet/standard/parallel-programming/dataflow-task-parallel-library
+
+---
+
 ## Usage example
 
 1. Create a data source
@@ -40,7 +57,9 @@
 6. ???
 7. Profit
 
-## Example data processor (filter) with a single input
+## Example filters
+
+### Data processor with a single input
 
 ```C#
 /// <summary>
@@ -56,7 +75,7 @@ public sealed class NotGate : DataFilter<bool, bool>
 }
 ```
 
-## Example data processor (filter) with two identical inputs
+### Data processor with two identical inputs
 
 ```C#
 /// <summary>
@@ -72,7 +91,7 @@ public sealed class AndGate : DualInFilter<bool, bool>
 }
 ```
 
-## Example data converter (filter)
+### Data converter
 
 ```C#
 /// <summary>
