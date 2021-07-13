@@ -3,7 +3,7 @@
 namespace Graph.Logic
 {
     /// <summary>
-    /// Produces a logical NOT (inversion) of the input
+    /// Produces a logical <c>NOT</c> (inversion) of the input
     /// </summary>
     public sealed class NotGate : DataFilter<bool, bool>
     {
@@ -12,7 +12,7 @@ namespace Graph.Logic
         /// </summary>
         /// <param name="input">The first input value</param>
         /// <param name="output">NOT <paramref name="input"/></param>
-        /// <returns>Always <c>true</c>. </returns>
+        /// <returns>Always <see langword="true" />. </returns>
         [Pure]
         protected override bool ProcessData(bool input, out bool output)
         {

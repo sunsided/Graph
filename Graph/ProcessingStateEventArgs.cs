@@ -5,16 +5,11 @@ using System.Diagnostics.Contracts;
 namespace Graph
 {
     /// <summary>
-    /// Verarbeitungszustand-Ereignisparameter
+    /// Event arguments for processing states.
     /// </summary>
-    [DebuggerDisplay("{State}")]
+    [DebuggerDisplay("{" + nameof(State) + "}")]
     public sealed class ProcessingStateEventArgs : EventArgs
     {
-        /// <summary>
-        /// Der Verarbeitungszustand
-        /// </summary>
-        public ProcessingState State { [Pure] get; private set; }
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingStateEventArgs"/> class.
         /// </summary>
@@ -23,5 +18,10 @@ namespace Graph
         {
             State = state;
         }
+
+        /// <summary>
+        /// Gets the processing state.
+        /// </summary>
+        public ProcessingState State { [Pure] get; private set; }
     }
 }

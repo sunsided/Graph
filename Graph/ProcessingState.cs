@@ -1,32 +1,32 @@
 ﻿namespace Graph
 {
     /// <summary>
-    /// Data processing state
+    /// Data processing state.
     /// </summary>
     public enum ProcessingState
     {
         /// <summary>
-        /// Stopped
+        /// Stopped.
         /// </summary>
         Stopped,
 
         /// <summary>
-        /// Idling
+        /// Idling.
         /// </summary>
         Idle,
 
         /// <summary>
-        /// Preparing data from input
+        /// Preparing data from input.
         /// </summary>
         Preparing,
 
         /// <summary>
-        /// Processing data
+        /// Processing data.
         /// </summary>
         Processing,
 
         /// <summary>
-        /// Dispatching data to outputs
+        /// Dispatching data to outputs.
         /// </summary>
         Dispatching
     }

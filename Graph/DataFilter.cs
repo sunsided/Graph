@@ -6,29 +6,28 @@ using System.Threading;
 namespace Graph
 {
     /// <summary>
-    /// Base class for a data processor with output
+    /// Base class for a data processor with output.
     /// </summary>
     public abstract class DataFilter<TInput, TOutput> : DataProcessor<TInput>, IFilter<TInput, TOutput>
     {
         /// <summary>
-        /// The list of attached output data processors
+        /// The list of attached output data processors.
         /// </summary>
         private readonly List<IDataInput<TOutput>> _outputList = new List<IDataInput<TOutput>>();
 
         /// <summary>
-        /// The count of attached output data processors
+        /// The count of attached output data processors.
         /// </summary>
         public int OutputProcessorCount { [Pure] get { return _outputList.Count; } }
 
         /// <summary>
-        /// The queue of output data processors to dispatch to
+        /// The queue of output data processors to dispatch to.
         /// </summary>
         private readonly Queue<IDataInput<TOutput>> _currentOutputs = new Queue<IDataInput<TOutput>>();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataFilter&lt;TInput, TOutput&gt;"/> class.
         /// </summary>
-        /// <remarks></remarks>
         protected DataFilter()
         {
         }
@@ -38,7 +37,6 @@ namespace Graph
         /// </summary>
         /// <param name="registrationTimeout">Timeout in milliseconds to be used during value registration.</param>
         /// <param name="inputQueueLength">Maximum queue length for input values.</param>
-        /// <remarks></remarks>
         protected DataFilter([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
             : base(registrationTimeout, inputQueueLength)
         {
@@ -47,10 +45,10 @@ namespace Graph
         }
 
         /// <summary>
-        /// Registers a processor for the output values
+        /// Registers a processor for the output values.
         /// </summary>
         /// <param name="outputProcessor">The processor to register.</param>
-        /// <returns><c>true</c> if the processor was registered successfully; <c>false</c> otherwise</returns>
+        /// <returns><see langword="true" /> if the processor was registered successfully; <see langword="false" /> otherwise</returns>
         public bool AttachOutput(IDataInput<TOutput> outputProcessor)
         {
             //Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) + 1 == _outputList.Count) ||
@@ -66,10 +64,10 @@ namespace Graph
         }
 
         /// <summary>
-        /// Unregisters a processor
+        /// Unregisters a processor.
         /// </summary>
         /// <param name="outputProcessor">The processor to unregister.</param>
-        /// <returns><c>true</c> if the processor was removed successfully; <c>false</c> otherwise</returns>
+        /// <returns><see langword="true" /> if the processor was removed successfully; <see langword="false" /> otherwise</returns>
         public bool DetachOutput(IDataInput<TOutput> outputProcessor)
         {
             //Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) - 1 == _outputList.Count) ||
@@ -83,9 +81,9 @@ namespace Graph
         }
 
         /// <summary>
-        /// Processes the data
+        /// Processes the data.
         /// </summary>
-        /// <param name="payload">Die zu verarbeitenden Daten</param>
+        /// <param name="payload">The data to process.</param>
         protected sealed override void ProcessData(TInput payload)
         {
             TOutput outputPayload;
@@ -114,12 +112,12 @@ namespace Graph
         }
 
         /// <summary>
-        /// Processes the data
+        /// Processes the data.
         /// </summary>
         /// <param name="input">The input data type</param>
         /// <param name="output">The output data type</param>
         /// <returns>
-        /// <c>true</c> if the result should be handed to the outputs; <c>false</c>
+        /// <see langword="true" /> if the result should be handed to the outputs; <see langword="false" />
         /// if the result should be discarded.
         /// </returns>
         protected abstract bool ProcessData(TInput input, out TOutput output);

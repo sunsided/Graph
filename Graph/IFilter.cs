@@ -1,7 +1,7 @@
 ﻿namespace Graph
 {
     /// <summary>
-    /// Interface for a filter
+    /// Interface for filter types.
     /// </summary>
     /// <typeparam name="TInput">The input data type</typeparam>
     /// <typeparam name="TOutput">The output data type</typeparam>

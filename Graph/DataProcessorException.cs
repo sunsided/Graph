@@ -19,7 +19,6 @@ namespace Graph
         /// Initializes a new instance of the <see cref="DataProcessorException"/> class.
         /// </summary>
         /// <param name="dataProcessor">The data processor.</param>
-        /// <remarks></remarks>
         internal DataProcessorException(object dataProcessor)
         {
             Contract.Requires(dataProcessor is DataProcessorBase);
@@ -31,7 +30,6 @@ namespace Graph
         /// </summary>
         /// <param name="dataProcessor">The data processor.</param>
         /// <param name="message">The message.</param>
-        /// <remarks></remarks>
         internal DataProcessorException(object dataProcessor, string message)
             : base(message)
         {
@@ -45,7 +43,6 @@ namespace Graph
         /// <param name="dataProcessor">The data processor.</param>
         /// <param name="message">The message.</param>
         /// <param name="inner">The inner.</param>
-        /// <remarks></remarks>
         internal DataProcessorException(object dataProcessor, string message, Exception inner)
             : base(message, inner)
         {
@@ -61,7 +58,6 @@ namespace Graph
         /// <exception cref="T:System.ArgumentNullException">The <paramref name="info"/> parameter is null. </exception>
         ///
         /// <exception cref="T:System.Runtime.Serialization.SerializationException">The class name is null or <see cref="P:System.Exception.HResult"/> is zero (0). </exception>
-        /// <remarks></remarks>
         private DataProcessorException(SerializationInfo info, StreamingContext context) : base(info, context)
         {
         }

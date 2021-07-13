@@ -9,7 +9,7 @@ namespace Graph
     public interface IDataOutput<out TOutput>
     {
         /// <summary>
-        /// The count of output processors.
+        /// Gets the number of output processors.
         /// </summary>
         int OutputProcessorCount { [Pure] get; }
 
@@ -17,14 +17,14 @@ namespace Graph
         /// Registers a processor for the output values.
         /// </summary>
         /// <param name="outputProcessor">The processor to register.</param>
-        /// <returns><c>true</c> if the processor could be attached successfully; <c>false</c> otherwise</returns>
+        /// <returns><see langword="true" /> if the processor could be attached successfully; <see langword="false" /> otherwise</returns>
         bool AttachOutput(IDataInput<TOutput> outputProcessor);
 
         /// <summary>
         /// Unregisters a processor.
         /// </summary>
         /// <param name="outputProcessor">The processor to be removed.</param>
-        /// <returns><c>true</c> if the processor could be detached successfully; <c>false</c> otherwise</returns>
+        /// <returns><see langword="true" /> if the processor could be detached successfully; <see langword="false" /> otherwise</returns>
         bool DetachOutput(IDataInput<TOutput> outputProcessor);
     }
 }

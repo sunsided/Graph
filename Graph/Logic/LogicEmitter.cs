@@ -4,27 +4,27 @@ using System.Threading;
 namespace Graph.Logic
 {
     /// <summary>
-    /// Source that emits boolean values
+    /// Source that emits boolean values.
     /// </summary>
     public sealed class LogicEmitter : DataSource<bool>
     {
         /// <summary>
-        /// WaitHandle to control the value creation
+        /// WaitHandle to control the value creation.
         /// </summary>
         private readonly AutoResetEvent _starter = new AutoResetEvent(false);
 
         /// <summary>
-        /// Timeout in milliseconds
+        /// Timeout in milliseconds.
         /// </summary>
         private const int StarterTimeoutMs = 1000;
 
         /// <summary>
-        /// Value emission queue
+        /// Value emission queue.
         /// </summary>
         private readonly Queue<bool> _emissionQueue = new Queue<bool>();
 
         /// <summary>
-        /// Creates the data
+        /// Creates the data.
         /// </summary>
         /// <param name="payload">The created data</param>
         /// <returns>
@@ -47,7 +47,7 @@ namespace Graph.Logic
         }
 
         /// <summary>
-        /// Emits the value <c>true</c>.
+        /// Emits the value <see langword="true" />.
         /// <para>A call to <see cref="DataSource{T}.StartProcessing"/> is needed to start processing!</para>
         /// </summary>
         public void EmitTrue()
@@ -56,7 +56,7 @@ namespace Graph.Logic
         }
 
         /// <summary>
-        /// Emits the value <c>false</c>.
+        /// Emits the value <see langword="false" />.
         /// <para>A call to <see cref="DataSource{T}.StartProcessing"/> is needed to start processing!</para>
         /// </summary>
         public void EmitFalse()

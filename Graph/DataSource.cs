@@ -41,7 +41,6 @@ namespace Graph
         /// <summary>
         /// Gets the output processor count.
         /// </summary>
-        /// <remarks></remarks>
         public int OutputProcessorCount { [Pure] get { return _outputList.Count; } }
 
         /// <summary>
@@ -93,7 +92,6 @@ namespace Graph
         /// <summary>
         /// Creates a new instance of the <seealso cref="DataSource{TData}"/> class
         /// </summary>
-        /// <remarks></remarks>
         protected DataSource()
             : this(OutputQueueLengthDefault)
         {
@@ -103,7 +101,6 @@ namespace Graph
         /// Initializes a new instance of the <see cref="DataSource&lt;TData&gt;"/> class.
         /// </summary>
         /// <param name="outputQueueLength">Length of the output queue.</param>
-        /// <remarks></remarks>
         protected DataSource([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
         {
             Contract.Requires(outputQueueLength > 0);
@@ -123,13 +120,13 @@ namespace Graph
         /// Registers a processor of the output values
         /// </summary>
         /// <param name="outputProcessor">The processor to register.</param>
-        /// <returns><c>true</c> if the processor was added successfully; <c>false</c> otherwise</returns>
+        /// <returns><see langword="true" /> if the processor was added successfully; <see langword="false" /> otherwise</returns>
         public bool AttachOutput(IDataInput<TData> outputProcessor)
         {
             //Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) + 1 == _outputList.Count) ||
             //                  (!Contract.Result<bool>() && Contract.OldValue(_outputList.Count) == _outputList.Count));
 
-            // Element eintüten und Verarbeitung starten lassen
+            // Enqueue element and start processing.
             lock (_outputList)
             {
                 if (_outputList.Contains(outputProcessor)) return false;
@@ -142,22 +139,20 @@ namespace Graph
         /// Unregisters a processor
         /// </summary>
         /// <param name="outputProcessor">The processor to unregister.</param>
-        /// <returns><c>true</c> if the processor was successfully removed; <c>false</c> otherwise</returns>
+        /// <returns><see langword="true" /> if the processor was successfully removed; <see langword="false" /> otherwise</returns>
         public bool DetachOutput(IDataInput<TData> outputProcessor)
         {
             //Contract.Ensures((Contract.Result<bool>() && Contract.OldValue(_outputList.Count) - 1 == _outputList.Count) ||
             //                  (!Contract.Result<bool>() && Contract.OldValue(_outputList.Count) == _outputList.Count));
 
-            // Element eintüten und Verarbeitung starten lassen
+            // Enqueue element and start processing.
             lock (_outputList)
             {
                 return _outputList.Remove(outputProcessor);
             }
         }
 
-        /// <summary>
-        /// Starts processing
-        /// </summary>
+        /// <inheritdoc />
         public override void StartProcessing()
         {
             if (_processingTask.Status == TaskStatus.WaitingToRun || _processingTask.Status == TaskStatus.Running) return;
@@ -165,9 +160,7 @@ namespace Graph
             _outputTask.Start();
         }
 
-        /// <summary>
-        /// Stops processing
-        /// </summary>
+        /// <inheritdoc />
         public override void StopProcessing()
         {
             Contract.Ensures(_stopProcessing == true);
@@ -199,7 +192,7 @@ namespace Graph
         protected abstract SourceResult CreateData(out TData payload);
 
         /// <summary>
-        /// Produces data in an ininite loop
+        /// Produces data in an infinite loop
         /// <seealso cref="StartProcessing"/>
         /// <seealso cref="StopProcessing"/>
         /// </summary>
@@ -229,7 +222,7 @@ namespace Graph
         }
 
         /// <summary>
-        /// The output loop
+        /// The output loop.
         /// </summary>
         private void OutputLoop()
         {

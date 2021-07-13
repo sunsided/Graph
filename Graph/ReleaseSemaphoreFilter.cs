@@ -4,9 +4,9 @@ using System.Threading;
 namespace Graph
 {
     /// <summary>
-    /// Filter, das Elemente weiterreicht und dabei einen <see cref="Semaphore"/> freigibt
+    /// A filter that releases a <see cref="Semaphore"/> whenever it passes elements on to the output.
     /// </summary>
-    /// <typeparam name="T">Ein- und Ausgabeparameter</typeparam>
+    /// <typeparam name="T">The input and output type.</typeparam>
     /// <seealso cref="WaitEventFilter{T}"/>
     public sealed class ReleaseSemaphoreFilter<T> : PassthroughFilter<T>
     {
@@ -26,11 +26,11 @@ namespace Graph
         }
 
         /// <summary>
-        /// Verarbeitet die Eingabe
+        /// Processes the input.
         /// </summary>
-        /// <param name="input">Der zu verarbeitende Wert</param>
-        /// <returns>Das Ergebnis</returns>
-        /// <remarks>Hier wird auschließlich die Filterlogik implementiert.</remarks>
+        /// <param name="input">The input to process.</param>
+        /// <returns>The <paramref name="input"/> value.</returns>
+        /// <remarks>This method implements only the filter functionality..</remarks>
         public override T Filter(T input)
         {
             ((Semaphore)WaitHandle).Release();

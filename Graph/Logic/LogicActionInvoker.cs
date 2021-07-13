@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 namespace Graph.Logic
 {
     /// <summary>
-    /// Sink that receives a boolean value and invokes an action
+    /// Sink that receives a boolean value and invokes an action.
     /// </summary>
     public sealed class LogicActionInvoker : ActionInvoker<bool>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="LogicActionInvoker"/> class.
         /// </summary>
-        /// <param name="action">The auszuführende Aktion.</param>
+        /// <param name="action">The <see cref="Action{T}"/> to execute.</param>
         public LogicActionInvoker(Action<bool> action)
             : base(action)
         {
@@ -22,8 +22,8 @@ namespace Graph.Logic
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionInvoker{T}"/> class.
         /// </summary>
-        /// <param name="action">The auszuführende Aktion.</param>
-        /// <param name="scheduler">Der zu verwendende Scheduler</param>
+        /// <param name="action">The <see cref="Action{T}"/> to execute.</param>
+        /// <param name="scheduler">The scheduler to use.</param>
         public LogicActionInvoker(Action<bool> action, TaskScheduler scheduler)
             : base(action, scheduler)
         {
@@ -34,9 +34,9 @@ namespace Graph.Logic
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionInvoker{T}"/> class.
         /// </summary>
-        /// <param name="action">The auszuführende Aktion.</param>
-        /// <param name="scheduler">Der zu verwendende Scheduler</param>
-        /// <param name="taskCreationOptions">Die Task-Erzeugungsoptionen</param>
+        /// <param name="action">The <see cref="Action{T}"/> to execute.</param>
+        /// <param name="scheduler">The scheduler to use.</param>
+        /// <param name="taskCreationOptions">The <see cref="TaskCreationOptions"/> to use.</param>
         public LogicActionInvoker(Action<bool> action, TaskScheduler scheduler, TaskCreationOptions taskCreationOptions)
             : base(action, scheduler, taskCreationOptions)
         {
@@ -47,8 +47,8 @@ namespace Graph.Logic
         /// <summary>
         /// Initializes a new instance of the <see cref="ActionInvoker{T}"/> class.
         /// </summary>
-        /// <param name="action">The auszuführende Aktion.</param>
-        /// <param name="taskCreationOptions">Die Task-Erzeugungsoptionen</param>
+        /// <param name="action">The <see cref="Action{T}"/> to execute.</param>
+        /// <param name="taskCreationOptions">The <see cref="TaskCreationOptions"/> to use.</param>
         public LogicActionInvoker(Action<bool> action, TaskCreationOptions taskCreationOptions)
             : base(action, taskCreationOptions)
         {

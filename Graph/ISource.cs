@@ -1,7 +1,7 @@
 ﻿namespace Graph
 {
     /// <summary>
-    /// Interface for a data source
+    /// Interface for data sources.
     /// </summary>
     /// <typeparam name="TOutput">The output data type</typeparam>
     public interface ISource<out TOutput> : IDataOutput<TOutput>

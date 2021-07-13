@@ -5,13 +5,13 @@ using System.Diagnostics.Contracts;
 namespace Graph
 {
     /// <summary>
-    /// Event arguments for execptions
+    /// Event arguments for exceptions.
     /// </summary>
-    [DebuggerDisplay("{Exception}")]
+    [DebuggerDisplay("{" + nameof(Exception) + "}")]
     public sealed class ExceptionEventArgs : EventArgs
     {
         /// <summary>
-        /// The exception
+        /// Gets the exception.
         /// </summary>
         public Exception Exception { [Pure] get; private set; }
 

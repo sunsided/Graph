@@ -5,22 +5,22 @@ using System.Threading.Tasks;
 namespace Graph
 {
     /// <summary>
-    /// Sink that invokes an action
+    /// Sink that invokes an action.
     /// </summary>
     public class ActionInvoker<TData> : DataSink<TData>
     {
         /// <summary>
-        /// The action to invoke
+        /// The action to invoke.
         /// </summary>
         private readonly Action<TData> _action;
 
         /// <summary>
-        /// The task scheduler to be used
+        /// The task scheduler to be used.
         /// </summary>
         private readonly TaskScheduler _scheduler;
 
         /// <summary>
-        /// The task creation options for the scheduler
+        /// The task creation options for the scheduler.
         /// </summary>
         /// <seealso cref="_scheduler"/>
         private readonly TaskCreationOptions _creationOptions = TaskCreationOptions.None;

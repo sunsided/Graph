@@ -4,14 +4,13 @@ using System.Diagnostics.Contracts;
 namespace Graph
 {
     /// <summary>
-    /// Filter that passes on data only if a test function evaluates to <code>true</code>
+    /// Filter that passes on data only if a test function evaluates to <see langword="true" />.
     /// </summary>
     /// <typeparam name="TData">The type of the data.</typeparam>
-    /// <remarks></remarks>
     public sealed class ConditionalPassFilter<TData> : DataFilter<TData, TData>, IPassthrough<TData>
     {
         /// <summary>
-        /// The test function
+        /// The test function.
         /// </summary>
         private readonly Func<ConditionalPassFilter<TData>, TData, bool> _func;
 
@@ -36,11 +35,11 @@ namespace Graph
         }
 
         /// <summary>
-        /// Evaluates the test function
+        /// Evaluates the test function.
         /// </summary>
         /// <param name="input">The input value</param>
         /// <param name="output">Always <paramref name="input"/>.</param>
-        /// <returns><c>true</c> or <c>false</c> depending on the function result</returns>
+        /// <returns><see langword="true" /> or <see langword="false" /> depending on the function result</returns>
         protected override bool ProcessData(TData input, out TData output)
         {
             output = input;

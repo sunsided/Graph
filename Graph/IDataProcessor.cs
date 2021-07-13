@@ -4,7 +4,7 @@ using System.Diagnostics.Contracts;
 namespace Graph
 {
     /// <summary>
-    /// Interface for data processors
+    /// Interface for data processors.
     /// </summary>
     public interface IDataProcessor
     {
@@ -15,28 +15,27 @@ namespace Graph
         object Tag { [Pure] get; set; }
 
         /// <summary>
-        /// Gets the current processing state
+        /// Gets the current processing state.
         /// </summary>
         ProcessingState State { [Pure] get; }
 
         /// <summary>
         /// Occurs when the processing state (<see cref="DataProcessorBase.State"/>) changes.
         /// </summary>
-        /// <remarks></remarks>
         event EventHandler<ProcessingStateEventArgs> ProcessingStateChanged;
 
         /// <summary>
-        /// Occurs when an exception was caught
+        /// Occurs when an exception was caught.
         /// </summary>
         event EventHandler<ExceptionEventArgs> ExceptionCaught;
 
         /// <summary>
-        /// Starts the processing
+        /// Starts the processing.
         /// </summary>
         void StartProcessing();
 
         /// <summary>
-        /// Stops the processing
+        /// Stops the processing.
         /// </summary>
         void StopProcessing();
     }

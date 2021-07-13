@@ -10,15 +10,14 @@ namespace Graph
     public abstract class DataSink<TData> : DataProcessor<TData>, ISink<TData>
     {
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataSink&lt;TData&gt;"/> class.
+        /// Initializes a new instance of the <see cref="DataSink{TData}"/> class.
         /// </summary>
-        /// <remarks></remarks>
         protected DataSink()
         {
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="DataSink&lt;TData&gt;"/> class.
+        /// Initializes a new instance of the <see cref="DataSink{Data}"/> class.
         /// </summary>
         /// <param name="registrationTimeout">Timeout in milliseconds to be used during value registration.</param>
         /// <param name="inputQueueLength">Maximum queue length for input values.</param>

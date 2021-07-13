@@ -6,7 +6,7 @@ using System.Threading;
 namespace Graph
 {
     /// <summary>
-    /// Data filter with to inputs
+    /// Data filter with two inputs.
     /// </summary>
     /// <typeparam name="TInput1">First input data type</typeparam>
     /// <typeparam name="TInput2">Second input data type</typeparam>
@@ -14,13 +14,13 @@ namespace Graph
     public abstract class DualInFilter<TInput1, TInput2, TOutput> : DataSource<TOutput>, IDualInFilter<TInput1, TInput2, TOutput>
     {
         /// <summary>
-        /// Sink that passes data to the parent queue
+        /// Sink that passes data to the parent queue.
         /// </summary>
         /// <typeparam name="T">The data type</typeparam>
         private sealed class PassthroughSink<T> : DataSink<T>
         {
             /// <summary>
-            /// The linked queue
+            /// The linked queue.
             /// </summary>
             private Queue<T> Queue { get; set; }
 
@@ -61,29 +61,38 @@ namespace Graph
         }
 
         /// <summary>
-        /// Default value for locking timeouts
+        /// Default value for locking timeouts.
         /// </summary>
         internal const int RegistrationTimeoutDefault = Timeout.Infinite;
 
         /// <summary>
-        /// Default value for the input queue size
+        /// Default value for the input queue size.
         /// </summary>
         internal const int InputQueueLengthDefault = 100;
 
         /// <summary>
-        /// First input
+        /// First input.
         /// </summary>
         private readonly Queue<TInput1> _input1 = new Queue<TInput1>();
 
         /// <summary>
-        /// Second input
+        /// Second input.
         /// </summary>
         private readonly Queue<TInput2> _input2 = new Queue<TInput2>();
 
         /// <summary>
+        /// Backing field for the first input
+        /// </summary>
+        private readonly PassthroughSink<TInput1> _inputSink1;
+
+        /// <summary>
+        /// Backing field for the second input
+        /// </summary>
+        private readonly PassthroughSink<TInput2> _inputSink2;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
         /// </summary>
-        /// <remarks></remarks>
         protected DualInFilter()
         {
             Contract.Ensures(_inputSink1 != null && _inputSink2 != null);
@@ -97,7 +106,6 @@ namespace Graph
         /// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
         /// </summary>
         /// <param name="outputQueueLength">Length of the output queue.</param>
-        /// <remarks></remarks>
         protected DualInFilter([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
             : base(outputQueueLength)
         {
@@ -117,7 +125,6 @@ namespace Graph
         /// <param name="outputQueueLength">Length of the output queue.</param>
         /// <param name="registrationTimeout">Der Timeout in Millisekunden, der beim Registrieren von Elementen eingehalten werden soll.</param>
         /// <param name="inputQueueLength">Die maximale Anzahl an Elementen in der Eingangsqueue.</param>
-        /// <remarks></remarks>
         protected DualInFilter([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength, [DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
             : base(outputQueueLength)
         {
@@ -131,6 +138,42 @@ namespace Graph
             _inputSink1 = new PassthroughSink<TInput1>(_input1, registrationTimeout, inputQueueLength);
             _inputSink2 = new PassthroughSink<TInput2>(_input2, registrationTimeout, inputQueueLength);
             StartProcessing();
+        }
+
+        /// <inheritdoc />
+        public ISink<TInput1> Input1
+        {
+            [Pure] get
+            {
+                Contract.Ensures(Contract.Result<ISink<TInput1>>() != null);
+                return _inputSink1;
+            }
+        }
+
+        /// <inheritdoc />
+        public ISink<TInput2> Input2
+        {
+            [Pure] get
+            {
+                Contract.Ensures(Contract.Result<ISink<TInput1>>() != null);
+                return _inputSink2;
+            }
+        }
+
+        /// <inheritdoc />
+        public sealed override void StartProcessing()
+        {
+            _inputSink1.StartProcessing();
+            _inputSink2.StartProcessing();
+            base.StartProcessing();
+        }
+
+        /// <inheritdoc />
+        public override void StopProcessing()
+        {
+            _inputSink1.StopProcessing();
+            _inputSink2.StopProcessing();
+            base.StopProcessing();
         }
 
         /// <summary>
@@ -150,7 +193,7 @@ namespace Graph
             TInput1 value1 = _input1.Dequeue();
             TInput2 value2 = _input2.Dequeue();
 
-            // Weiterverarbeiten
+            // Process the data.
             TOutput output;
             if (ProcessData(value1, value2, out output))
             {
@@ -158,31 +201,9 @@ namespace Graph
                 return SourceResult.Process;
             }
 
-            // Nichts tun
+            // Do nothing.
             payload = default(TOutput);
             return SourceResult.Idle;
-        }
-
-        /// <summary>
-        /// Starts the processing.
-        /// </summary>
-        /// <remarks></remarks>
-        public sealed override void StartProcessing()
-        {
-            _inputSink1.StartProcessing();
-            _inputSink2.StartProcessing();
-            base.StartProcessing();
-        }
-
-        /// <summary>
-        /// Stops the processing.
-        /// </summary>
-        /// <remarks></remarks>
-        public override void StopProcessing()
-        {
-            _inputSink1.StopProcessing();
-            _inputSink2.StopProcessing();
-            base.StopProcessing();
         }
 
         /// <summary>
@@ -192,48 +213,13 @@ namespace Graph
         /// <param name="input2">The second input data type</param>
         /// <param name="output">The output data type</param>
         /// <returns>
-        /// <c>true</c> if the result should be send to the outputs; <c>false</c> if the result should be discarded.
+        /// <see langword="true" /> if the result should be send to the outputs; <see langword="false" /> if the result should be discarded.
         /// </returns>
         protected abstract bool ProcessData(TInput1 input1, TInput2 input2, out TOutput output);
 
         /// <summary>
-        /// Backing field for the first input
+        /// Contract invariant.
         /// </summary>
-        private readonly PassthroughSink<TInput1> _inputSink1;
-
-        /// <summary>
-        /// The first input
-        /// </summary>
-        public ISink<TInput1> Input1
-        {
-            [Pure] get
-            {
-                Contract.Ensures(Contract.Result<ISink<TInput1>>() != null);
-                return _inputSink1;
-            }
-        }
-
-        /// <summary>
-        /// Backing field for the second input
-        /// </summary>
-        private readonly PassthroughSink<TInput2> _inputSink2;
-
-        /// <summary>
-        /// The second input
-        /// </summary>
-        public ISink<TInput2> Input2
-        {
-            [Pure] get
-            {
-                Contract.Ensures(Contract.Result<ISink<TInput1>>() != null);
-                return _inputSink2;
-            }
-        }
-
-        /// <summary>
-        /// Contract invariant
-        /// </summary>
-        /// <remarks></remarks>
         [ContractInvariantMethod]
         private void ObjectInvariant()
         {
@@ -243,7 +229,7 @@ namespace Graph
     }
 
     /// <summary>
-    /// Filter with two identical inputs
+    /// Filter with two identical inputs.
     /// </summary>
     /// <typeparam name="TInput">The input data type</typeparam>
     /// <typeparam name="TOutput">The output data type</typeparam>
@@ -252,7 +238,6 @@ namespace Graph
         /// <summary>
         /// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
         /// </summary>
-        /// <remarks></remarks>
         protected DualInFilter()
         {
         }
@@ -261,7 +246,6 @@ namespace Graph
         /// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
         /// </summary>
         /// <param name="outputQueueLength">Length of the output queue.</param>
-        /// <remarks></remarks>
         protected DualInFilter([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
             : base(outputQueueLength)
         {

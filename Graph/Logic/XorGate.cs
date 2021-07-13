@@ -3,7 +3,7 @@
 namespace Graph.Logic
 {
     /// <summary>
-    /// Produces a logical XOR of the inputs
+    /// Produces a logical <c>XOR</c> of the inputs
     /// </summary>
     public sealed class XorGate : DualInFilter<bool, bool>
     {
@@ -13,7 +13,7 @@ namespace Graph.Logic
         /// <param name="input1">The first input value</param>
         /// <param name="input2">The second input value</param>
         /// <param name="output"><paramref name="input1"/> XOR <paramref name="input2"/></param>
-        /// <returns>Always <c>true</c>. </returns>
+        /// <returns>Always <see langword="true" />. </returns>
         [Pure]
         protected override bool ProcessData(bool input1, bool input2, out bool output)
         {

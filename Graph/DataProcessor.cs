@@ -8,10 +8,9 @@ using System.Threading.Tasks;
 namespace Graph
 {
     /// <summary>
-    /// Base class for data processors
+    /// Base class for data processors.
     /// </summary>
     /// <typeparam name="TData">The type of the data.</typeparam>
-    /// <remarks></remarks>
     public abstract class DataProcessor<TData> : DataProcessorBase, IDataInput<TData>, IDisposable
     {
         /// <summary>
@@ -42,24 +41,24 @@ namespace Graph
         private readonly Queue<TData> _inputQueue = new Queue<TData>();
 
         /// <summary>
-        /// The semaphore to control the input queue
+        /// The semaphore to control the input queue.
         /// </summary>
         /// <seealso cref="RegisterInput"/>
         /// <seealso cref="_inputQueue"/>
         private readonly Semaphore _inputQueueSemaphore;
 
         /// <summary>
-        /// The maximum size of the input queue
+        /// The maximum size of the input queue.
         /// </summary>
         public int InputQueueLength { [Pure] get; private set; }
 
         /// <summary>
-        /// Thread sync object to control the processing loop
+        /// Thread sync object to control the processing loop.
         /// </summary>
         private readonly AutoResetEvent _processStartTrigger = new AutoResetEvent(false);
 
         /// <summary>
-        /// Determines if the processing loop should stop
+        /// Determines if the processing loop should stop.
         /// </summary>
         private volatile bool _stopProcessing;
 
@@ -91,11 +90,11 @@ namespace Graph
             _inputQueueSemaphore = new Semaphore(inputQueueLength, inputQueueLength);
 
             _processingTask = new Task(ProcessingLoop, TaskCreationOptions.LongRunning);
-            _processingTask.Start(); // TODO: Scheduler wählbar?
+            _processingTask.Start(); // TODO: customizable scheduler?
         }
 
         /// <summary>
-        /// Registers an input value
+        /// Registers an input value.
         /// <para>
         /// If the input queue has free slots, this call is non-blocking, otherwise it is blocked
         /// until a queue slot is freed.
@@ -104,17 +103,17 @@ namespace Graph
         /// <param name="input">The value to register.</param>
         public bool RegisterInput(TData input)
         {
-            // Warten, bis ein Eingabeslot frei wird
+            // Wait until an input slot is free.
             if (!_inputQueueSemaphore.WaitOne(_registrationTimeout)) return false;
 
-            // Element eintüten und Verarbeitung starten lassen
+            // Enqueue element and start processing.
             lock (_inputQueue) _inputQueue.Enqueue(input);
             _processStartTrigger.Set();
             return true;
         }
 
         /// <summary>
-        /// Processes the input data until <see cref="_stopProcessing"/> is set to <c>true</c>.
+        /// Processes the input data until <see cref="_stopProcessing"/> is set to <see langword="true" />.
         /// <para>
         /// If there is no input in the input queue, the execution blocks until <see cref="_processStartTrigger"/> is set.
         /// </para>
@@ -152,24 +151,20 @@ namespace Graph
             }
         }
 
-        /// <summary>
-        /// Stops the processing
-        /// </summary>
+        /// <inheritdoc />
+        public override void StartProcessing()
+        {
+            if (_processingTask.Status == TaskStatus.WaitingToRun || _processingTask.Status == TaskStatus.Running) return;
+            _processingTask.Start();
+        }
+
+        /// <inheritdoc />
         public override void StopProcessing()
         {
             Contract.Ensures(_stopProcessing == true);
             _stopProcessing = true;
             _processStartTrigger.Set();
             OnProcessingStateChanged(ProcessingState.Stopped);
-        }
-
-        /// <summary>
-        /// Starts the processing
-        /// </summary>
-        public override void StartProcessing()
-        {
-            if (_processingTask.Status == TaskStatus.WaitingToRun || _processingTask.Status == TaskStatus.Running) return;
-            _processingTask.Start();
         }
 
         /// <inheritdoc />
@@ -184,13 +179,13 @@ namespace Graph
         }
 
         /// <summary>
-        /// Processes a data element
+        /// Processes a data element.
         /// </summary>
         /// <param name="payload">The data to process</param>
         protected abstract void ProcessData(TData payload);
 
         /// <summary>
-        /// Processes a data element
+        /// Processes a data element.
         /// </summary>
         /// <param name="payload">The data to process</param>
         private void ProcessDataInternal(TData payload)
