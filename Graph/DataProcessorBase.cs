@@ -53,6 +53,7 @@ namespace Graph
         protected virtual void OnProcessingStateChanged(ProcessingState state)
         {
             if (state == State) return;
+            State = state;
             var handler = ProcessingStateChanged;
             if (handler != null) handler(this, new ProcessingStateEventArgs(state));
         }

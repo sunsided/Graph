@@ -212,7 +212,7 @@ namespace Graph
                     break;
                 }
 
-                // Eintüten
+                // Enqueue the payload.
                 _outputQueueSemaphore.WaitOne(); // TODO: Timeout!
                 _outputQueue.Enqueue(payload);
                 _outputStartTrigger.Set();
@@ -250,7 +250,7 @@ namespace Graph
                         _outputList.ForEach(processor => _currentOutputs.Enqueue(processor));
                     }
 
-                    // Loopity loop
+                    // Process all outputs.
                     while (_currentOutputs.Count > 0)
                     {
                         var processor = _currentOutputs.Dequeue();
