@@ -190,8 +190,8 @@ namespace Graph
             if (_input1.Count == 0) return SourceResult.Idle;
             if (_input2.Count == 0) return SourceResult.Idle;
 
-            TInput1 value1 = _input1.Dequeue();
-            TInput2 value2 = _input2.Dequeue();
+            var value1 = _input1.Dequeue();
+            var value2 = _input2.Dequeue();
 
             // Process the data.
             TOutput output;

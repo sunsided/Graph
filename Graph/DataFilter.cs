@@ -88,7 +88,7 @@ namespace Graph
         {
             TOutput outputPayload;
             OnProcessingStateChanged(ProcessingState.Processing);
-            bool dispatch = ProcessData(payload, out outputPayload);
+            var dispatch = ProcessData(payload, out outputPayload);
 
             // Dispatch
             if (!dispatch) return;

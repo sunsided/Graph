@@ -15,11 +15,11 @@ namespace Graph.Test
         [Fact]
         public void TestDirect()
         {
-            AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-            bool result = false;
+            var autoResetEvent = new AutoResetEvent(false);
+            var result = false;
 
             // Create elements / build the graph
-            LogicEmitter source = new LogicEmitter();
+            var source = new LogicEmitter();
             source.AttachOutput(new LogicActionInvoker(value =>
                                                         {
                                                             result = value;
@@ -71,8 +71,8 @@ namespace Graph.Test
         [Fact]
         public void TestNegation()
         {
-            AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-            bool result = false;
+            var autoResetEvent = new AutoResetEvent(false);
+            var result = false;
 
             // Create elements
             var source = new LogicEmitter();
@@ -132,8 +132,8 @@ namespace Graph.Test
         [Fact]
         public void TestDoubleNegation()
         {
-            AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-            bool result = false;
+            var autoResetEvent = new AutoResetEvent(false);
+            var result = false;
 
             // Create elements
             var source = new LogicEmitter();
@@ -195,8 +195,8 @@ namespace Graph.Test
         [Fact]
         public void TestAnd()
         {
-            AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-            bool result = false;
+            var autoResetEvent = new AutoResetEvent(false);
+            var result = false;
 
             // Create the elements
             var source1 = new LogicEmitter();
@@ -249,8 +249,8 @@ namespace Graph.Test
         [Fact]
         public void TestXnor()
         {
-            AutoResetEvent autoResetEvent = new AutoResetEvent(false);
-            bool result = false;
+            var autoResetEvent = new AutoResetEvent(false);
+            var result = false;
 
             // Create elements
             var source1 = new LogicEmitter();

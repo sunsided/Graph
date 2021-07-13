@@ -53,7 +53,7 @@ namespace Graph
         protected virtual void OnProcessingStateChanged(ProcessingState state)
         {
             if (state == State) return;
-            EventHandler<ProcessingStateEventArgs> handler = ProcessingStateChanged;
+            var handler = ProcessingStateChanged;
             if (handler != null) handler(this, new ProcessingStateEventArgs(state));
         }
 
@@ -63,7 +63,7 @@ namespace Graph
         /// <param name="e">The <see cref="Graph.ExceptionEventArgs"/> instance containing the event data.</param>
         protected virtual void OnExceptionCaught(Exception e)
         {
-            EventHandler<ExceptionEventArgs> handler = ExceptionCaught;
+            var handler = ExceptionCaught;
             if (handler != null) handler(this, new ExceptionEventArgs(e));
         }
     }

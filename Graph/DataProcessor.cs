@@ -122,7 +122,7 @@ namespace Graph
         /// <seealso cref="StopProcessing"/>
         private void ProcessingLoop()
         {
-            Queue<TData> processingQueue = new Queue<TData>();
+            var processingQueue = new Queue<TData>();
             while (!_stopProcessing)
             {
                 // Wait for the start signal
@@ -134,7 +134,7 @@ namespace Graph
                 {
                     if (_inputQueue.Count == 0) continue;
                     OnProcessingStateChanged(ProcessingState.Preparing);
-                    int count = _inputQueue.Count;
+                    var count = _inputQueue.Count;
                     while (count-- > 0)
                     {
                         processingQueue.Enqueue(_inputQueue.Dequeue());
@@ -145,7 +145,7 @@ namespace Graph
                 // Process the data
                 while(processingQueue.Count > 0)
                 {
-                    TData payload = processingQueue.Dequeue();
+                    var payload = processingQueue.Dequeue();
                     ProcessDataInternal(payload);
                 }
             }

@@ -81,7 +81,7 @@ namespace Graph
         /// <param name="payload">The data to process</param>
         protected override void ProcessData(TData payload)
         {
-            Task task = new Task(() => _action(payload), _creationOptions);
+            var task = new Task(() => _action(payload), _creationOptions);
             if (_scheduler == null) task.Start(); else task.Start(_scheduler);
         }
     }
