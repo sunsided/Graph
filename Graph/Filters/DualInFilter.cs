@@ -49,7 +49,7 @@ namespace Graph.Filters
                 int inputQueueLength)
                 : base(registrationTimeout, inputQueueLength)
             {
-                Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
+                Contract.Requires(registrationTimeout is Timeout.Infinite or > 0);
                 Contract.Requires(inputQueueLength > 0);
                 Queue = queue;
             }
@@ -137,7 +137,7 @@ namespace Graph.Filters
             int outputQueueLength)
             : base(outputQueueLength)
         {
-            Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
+            Contract.Requires(registrationTimeout is Timeout.Infinite or > 0);
             Contract.Requires(inputQueueLength > 0);
             Contract.Requires(outputQueueLength > 0);
             Contract.Ensures(_inputSink1 != null && _inputSink2 != null);

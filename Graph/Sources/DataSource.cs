@@ -173,8 +173,7 @@ namespace Graph.Sources
         /// <inheritdoc />
         public override void StartProcessing()
         {
-            if (_processingTask.Status == TaskStatus.WaitingToRun ||
-                _processingTask.Status == TaskStatus.Running) return;
+            if (_processingTask.Status is TaskStatus.WaitingToRun or TaskStatus.Running) return;
             _processingTask.Start();
             _outputTask.Start();
         }

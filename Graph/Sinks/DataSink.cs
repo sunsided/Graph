@@ -27,7 +27,7 @@ namespace Graph.Sinks
             int inputQueueLength)
             : base(registrationTimeout, inputQueueLength)
         {
-            Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
+            Contract.Requires(registrationTimeout is Timeout.Infinite or > 0);
             Contract.Requires(inputQueueLength > 0);
         }
     }

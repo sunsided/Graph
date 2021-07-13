@@ -90,7 +90,7 @@ namespace Graph.Processors
             int registrationTimeout, [DefaultValue(InputQueueLengthDefault)]
             int inputQueueLength)
         {
-            Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
+            Contract.Requires(registrationTimeout is Timeout.Infinite or > 0);
             Contract.Requires(inputQueueLength > 0);
 
             _registrationTimeout = registrationTimeout;
@@ -162,8 +162,7 @@ namespace Graph.Processors
         /// <inheritdoc />
         public override void StartProcessing()
         {
-            if (_processingTask.Status == TaskStatus.WaitingToRun ||
-                _processingTask.Status == TaskStatus.Running) return;
+            if (_processingTask.Status is TaskStatus.WaitingToRun or TaskStatus.Running) return;
             _processingTask.Start();
         }
 
