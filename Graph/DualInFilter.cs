@@ -186,7 +186,7 @@ namespace Graph
         /// </returns>
         protected override SourceResult CreateData(out TOutput payload)
         {
-            payload = default(TOutput);
+            payload = default;
             if (_input1.Count == 0) return SourceResult.Idle;
             if (_input2.Count == 0) return SourceResult.Idle;
 
@@ -202,7 +202,7 @@ namespace Graph
             }
 
             // Do nothing.
-            payload = default(TOutput);
+            payload = default;
             return SourceResult.Idle;
         }
 

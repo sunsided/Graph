@@ -22,6 +22,6 @@ namespace Graph
         /// <summary>
         /// Gets the processing state.
         /// </summary>
-        public ProcessingState State { [Pure] get; private set; }
+        public ProcessingState State { [Pure] get; private init; }
     }
 }
