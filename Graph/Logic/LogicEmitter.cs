@@ -11,7 +11,7 @@ namespace Graph.Logic
         /// <summary>
         /// WaitHandle to control the value creation.
         /// </summary>
-        private readonly AutoResetEvent _starter = new AutoResetEvent(false);
+        private readonly AutoResetEvent _starter = new(false);
 
         /// <summary>
         /// Timeout in milliseconds.
@@ -21,7 +21,7 @@ namespace Graph.Logic
         /// <summary>
         /// Value emission queue.
         /// </summary>
-        private readonly Queue<bool> _emissionQueue = new Queue<bool>();
+        private readonly Queue<bool> _emissionQueue = new();
 
         /// <summary>
         /// Creates the data.

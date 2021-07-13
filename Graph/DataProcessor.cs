@@ -38,7 +38,7 @@ namespace Graph
         /// <summary>
         /// The input value queue
         /// </summary>
-        private readonly Queue<TData> _inputQueue = new Queue<TData>();
+        private readonly Queue<TData> _inputQueue = new();
 
         /// <summary>
         /// The semaphore to control the input queue.
@@ -55,7 +55,7 @@ namespace Graph
         /// <summary>
         /// Thread sync object to control the processing loop.
         /// </summary>
-        private readonly AutoResetEvent _processStartTrigger = new AutoResetEvent(false);
+        private readonly AutoResetEvent _processStartTrigger = new(false);
 
         /// <summary>
         /// Determines if the processing loop should stop.

@@ -36,7 +36,7 @@ namespace Graph
         /// <summary>
         /// The list of output processors
         /// </summary>
-        private readonly List<IDataInput<TData>> _outputList = new List<IDataInput<TData>>();
+        private readonly List<IDataInput<TData>> _outputList = new();
 
         /// <summary>
         /// Gets the output processor count.
@@ -46,12 +46,12 @@ namespace Graph
         /// <summary>
         /// The list of outputs to dispatch data to.
         /// </summary>
-        private readonly Queue<IDataInput<TData>> _currentOutputs = new Queue<IDataInput<TData>>();
+        private readonly Queue<IDataInput<TData>> _currentOutputs = new();
 
         /// <summary>
         /// The size of the output queue
         /// </summary>
-        private readonly Queue<TData> _outputQueue = new Queue<TData>();
+        private readonly Queue<TData> _outputQueue = new();
 
         /// <summary>
         /// The processing task
@@ -87,7 +87,7 @@ namespace Graph
         /// <summary>
         /// Thread synchronization object that controls the output loop
         /// </summary>
-        private readonly AutoResetEvent _outputStartTrigger = new AutoResetEvent(false);
+        private readonly AutoResetEvent _outputStartTrigger = new(false);
 
         /// <summary>
         /// Creates a new instance of the <seealso cref="DataSource{TData}"/> class

@@ -73,12 +73,12 @@ namespace Graph
         /// <summary>
         /// First input.
         /// </summary>
-        private readonly Queue<TInput1> _input1 = new Queue<TInput1>();
+        private readonly Queue<TInput1> _input1 = new();
 
         /// <summary>
         /// Second input.
         /// </summary>
-        private readonly Queue<TInput2> _input2 = new Queue<TInput2>();
+        private readonly Queue<TInput2> _input2 = new();
 
         /// <summary>
         /// Backing field for the first input

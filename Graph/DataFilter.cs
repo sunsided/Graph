@@ -13,7 +13,7 @@ namespace Graph
         /// <summary>
         /// The list of attached output data processors.
         /// </summary>
-        private readonly List<IDataInput<TOutput>> _outputList = new List<IDataInput<TOutput>>();
+        private readonly List<IDataInput<TOutput>> _outputList = new();
 
         /// <summary>
         /// The count of attached output data processors.
@@ -23,7 +23,7 @@ namespace Graph
         /// <summary>
         /// The queue of output data processors to dispatch to.
         /// </summary>
-        private readonly Queue<IDataInput<TOutput>> _currentOutputs = new Queue<IDataInput<TOutput>>();
+        private readonly Queue<IDataInput<TOutput>> _currentOutputs = new();
 
         /// <summary>
         /// Initializes a new instance of the <see cref="DataFilter&lt;TInput, TOutput&gt;"/> class.
