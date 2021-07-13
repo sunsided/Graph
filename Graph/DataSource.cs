@@ -179,6 +179,8 @@ namespace Graph
             _outputQueueSemaphore.Dispose();
             _outputTask.Dispose();
             _processingTask.Dispose();
+
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
