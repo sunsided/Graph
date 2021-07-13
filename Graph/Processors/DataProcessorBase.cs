@@ -6,7 +6,7 @@ namespace Graph.Processors
     /// <summary>
     /// Base for data processors.
     /// </summary>
-    public abstract class DataProcessorBase : IDataProcessor
+    public abstract class DataProcessorBase : IDataProcessor, IDisposable
     {
         /// <summary>
         /// Gets or sets a user defined tag.
@@ -56,6 +56,11 @@ namespace Graph.Processors
         {
         }
 
+        ~DataProcessorBase()
+        {
+            Dispose(false);
+        }
+
         /// <summary>
         /// Raises the <see cref="ProcessingStateChanged"/> event.
         /// </summary>
@@ -76,6 +81,20 @@ namespace Graph.Processors
         {
             var handler = ExceptionCaught;
             handler?.Invoke(this, new ExceptionEventArgs(e));
+        }
+
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <inheritdoc cref="IDisposable" />
+        /// <param name="disposing">Whether this instance is currently disposing.</param>
+        protected virtual void Dispose(bool disposing)
+        {
+            StopProcessing();
         }
     }
 }

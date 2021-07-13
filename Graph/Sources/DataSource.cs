@@ -170,6 +170,17 @@ namespace Graph.Sources
             }
         }
 
+        /// <summary>
+        /// Unregisters all processors.
+        /// </summary>
+        public void DetachAllOutputs()
+        {
+            lock (_outputList)
+            {
+                _outputList.Clear();
+            }
+        }
+
         /// <inheritdoc />
         public override void StartProcessing()
         {
@@ -182,23 +193,10 @@ namespace Graph.Sources
         public override void StopProcessing()
         {
             Contract.Ensures(_stopProcessing == true);
+            if (_stopProcessing) return;
             _stopProcessing = true;
             _outputStartTrigger.Set();
             OnProcessingStateChanged(ProcessingState.Stopped);
-        }
-
-        /// <inheritdoc />
-        public void Dispose()
-        {
-            StopProcessing();
-            Task.WhenAll(_outputTask, _processingTask).Wait();
-
-            _outputStartTrigger.Dispose();
-            _outputQueueSemaphore.Dispose();
-            _outputTask.Dispose();
-            _processingTask.Dispose();
-
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -210,6 +208,22 @@ namespace Graph.Sources
         /// should be discarded and the processing stopped; <see cref="SourceResult.Idle"/> if nothing should happen.
         /// </returns>
         protected abstract SourceResult CreateData(out TData payload);
+
+        /// <inheritdoc />
+        protected override void Dispose(bool disposing)
+        {
+            base.Dispose(disposing);
+            if (!disposing) return;
+
+            DetachAllOutputs();
+            StopProcessing();
+            Task.WhenAll(_outputTask, _processingTask).Wait();
+
+            _outputStartTrigger.Dispose();
+            _outputQueueSemaphore.Dispose();
+            _outputTask.Dispose();
+            _processingTask.Dispose();
+        }
 
         /// <summary>
         /// Produces data in an infinite loop

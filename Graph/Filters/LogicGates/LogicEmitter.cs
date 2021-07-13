@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading;
 using Graph.Sources;
 
@@ -15,9 +16,9 @@ namespace Graph.Filters.LogicGates
         private readonly AutoResetEvent _starter = new(false);
 
         /// <summary>
-        /// Timeout in milliseconds.
+        /// Timeout.
         /// </summary>
-        private const int StarterTimeoutMs = 1000;
+        private readonly TimeSpan _starterTimeout = TimeSpan.FromSeconds(1);
 
         /// <summary>
         /// Value emission queue.
@@ -43,7 +44,7 @@ namespace Graph.Filters.LogicGates
                 }
             }
 
-            _starter.WaitOne(StarterTimeoutMs);
+            _starter.WaitOne(_starterTimeout);
             payload = false; // Don't care
             return SourceResult.Idle;
         }
@@ -52,19 +53,13 @@ namespace Graph.Filters.LogicGates
         /// Emits the value <see langword="true" />.
         /// <para>A call to <see cref="DataSource{T}.StartProcessing"/> is needed to start processing!</para>
         /// </summary>
-        public void EmitTrue()
-        {
-            Emit(true);
-        }
+        public void EmitTrue() => Emit(true);
 
         /// <summary>
         /// Emits the value <see langword="false" />.
         /// <para>A call to <see cref="DataSource{T}.StartProcessing"/> is needed to start processing!</para>
         /// </summary>
-        public void EmitFalse()
-        {
-            Emit(false);
-        }
+        public void EmitFalse() => Emit(false);
 
         /// <summary>
         /// Emits the given value
@@ -78,6 +73,13 @@ namespace Graph.Filters.LogicGates
                 _emissionQueue.Enqueue(value);
                 _starter.Set();
             }
+        }
+
+        /// <inheritdoc />
+        public override void StopProcessing()
+        {
+            _starter.Set();
+            base.StopProcessing();
         }
     }
 }

@@ -137,25 +137,34 @@ namespace Graph.Processors
                 OnProcessingStateChanged(ProcessingState.Idle);
                 if (!_processStartTrigger.WaitOne(ProcessingLockTimeout)) continue;
 
-                // Get the data
-                lock (_inputQueue)
-                {
-                    if (_inputQueue.Count == 0) continue;
-                    OnProcessingStateChanged(ProcessingState.Preparing);
-                    var count = _inputQueue.Count;
-                    while (count-- > 0)
-                    {
-                        processingQueue.Enqueue(_inputQueue.Dequeue());
-                        _inputQueueSemaphore.Release(1);
-                    }
-                }
+                ProcessOnce(processingQueue);
+            }
+        }
 
-                // Process the data
-                while (processingQueue.Count > 0)
+        /// <summary>
+        /// A single iteration of <see cref="ProcessingLoop"/>.
+        /// </summary>
+        /// <param name="processingQueue"></param>
+        private void ProcessOnce(Queue<TData> processingQueue)
+        {
+            // Get the data
+            lock (_inputQueue)
+            {
+                if (_inputQueue.Count == 0) return;
+                OnProcessingStateChanged(ProcessingState.Preparing);
+                var count = _inputQueue.Count;
+                while (count-- > 0)
                 {
-                    var payload = processingQueue.Dequeue();
-                    ProcessDataInternal(payload);
+                    processingQueue.Enqueue(_inputQueue.Dequeue());
+                    _inputQueueSemaphore.Release(1);
                 }
+            }
+
+            // Process the data
+            while (processingQueue.Count > 0)
+            {
+                var payload = processingQueue.Dequeue();
+                ProcessDataInternal(payload);
             }
         }
 
@@ -170,22 +179,26 @@ namespace Graph.Processors
         public override void StopProcessing()
         {
             Contract.Ensures(_stopProcessing == true);
+            if (_stopProcessing) return;
+
             _stopProcessing = true;
             _processStartTrigger.Set();
             OnProcessingStateChanged(ProcessingState.Stopped);
         }
 
         /// <inheritdoc />
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
+            base.Dispose(disposing);
+            if (!disposing) return;
+
+            UnregisterAllInputs();
             StopProcessing();
             _processingTask.Wait();
 
             _inputQueueSemaphore.Dispose();
             _processingTask.Dispose();
             _processStartTrigger.Dispose();
-
-            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -209,6 +222,14 @@ namespace Graph.Processors
             {
                 OnExceptionCaught(e);
             }
+        }
+
+        /// <summary>
+        /// Unregisters all inputs.
+        /// </summary>
+        private void UnregisterAllInputs()
+        {
+            lock (_inputQueue) _inputQueue.Clear();
         }
     }
 }
