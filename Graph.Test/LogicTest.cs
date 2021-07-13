@@ -1,4 +1,5 @@
 ﻿using System.Threading;
+using FluentAssertions;
 using Graph.Filters.LogicGates;
 using Xunit;
 
@@ -30,47 +31,47 @@ namespace Graph.Test
             source.StartProcessing();
 
             // Test initial state
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit an test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
         }
 
         /// <summary>
@@ -99,47 +100,47 @@ namespace Graph.Test
             source.StartProcessing();
 
             // Test initial state
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
         }
 
         /// <summary>
@@ -170,47 +171,47 @@ namespace Graph.Test
             source.StartProcessing();
 
             // Test initial state
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitFalse();
             autoResetEvent.WaitOne();
-            Assert.False(result);
+            result.Should().BeFalse();
 
             // Emit and test
             source.EmitTrue();
             autoResetEvent.WaitOne();
-            Assert.True(result);
+            result.Should().BeTrue();
         }
 
         /// <summary>
@@ -243,32 +244,32 @@ namespace Graph.Test
             gate.StartProcessing();
 
             // Test initial state
-            Assert.False(result);
+            result.Should().BeFalse();
             const int timeout = Timeout.Infinite;
 
             // Emit and test
             source1.EmitTrue();
             source2.EmitTrue();
-            Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
-            Assert.True(result);
+            autoResetEvent.WaitOne(timeout).Should().BeTrue();
+            result.Should().BeTrue();
 
             // Emit and test
             source1.EmitTrue();
             source2.EmitFalse();
-            Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
-            Assert.False(result);
+            autoResetEvent.WaitOne(timeout).Should().BeTrue();
+            result.Should().BeFalse();
 
             // Emit and test
             source1.EmitFalse();
             source2.EmitTrue();
-            Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
-            Assert.False(result);
+            autoResetEvent.WaitOne(timeout).Should().BeTrue();
+            result.Should().BeFalse();
 
             // Emit and test
             source1.EmitFalse();
             source2.EmitFalse();
-            Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
-            Assert.False(result);
+            autoResetEvent.WaitOne(timeout).Should().BeTrue();
+            result.Should().BeFalse();
         }
 
         /// <summary>
@@ -301,32 +302,32 @@ namespace Graph.Test
             //gate.StartProcessing();
 
             // Test initial state
-            Assert.False(result);
+            result.Should().BeFalse();
             const int timeout = Timeout.Infinite;
 
             // Emit and test
             source1.EmitTrue();
             source2.EmitTrue();
-            Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
-            Assert.True(result);
+            autoResetEvent.WaitOne(timeout).Should().BeTrue();
+            result.Should().BeTrue();
 
             // Emit and test
             source1.EmitTrue();
             source2.EmitFalse();
-            Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
-            Assert.False(result);
+            autoResetEvent.WaitOne(timeout).Should().BeTrue();
+            result.Should().BeFalse();
 
             // Emit and test
             source1.EmitFalse();
             source2.EmitTrue();
-            Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
-            Assert.False(result);
+            autoResetEvent.WaitOne(timeout).Should().BeTrue();
+            result.Should().BeFalse();
 
             // Emit and test
             source1.EmitFalse();
             source2.EmitFalse();
-            Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
-            Assert.True(result);
+            autoResetEvent.WaitOne(timeout).Should().BeTrue();
+            result.Should().BeTrue();
         }
     }
 }
