@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics.Contracts;
 using System.Threading;
@@ -9,7 +10,7 @@ namespace Graph
     /// <summary>
     /// Base class for data processors with output
     /// </summary>
-    public abstract class DataSource<TData> : DataProcessorBase, ISource<TData>
+    public abstract class DataSource<TData> : DataProcessorBase, ISource<TData>, IDisposable
     {
         /// <summary>
         /// Processing state
@@ -175,6 +176,28 @@ namespace Graph
             OnProcessingStateChanged(ProcessingState.Stopped);
         }
 
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            StopProcessing();
+            Task.WhenAll(_outputTask, _processingTask).Wait();
+
+            _outputStartTrigger.Dispose();
+            _outputQueueSemaphore.Dispose();
+            _outputTask.Dispose();
+            _processingTask.Dispose();
+        }
+
+        /// <summary>
+        /// Creates the data
+        /// </summary>
+        /// <param name="payload">The created data</param>
+        /// <returns>
+        /// <see cref="SourceResult.Process"/> if the processing should continue; <see cref="SourceResult.StopProcessing"/> if the output (<paramref name="payload"/>)
+        /// should be discarded and the processing stopped; <see cref="SourceResult.Idle"/> if nothing should happen.
+        /// </returns>
+        protected abstract SourceResult CreateData(out TData payload);
+
         /// <summary>
         /// Produces data in an ininite loop
         /// <seealso cref="StartProcessing"/>
@@ -247,15 +270,5 @@ namespace Graph
                 }
             }
         }
-
-        /// <summary>
-        /// Creates the data
-        /// </summary>
-        /// <param name="payload">The created data</param>
-        /// <returns>
-        /// <see cref="SourceResult.Process"/> if the processing should continue; <see cref="SourceResult.StopProcessing"/> if the output (<paramref name="payload"/>)
-        /// should be discarded and the processing stopped; <see cref="SourceResult.Idle"/> if nothing should happen.
-        /// </returns>
-        protected abstract SourceResult CreateData(out TData payload);
     }
 }

@@ -12,7 +12,7 @@ namespace Graph
     /// </summary>
     /// <typeparam name="TData">The type of the data.</typeparam>
     /// <remarks></remarks>
-    public abstract class DataProcessor<TData> : DataProcessorBase, IDataInput<TData>
+    public abstract class DataProcessor<TData> : DataProcessorBase, IDataInput<TData>, IDisposable
     {
         /// <summary>
         /// Default value for <see cref="_registrationTimeout"/>.
@@ -172,6 +172,23 @@ namespace Graph
             _processingTask.Start();
         }
 
+        /// <inheritdoc />
+        public void Dispose()
+        {
+            StopProcessing();
+            _processingTask.Wait();
+
+            _inputQueueSemaphore.Dispose();
+            _processingTask.Dispose();
+            _processStartTrigger.Dispose();
+        }
+
+        /// <summary>
+        /// Processes a data element
+        /// </summary>
+        /// <param name="payload">The data to process</param>
+        protected abstract void ProcessData(TData payload);
+
         /// <summary>
         /// Processes a data element
         /// </summary>
@@ -188,11 +205,5 @@ namespace Graph
                 OnExceptionCaught(e);
             }
         }
-
-        /// <summary>
-        /// Processes a data element
-        /// </summary>
-        /// <param name="payload">The data to process</param>
-        protected abstract void ProcessData(TData payload);
     }
 }
