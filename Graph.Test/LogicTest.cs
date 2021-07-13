@@ -1,5 +1,5 @@
 ﻿using System.Threading;
-using Graph.Logic;
+using Graph.Filters.LogicGates;
 using Xunit;
 
 namespace Graph.Test
