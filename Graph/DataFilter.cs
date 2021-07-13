@@ -18,7 +18,7 @@ namespace Graph
         /// <summary>
         /// The count of attached output data processors.
         /// </summary>
-        public int OutputProcessorCount { [Pure] get { return _outputList.Count; } }
+        public int OutputProcessorCount { [Pure] get => _outputList.Count; }
 
         /// <summary>
         /// The queue of output data processors to dispatch to.

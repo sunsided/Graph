@@ -41,7 +41,7 @@ namespace Graph
         /// <summary>
         /// Gets the output processor count.
         /// </summary>
-        public int OutputProcessorCount { [Pure] get { return _outputList.Count; } }
+        public int OutputProcessorCount { [Pure] get => _outputList.Count; }
 
         /// <summary>
         /// The list of outputs to dispatch data to.
