@@ -2,11 +2,11 @@
 
 namespace Graph.Logic
 {
-	/// <summary>
-	/// Produces a logical XOR of the inputs
-	/// </summary>
-	public sealed class XorGate : DualInFilter<bool, bool>
-	{
+    /// <summary>
+    /// Produces a logical XOR of the inputs
+    /// </summary>
+    public sealed class XorGate : DualInFilter<bool, bool>
+    {
         /// <summary>
         /// Processes the data
         /// </summary>
@@ -14,13 +14,13 @@ namespace Graph.Logic
         /// <param name="input2">The second input value</param>
         /// <param name="output"><paramref name="input1"/> XOR <paramref name="input2"/></param>
         /// <returns>Always <c>true</c>. </returns>
-		[Pure]
-		protected override bool ProcessData(bool input1, bool input2, out bool output)
-		{
-			Contract.Ensures(Contract.Result<bool>());
+        [Pure]
+        protected override bool ProcessData(bool input1, bool input2, out bool output)
+        {
+            Contract.Ensures(Contract.Result<bool>());
 
-			output = input1 ^ input2;
-			return true;
-		}
-	}
+            output = input1 ^ input2;
+            return true;
+        }
+    }
 }
