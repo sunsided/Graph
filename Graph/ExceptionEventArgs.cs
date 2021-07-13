@@ -14,7 +14,12 @@ namespace Graph
         /// <summary>
         /// Gets the exception.
         /// </summary>
-        public Exception Exception { [Pure] get; private set; }
+        public Exception Exception
+        {
+            [Pure]
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="ProcessingStateEventArgs"/> class.

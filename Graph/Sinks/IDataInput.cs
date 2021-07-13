@@ -11,7 +11,11 @@ namespace Graph.Sinks
         /// <summary>
         /// Gets the length of the input queue.
         /// </summary>
-        int InputQueueLength { [Pure] get; }
+        int InputQueueLength
+        {
+            [Pure]
+            get;
+        }
 
         /// <summary>
         /// Registers an input value.

@@ -19,7 +19,7 @@ namespace Graph.Filters
         /// </summary>
         /// <param name="evaluationFunc">The evaluation function.</param>
         public ConditionalPassFilter(Func<TData, bool> evaluationFunc)
-            : this((ignored, input) => evaluationFunc(input) )
+            : this((ignored, input) => evaluationFunc(input))
         {
             Contract.Requires(evaluationFunc != null);
         }

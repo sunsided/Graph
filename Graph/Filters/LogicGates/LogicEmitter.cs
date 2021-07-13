@@ -42,6 +42,7 @@ namespace Graph.Filters.LogicGates
                     return SourceResult.Process;
                 }
             }
+
             _starter.WaitOne(StarterTimeoutMs);
             payload = false; // Don't care
             return SourceResult.Idle;
@@ -72,7 +73,7 @@ namespace Graph.Filters.LogicGates
         /// <param name="value">The value to emit</param>
         public void Emit(bool value)
         {
-            lock(_emissionQueue)
+            lock (_emissionQueue)
             {
                 _emissionQueue.Enqueue(value);
                 _starter.Set();

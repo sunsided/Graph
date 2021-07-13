@@ -82,7 +82,8 @@ namespace Graph.Sinks
         protected override void ProcessData(TData payload)
         {
             var task = new Task(() => _action(payload), _creationOptions);
-            if (_scheduler == null) task.Start(); else task.Start(_scheduler);
+            if (_scheduler == null) task.Start();
+            else task.Start(_scheduler);
         }
     }
 }

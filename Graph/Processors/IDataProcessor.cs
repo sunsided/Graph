@@ -12,12 +12,21 @@ namespace Graph.Processors
         /// Gets or sets a user defined tag.
         /// </summary>
         /// <value>The tag.</value>
-        object Tag { [Pure] get; set; }
+        object Tag
+        {
+            [Pure]
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets the current processing state.
         /// </summary>
-        ProcessingState State { [Pure] get; }
+        ProcessingState State
+        {
+            [Pure]
+            get;
+        }
 
         /// <summary>
         /// Occurs when the processing state (<see cref="DataProcessorBase.State"/>) changes.

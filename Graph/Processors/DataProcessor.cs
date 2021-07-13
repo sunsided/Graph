@@ -51,7 +51,12 @@ namespace Graph.Processors
         /// <summary>
         /// The maximum size of the input queue.
         /// </summary>
-        public int InputQueueLength { [Pure] get; private set; }
+        public int InputQueueLength
+        {
+            [Pure]
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Thread sync object to control the processing loop.
@@ -81,7 +86,9 @@ namespace Graph.Processors
         /// </summary>
         /// <param name="registrationTimeout">Timeout in milliseconds to be used during value registration.</param>
         /// <param name="inputQueueLength">Maximum queue length for input values.</param>
-        internal DataProcessor([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
+        internal DataProcessor([DefaultValue(RegistrationTimeoutDefault)]
+            int registrationTimeout, [DefaultValue(InputQueueLengthDefault)]
+            int inputQueueLength)
         {
             Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
             Contract.Requires(inputQueueLength > 0);
@@ -144,7 +151,7 @@ namespace Graph.Processors
                 }
 
                 // Process the data
-                while(processingQueue.Count > 0)
+                while (processingQueue.Count > 0)
                 {
                     var payload = processingQueue.Dequeue();
                     ProcessDataInternal(payload);
@@ -155,7 +162,8 @@ namespace Graph.Processors
         /// <inheritdoc />
         public override void StartProcessing()
         {
-            if (_processingTask.Status == TaskStatus.WaitingToRun || _processingTask.Status == TaskStatus.Running) return;
+            if (_processingTask.Status == TaskStatus.WaitingToRun ||
+                _processingTask.Status == TaskStatus.Running) return;
             _processingTask.Start();
         }
 
@@ -198,7 +206,7 @@ namespace Graph.Processors
                 OnProcessingStateChanged(ProcessingState.Processing);
                 ProcessData(payload);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 OnExceptionCaught(e);
             }

@@ -21,10 +21,10 @@ namespace Graph.Test
             // Create elements / build the graph
             var source = new LogicEmitter();
             source.AttachOutput(new LogicActionInvoker(value =>
-                                                        {
-                                                            result = value;
-                                                            autoResetEvent.Set();
-                                                        }));
+            {
+                result = value;
+                autoResetEvent.Set();
+            }));
 
             // Start processing
             source.StartProcessing();
@@ -33,35 +33,43 @@ namespace Graph.Test
             Assert.False(result);
 
             // Emit an test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.True(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.True(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.True(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.True(result);
         }
 
@@ -78,10 +86,10 @@ namespace Graph.Test
             var source = new LogicEmitter();
             var filter = new NotGate();
             var sink = new LogicActionInvoker(value =>
-                                                                {
-                                                                    result = value;
-                                                                    autoResetEvent.Set(); // wait for processing to finish
-                                                                });
+            {
+                result = value;
+                autoResetEvent.Set(); // wait for processing to finish
+            });
 
             // Build the graph
             source.AttachOutput(filter);
@@ -94,35 +102,43 @@ namespace Graph.Test
             Assert.False(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.True(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.True(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.True(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.True(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.False(result);
         }
 
@@ -140,10 +156,10 @@ namespace Graph.Test
             var filter1 = new NotGate();
             var filter2 = new NotGate();
             var sink = new LogicActionInvoker(value =>
-                                                  {
-                                                      result = value;
-                                                      autoResetEvent.Set();
-                                                  });
+            {
+                result = value;
+                autoResetEvent.Set();
+            });
 
             // Build the graph
             source.AttachOutput(filter1);
@@ -157,35 +173,43 @@ namespace Graph.Test
             Assert.False(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.True(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.True(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.True(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitFalse(); autoResetEvent.WaitOne();
+            source.EmitFalse();
+            autoResetEvent.WaitOne();
             Assert.False(result);
 
             // Emit and test
-            source.EmitTrue(); autoResetEvent.WaitOne();
+            source.EmitTrue();
+            autoResetEvent.WaitOne();
             Assert.True(result);
         }
 
@@ -203,10 +227,10 @@ namespace Graph.Test
             var source2 = new LogicEmitter();
             var gate = new AndGate();
             var sink = new LogicActionInvoker(value =>
-                                                  {
-                                                      result = value;
-                                                      autoResetEvent.Set();
-                                                  });
+            {
+                result = value;
+                autoResetEvent.Set();
+            });
 
             // Build the graph
             source1.AttachOutput(gate.Input1);
@@ -223,22 +247,26 @@ namespace Graph.Test
             const int timeout = Timeout.Infinite;
 
             // Emit and test
-            source1.EmitTrue(); source2.EmitTrue();
+            source1.EmitTrue();
+            source2.EmitTrue();
             Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
             Assert.True(result);
 
             // Emit and test
-            source1.EmitTrue(); source2.EmitFalse();
+            source1.EmitTrue();
+            source2.EmitFalse();
             Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
             Assert.False(result);
 
             // Emit and test
-            source1.EmitFalse(); source2.EmitTrue();
+            source1.EmitFalse();
+            source2.EmitTrue();
             Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
             Assert.False(result);
 
             // Emit and test
-            source1.EmitFalse(); source2.EmitFalse();
+            source1.EmitFalse();
+            source2.EmitFalse();
             Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
             Assert.False(result);
         }
@@ -257,10 +285,10 @@ namespace Graph.Test
             var source2 = new LogicEmitter();
             var gate = new XnorGate();
             var sink = new LogicActionInvoker(value =>
-                                                  {
-                                                      result = value;
-                                                      autoResetEvent.Set();
-                                                  });
+            {
+                result = value;
+                autoResetEvent.Set();
+            });
 
             // Build the graph
             source1.AttachOutput(gate.Input1);
@@ -277,22 +305,26 @@ namespace Graph.Test
             const int timeout = Timeout.Infinite;
 
             // Emit and test
-            source1.EmitTrue(); source2.EmitTrue();
+            source1.EmitTrue();
+            source2.EmitTrue();
             Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
             Assert.True(result);
 
             // Emit and test
-            source1.EmitTrue(); source2.EmitFalse();
+            source1.EmitTrue();
+            source2.EmitFalse();
             Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
             Assert.False(result);
 
             // Emit and test
-            source1.EmitFalse(); source2.EmitTrue();
+            source1.EmitFalse();
+            source2.EmitTrue();
             Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
             Assert.False(result);
 
             // Emit and test
-            source1.EmitFalse(); source2.EmitFalse();
+            source1.EmitFalse();
+            source2.EmitFalse();
             Assert.True(autoResetEvent.WaitOne(timeout), "Timeout");
             Assert.True(result);
         }

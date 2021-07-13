@@ -22,7 +22,9 @@ namespace Graph.Sinks
         /// </summary>
         /// <param name="registrationTimeout">Timeout in milliseconds to be used during value registration.</param>
         /// <param name="inputQueueLength">Maximum queue length for input values.</param>
-        protected DataSink([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
+        protected DataSink([DefaultValue(RegistrationTimeoutDefault)]
+            int registrationTimeout, [DefaultValue(InputQueueLengthDefault)]
+            int inputQueueLength)
             : base(registrationTimeout, inputQueueLength)
         {
             Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);

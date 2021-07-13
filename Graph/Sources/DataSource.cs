@@ -45,7 +45,8 @@ namespace Graph.Sources
         /// </summary>
         public int OutputProcessorCount
         {
-            [Pure] get
+            [Pure]
+            get
             {
                 lock (_outputList)
                 {
@@ -93,7 +94,12 @@ namespace Graph.Sources
         /// <summary>
         /// The maximum size of the output queue
         /// </summary>
-        public int OutputQueueLength { [Pure] get; private set; }
+        public int OutputQueueLength
+        {
+            [Pure]
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Thread synchronization object that controls the output loop
@@ -112,7 +118,8 @@ namespace Graph.Sources
         /// Initializes a new instance of the <see cref="DataSource&lt;TData&gt;"/> class.
         /// </summary>
         /// <param name="outputQueueLength">Length of the output queue.</param>
-        protected DataSource([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
+        protected DataSource([DefaultValue(OutputQueueLengthDefault)]
+            int outputQueueLength)
         {
             Contract.Requires(outputQueueLength > 0);
 
@@ -166,7 +173,8 @@ namespace Graph.Sources
         /// <inheritdoc />
         public override void StartProcessing()
         {
-            if (_processingTask.Status == TaskStatus.WaitingToRun || _processingTask.Status == TaskStatus.Running) return;
+            if (_processingTask.Status == TaskStatus.WaitingToRun ||
+                _processingTask.Status == TaskStatus.Running) return;
             _processingTask.Start();
             _outputTask.Start();
         }
@@ -220,7 +228,8 @@ namespace Graph.Sources
                     if (_stopProcessing) break;
                     continue;
                 }
-                if(result == SourceResult.StopProcessing)
+
+                if (result == SourceResult.StopProcessing)
                 {
                     break;
                 }

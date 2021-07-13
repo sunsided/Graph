@@ -22,6 +22,11 @@ namespace Graph.Processors
         /// <summary>
         /// Gets the processing state.
         /// </summary>
-        public ProcessingState State { [Pure] get; private init; }
+        public ProcessingState State
+        {
+            [Pure]
+            get;
+            private init;
+        }
     }
 }

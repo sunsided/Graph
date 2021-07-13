@@ -18,7 +18,7 @@ namespace Graph.Filters
         /// </summary>
         /// <param name="func">The function.</param>
         public FunctionFilter(Func<TInput, TOutput> func)
-            : this((_, input) => func(input) )
+            : this((_, input) => func(input))
         {
             Contract.Requires(func != null);
         }

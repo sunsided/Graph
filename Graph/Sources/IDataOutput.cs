@@ -12,7 +12,11 @@ namespace Graph.Sources
         /// <summary>
         /// Gets the number of output processors.
         /// </summary>
-        int OutputProcessorCount { [Pure] get; }
+        int OutputProcessorCount
+        {
+            [Pure]
+            get;
+        }
 
         /// <summary>
         /// Registers a processor for the output values.

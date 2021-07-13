@@ -13,7 +13,8 @@ namespace Graph.Filters
     /// <typeparam name="TInput1">First input data type</typeparam>
     /// <typeparam name="TInput2">Second input data type</typeparam>
     /// <typeparam name="TOutput">Output data type</typeparam>
-    public abstract class DualInFilter<TInput1, TInput2, TOutput> : DataSource<TOutput>, IDualInFilter<TInput1, TInput2, TOutput>
+    public abstract class DualInFilter<TInput1, TInput2, TOutput> : DataSource<TOutput>,
+        IDualInFilter<TInput1, TInput2, TOutput>
     {
         /// <summary>
         /// Sink that passes data to the parent queue.
@@ -43,7 +44,9 @@ namespace Graph.Filters
             /// <param name="registrationTimeout">Timeout in milliseconds to be used during value registration.</param>
             /// <param name="inputQueueLength">Maximum queue length for input values.</param>
             /// <remarks></remarks>
-            public PassthroughSink(Queue<T> queue, [DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
+            public PassthroughSink(Queue<T> queue, [DefaultValue(RegistrationTimeoutDefault)]
+                int registrationTimeout, [DefaultValue(InputQueueLengthDefault)]
+                int inputQueueLength)
                 : base(registrationTimeout, inputQueueLength)
             {
                 Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
@@ -108,7 +111,8 @@ namespace Graph.Filters
         /// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
         /// </summary>
         /// <param name="outputQueueLength">Length of the output queue.</param>
-        protected DualInFilter([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
+        protected DualInFilter([DefaultValue(OutputQueueLengthDefault)]
+            int outputQueueLength)
             : base(outputQueueLength)
         {
             Contract.Requires(outputQueueLength > 0);
@@ -127,7 +131,10 @@ namespace Graph.Filters
         /// <param name="outputQueueLength">Length of the output queue.</param>
         /// <param name="registrationTimeout">Der Timeout in Millisekunden, der beim Registrieren von Elementen eingehalten werden soll.</param>
         /// <param name="inputQueueLength">Die maximale Anzahl an Elementen in der Eingangsqueue.</param>
-        protected DualInFilter([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength, [DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
+        protected DualInFilter([DefaultValue(RegistrationTimeoutDefault)]
+            int registrationTimeout, [DefaultValue(InputQueueLengthDefault)]
+            int inputQueueLength, [DefaultValue(OutputQueueLengthDefault)]
+            int outputQueueLength)
             : base(outputQueueLength)
         {
             Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
@@ -145,7 +152,8 @@ namespace Graph.Filters
         /// <inheritdoc />
         public ISink<TInput1> Input1
         {
-            [Pure] get
+            [Pure]
+            get
             {
                 Contract.Ensures(Contract.Result<ISink<TInput1>>() != null);
                 return _inputSink1;
@@ -155,7 +163,8 @@ namespace Graph.Filters
         /// <inheritdoc />
         public ISink<TInput2> Input2
         {
-            [Pure] get
+            [Pure]
+            get
             {
                 Contract.Ensures(Contract.Result<ISink<TInput1>>() != null);
                 return _inputSink2;
@@ -234,7 +243,8 @@ namespace Graph.Filters
     /// </summary>
     /// <typeparam name="TInput">The input data type</typeparam>
     /// <typeparam name="TOutput">The output data type</typeparam>
-    public abstract class DualInFilter<TInput, TOutput> : DualInFilter<TInput, TInput, TOutput>, IDualInFilter<TInput, TOutput>
+    public abstract class DualInFilter<TInput, TOutput> : DualInFilter<TInput, TInput, TOutput>,
+        IDualInFilter<TInput, TOutput>
     {
         /// <summary>
         /// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
@@ -247,7 +257,8 @@ namespace Graph.Filters
         /// Initializes a new instance of the <see cref="DualInFilter&lt;TInput1, TInput2, TOutput&gt;"/> class.
         /// </summary>
         /// <param name="outputQueueLength">Length of the output queue.</param>
-        protected DualInFilter([DefaultValue(OutputQueueLengthDefault)] int outputQueueLength)
+        protected DualInFilter([DefaultValue(OutputQueueLengthDefault)]
+            int outputQueueLength)
             : base(outputQueueLength)
         {
             Contract.Requires(outputQueueLength > 0);

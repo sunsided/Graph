@@ -49,7 +49,9 @@ namespace Graph.Filters
         /// </summary>
         /// <param name="registrationTimeout">Timeout in milliseconds to be used during value registration.</param>
         /// <param name="inputQueueLength">Maximum queue length for input values.</param>
-        protected DataFilter([DefaultValue(RegistrationTimeoutDefault)] int registrationTimeout, [DefaultValue(InputQueueLengthDefault)] int inputQueueLength)
+        protected DataFilter([DefaultValue(RegistrationTimeoutDefault)]
+            int registrationTimeout, [DefaultValue(InputQueueLengthDefault)]
+            int inputQueueLength)
             : base(registrationTimeout, inputQueueLength)
         {
             Contract.Requires(registrationTimeout == Timeout.Infinite || registrationTimeout > 0);
@@ -103,7 +105,7 @@ namespace Graph.Filters
 
             // Dispatch
             if (!dispatch) return;
-            lock(_outputList)
+            lock (_outputList)
             {
                 OnProcessingStateChanged(ProcessingState.Dispatching);
                 // Enqueue processors
