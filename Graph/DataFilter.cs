@@ -86,9 +86,8 @@ namespace Graph
         /// <param name="payload">The data to process.</param>
         protected sealed override void ProcessData(TInput payload)
         {
-            TOutput outputPayload;
             OnProcessingStateChanged(ProcessingState.Processing);
-            var dispatch = ProcessData(payload, out outputPayload);
+            var dispatch = ProcessData(payload, out var outputPayload);
 
             // Dispatch
             if (!dispatch) return;

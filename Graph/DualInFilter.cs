@@ -194,8 +194,7 @@ namespace Graph
             var value2 = _input2.Dequeue();
 
             // Process the data.
-            TOutput output;
-            if (ProcessData(value1, value2, out output))
+            if (ProcessData(value1, value2, out var output))
             {
                 payload = output;
                 return SourceResult.Process;

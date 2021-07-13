@@ -200,8 +200,7 @@ namespace Graph
         {
             do
             {
-                TData payload;
-                var result = CreateData(out payload);
+                var result = CreateData(out var payload);
                 if (result == SourceResult.Idle)
                 {
                     Thread.Sleep(0);
